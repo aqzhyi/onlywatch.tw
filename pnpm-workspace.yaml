@@ -1,0 +1,6 @@
+packages:
+  - "@apps/*"
+  - "@aqzhyi/*"
+  - "!**/test/**"
+  - "!**/mock/**"
+  - "!**/.vercel/**"

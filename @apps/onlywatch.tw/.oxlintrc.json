@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["import", "typescript", "unicorn"],
+  "rules": {
+    // i support clearly leaving unused function parameters, since
+    // they often have types defined
+    // they can help us remember which parameters are available for this function
+    "no-unused-vars": "allow"
+  }
+}

@@ -1,0 +1,4 @@
+- write code using next.js version v15 or higher
+- write code using react version v19 or higher
+- use tailwindCSS version v4 or higher to write CSS
+- use @supabase/supabase-js version v2 or higher to write database actions
