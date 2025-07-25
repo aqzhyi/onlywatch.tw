@@ -1,0 +1,30 @@
+# unsure, i don't know
+**/.nvmrc
+**/.npmrc
+
+# obviously no need
+**/*.bmp
+**/*.jpeg
+**/*.jpg
+**/*.map
+**/*.png
+**/*.webp
+**/.gitignore
+**/node_modules
+**/pnpm-lock.yaml
+
+# that is bundles copied from charting_library
+**/charting*library-v*/bundles
+**/charting*library/**/charting*library.js
+**/charting*library/**/charting*library.*.js
+**/charting*library/**/changelog.md
+**/charting*library/datafeeds/udf/lib
+
+# bundles
+**/out
+**/bundles
+**/dist
+**/*.scss.d.ts
+**/*.swagger.*
+**/.next
+**/.turbo
