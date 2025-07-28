@@ -1,0 +1,71 @@
+{
+  "$schema": "https://turbo.build/schema.v2.json",
+  "globalDependencies": ["**/.env.*local"],
+  "ui": "stream",
+  "tasks": {
+    "build": {
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "dependsOn": [
+        //
+        // Certain packages may need to be built first to ensure that the
+        // correct versions are available for use in the app project.
+        // You now have the build order you would expect,
+        // building dependencies before dependents.
+        "^build"
+      ],
+      "env": [
+        "NEXT_PUBLIC_SUPABASE_URL",
+        "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "NEXT_PUBLIC_GA_ID",
+        "SUPABASE_PROJECT_ID",
+        "SUPABASE_SERVICE_KEY",
+        "JIN10_API_URL",
+        "JIN10_APP_ID",
+        "JIN10_HEADER_ORIGIN"
+      ],
+
+      //
+      // outputs: it tells turbo which tasks to cache results for
+      // so unchanged projects don't need to be rebuilt, which helps speed up the build process
+      // you only need to include, for example, `'outDir'`, inside each project
+      // you should not include the cache folders created inside each project
+      "outputs": [
+        "dist",
+        "out",
+        "public",
+        ".next/**",
+        "!.next/cache/**",
+        "!.vercel"
+      ]
+    },
+
+    "tsc": {
+      "cache": false,
+      "dependsOn": [
+        // now, many typings need to be built in advance by the framework
+        "^build",
+        "^tsc"
+      ]
+    },
+
+    "lint": {
+      "cache": false,
+      "dependsOn": [
+        // now, many typings need to be built in advance by the framework
+        "^build",
+        "^lint"
+      ]
+    },
+
+    "test": {
+      "outputs": ["coverage/**"],
+      "dependsOn": []
+    },
+
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build"]
+    }
+  }
+}
