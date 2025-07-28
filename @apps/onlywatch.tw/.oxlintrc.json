@@ -1,0 +1,29 @@
+//
+// list of supported plugins
+// refs to 👉 https://oxc.rs/docs/guide/usage/linter/plugins.html
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": [
+    "import",
+    "jsx-a11y",
+    "nextjs",
+    "oxc",
+    "promise",
+    "react-perf",
+    "react",
+    "typescript",
+    "unicorn",
+    "vitest"
+  ],
+  "rules": {
+    // i support clearly leaving unused function parameters, since
+    // they often have types defined
+    // they can help us remember which parameters are available for this function
+    "no-unused-vars": "allow"
+
+    // "react-perf/jsx-no-new-array-as-prop": "warn",
+    // "react-perf/jsx-no-new-function-as-prop": "warn",
+    // "react-perf/jsx-no-new-object-as-prop": "warn",
+    // "react-perf/jsx-no-jsx-as-prop": "warn"
+  }
+}
