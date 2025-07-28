@@ -1,0 +1,8 @@
+// Yes this file is intentionally empty!
+// ---
+// Having a blank `tsconfig.json` file prevents TypeScript from crawling up your directory tree
+// and possibly picking up a parent `tsconfig.json` (which, unsurprisingly, is very hard to debug)
+{}
+//
+// see https://github.com/withastro/astro/blob/ff72ebe49398cfba70189a2402d4f82e86c0b777/tsconfig.json#L1-L5
+//

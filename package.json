@@ -1,0 +1,19 @@
+{
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.13.1",
+  "devDependencies": {
+    "@types/node": "24.1.0",
+    "lefthook": "1.12.2",
+    "turbo": "2.5.5",
+    "typescript": "5.9.2"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "tsc": "turbo run tsc"
+  }
+}
