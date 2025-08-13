@@ -11,9 +11,11 @@
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
 ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
 ![NextJS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+![HeroUI](https://img.shields.io/badge/HeroUI-black?style=for-the-badge&logo=heroui&logoColor=white)
 ![Zod](https://img.shields.io/badge/zod-%233068b7.svg?style=for-the-badge&logo=zod&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![iconify](https://img.shields.io/badge/iconify-%2338B2AC.svg?style=for-the-badge&logo=iconify&logoColor=white)
 
 provide with calendar to observe international 🇺🇲🇪🇺🇯🇵🇨🇭🇨🇦🇬🇧🇦🇺🇳🇿 's economic event data trends so they can plan quarterly short-term swing trades
 
@@ -67,3 +69,5 @@ provide with calendar to observe international 🇺🇲🇪🇺🇯🇵🇨🇭�
 - TkDodo - Blog <https://tkdodo.eu/blog/all>
 - Anthony Fu - Blog <https://antfu.me/posts>
 - Dan Abramov - Blog <https://overreacted.io/>
+- Mark Erikson - Blog <https://blog.isquaredsoftware.com/>
+- Daniel Saewitz - Blog <https://saewitz.com/>
