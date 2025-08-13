@@ -4,7 +4,6 @@ import { site } from '~/site'
 import './globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { envVars } from '~/envVars'
-import { SkeletonTheme } from '~/components/Skeleton'
 import { Providers } from '~/app/Providers'
 
 const fontSans = Noto_Sans({
@@ -78,9 +77,7 @@ export default function RootLayout({
     >
       <GoogleAnalytics gaId={`G-${envVars.NEXT_PUBLIC_GA_ID}`} />
       <body className={`${fontClassNames}`}>
-        <Providers>
-          <SkeletonTheme highlightColor='#82828266'>{children}</SkeletonTheme>
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
