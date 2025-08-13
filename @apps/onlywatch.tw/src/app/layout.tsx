@@ -74,6 +74,7 @@ export default function RootLayout({
     <html
       lang='zh-TW'
       className='dark'
+      suppressHydrationWarning
     >
       <GoogleAnalytics gaId={`G-${envVars.NEXT_PUBLIC_GA_ID}`} />
       <body className={`${fontClassNames}`}>
