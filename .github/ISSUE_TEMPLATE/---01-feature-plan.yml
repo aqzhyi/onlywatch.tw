@@ -1,0 +1,48 @@
+name: "🔋 Feature Plan"
+description: plan a new feature
+labels: ["feat: planning"]
+assignees: []
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ##  Think about it a bit more
+        Before filing a feature request, please take a moment to think about the problem you're trying to solve.
+
+        Consider the following questions:
+
+        👉 Why is this feature needed❓
+        👉 What is the goal of this feature❓
+        👉 What will benefit from it❓
+
+  - type: textarea
+    id: feature-why
+    attributes:
+      label: Feature why
+      description: Describe why this feature is needed.
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-goal
+    attributes:
+      label: Feature goal
+      description: Describe feature's goal.
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-benefit
+    attributes:
+      label: Feature benefits
+      description: Describe what benefits can this feature bring.
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-planning
+    attributes:
+      label: Feature planning
+      description: Plan the feature as detailed as possible 📣
+    validations:
+      required: true
