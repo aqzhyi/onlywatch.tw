@@ -1,4 +1,5 @@
 import { Card, CardBody } from '@heroui/card'
+import { Chip } from '@heroui/chip'
 import clsx from 'clsx'
 import { CountryFlag } from '~/features/jin10/components/CountryFlag'
 import { LocaleDatetimeAt } from '~/features/jin10/components/LocaleDatetimeAt'
@@ -15,14 +16,21 @@ export function EventCard(
   const hasNoNumbers = !props.numbers || props.numbers.every((n) => n === null)
   const noContent = ' ... '
 
+  const hasPublished = !!props.numbers?.[2]
+
   const numbers = (
     <div className='flex flex-row items-center gap-2'>
-      <span>{props.numbers?.[0] || noContent}</span>
-      <span>|</span>
-      <span>{props.numbers?.[1] || noContent}</span>
-      <span>|</span>
-      <span>{props.numbers?.[2] || noContent}</span>
-      <span className='text-sm'>{props.unit}</span>
+      <span title='前次公佈值'>{props.numbers?.[0] || noContent}</span>
+      <span className='icon-[mdi--keyboard-arrow-right]' />
+      <span title='預測公布值'>{props.numbers?.[1] || noContent}</span>
+      <span className='icon-[mdi--keyboard-arrow-right]' />
+      <Chip
+        variant={'bordered'}
+        color={hasPublished ? 'primary' : 'default'}
+      >
+        <span title='實際公佈值'>{props.numbers?.[2] || noContent}</span>
+        <span className='text-sm'>{props.unit}</span>
+      </Chip>
     </div>
   )
 
