@@ -4,7 +4,7 @@ import { site } from '~/site'
 import './globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { envVars } from '~/envVars'
-import { SkeletonTheme } from '~/components/Skeleton'
+import { Providers } from '~/app/Providers'
 
 const fontSans = Noto_Sans({
   variable: '--font-sans',
@@ -71,10 +71,14 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='zh-TW'>
+    <html
+      lang='zh-TW'
+      className='dark'
+      suppressHydrationWarning
+    >
       <GoogleAnalytics gaId={`G-${envVars.NEXT_PUBLIC_GA_ID}`} />
       <body className={`${fontClassNames}`}>
-        <SkeletonTheme highlightColor='#82828266'>{children}</SkeletonTheme>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )
