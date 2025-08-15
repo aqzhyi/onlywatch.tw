@@ -5,6 +5,7 @@ import './globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import { envVars } from '~/envVars'
 import { Providers } from '~/app/Providers'
+import { NuqsAdapter } from 'nuqs/adapters/next'
 
 const fontSans = Noto_Sans({
   variable: '--font-sans',
@@ -78,7 +79,9 @@ export default function RootLayout({
     >
       <GoogleAnalytics gaId={`G-${envVars.NEXT_PUBLIC_GA_ID}`} />
       <body className={`${fontClassNames}`}>
-        <Providers>{children}</Providers>
+        <NuqsAdapter>
+          <Providers>{children}</Providers>
+        </NuqsAdapter>
       </body>
     </html>
   )

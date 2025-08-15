@@ -16,8 +16,10 @@
     "gen:db:types": "tsx ./scripts/generateDatabaseTypes.ts"
   },
   "dependencies": {
+    "@heroui/badge": "2.2.15",
     "@heroui/button": "2.2.24",
     "@heroui/card": "2.2.23",
+    "@heroui/drawer": "2.2.21",
     "@heroui/react": "2.8.2",
     "@heroui/skeleton": "2.2.15",
     "@heroui/system": "2.4.20",
@@ -38,6 +40,7 @@
     "lodash": "4.17.21",
     "next": "15.4.6",
     "next-themes": "0.4.6",
+    "nuqs": "2.4.3",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "server-only": "0.0.1",

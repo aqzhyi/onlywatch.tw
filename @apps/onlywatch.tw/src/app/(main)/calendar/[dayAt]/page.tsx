@@ -1,9 +1,12 @@
+import { Badge } from '@heroui/badge'
+import { Card, CardBody, CardHeader } from '@heroui/card'
+import { Skeleton } from '@heroui/skeleton'
 import { range } from 'lodash'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { Suspense } from 'react'
 import z from 'zod'
-import { Button } from '~/components/Button'
-import { EventManyCards } from '~/features/jin10/components/EventManyCards'
+import { CountryFlag } from '~/features/jin10/components/CountryFlag'
+import { DayCard } from '~/features/jin10/components/DayCard'
 import { findManyEvents } from '~/features/jin10/db/findManyEvents'
 import { days } from '~/utils/days'
 
@@ -48,20 +51,14 @@ export default async function Page({
     endOf: days(paramsData.dayAt).add(1, 'days').endOf('days').toISOString(),
   })
 
-  return (
-    <div className='flex flex-col gap-2 px-2 pb-2 md:flex-row md:gap-2'>
-      <EventManyCards
-        key={paramsData.dayAt}
-        dayAt={paramsData.dayAt}
-        value={events.dataGroupedByDate?.[paramsData.dayAt] || []}
-      />
+  const dayEvents = events.dataGroupedByDate?.[paramsData.dayAt] || []
 
-      <Link
-        href='/calender'
-        className='flex md:hidden'
-      >
-        <Button className='w-full'>查看完整日曆</Button>
-      </Link>
-    </div>
+  return (
+    <Suspense fallback={<Skeleton />}>
+      <DayCard
+        dayAt={paramsData.dayAt}
+        value={dayEvents}
+      />
+    </Suspense>
   )
 }
