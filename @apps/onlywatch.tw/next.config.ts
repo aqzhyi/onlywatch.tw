@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: '/',
-        destination: '/calender',
+        destination: '/calendar',
       },
     ]
   },
