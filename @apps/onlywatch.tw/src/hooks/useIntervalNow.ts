@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import type { AnyFunction } from '~/app/types/AnyFunction'
+import type { AnyFunction } from '~/types/AnyFunction'
 
 export function useIntervalNow(callback: AnyFunction, delay: number) {
   useEffect(() => {
