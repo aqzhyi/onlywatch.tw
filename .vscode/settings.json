@@ -19,5 +19,12 @@
   "prettier.enable": true,
   "tailwind-fold.foldStyle": "QUOTES",
   "tailwindCSS.classFunctions": ["cva", "cx", "clsx", "cn"],
+  "tailwindCSS.classAttributes": [
+    "class",
+    "className",
+    "classNames",
+    "ngClass",
+    "class:list"
+  ],
   "typescript.tsdk": "node_modules/typescript/lib"
 }
