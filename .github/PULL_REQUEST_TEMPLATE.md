@@ -1,6 +1,6 @@
 > [!IMPORTANT]
 >
-> Issue number: resolves #NA
+> ⚡ Issue number: resolves #NA
 
 <!-- Please do not submit updates to dependencies unless it fixes an issue. -->
 
@@ -8,22 +8,32 @@
 
 ---
 
-## 🔵 What is the current behavior?
+## 🔵 What is the current behavior❓
 
 > Describe the current behavior that you are modifying.
 
+- 👉 [...]
+- 👉 [...]
+- 👉 [...]
+
 ---
 
-## ✨ What is the new behavior?
+## ✨ What is the new behavior❓
 
 > Describe the behavior or changes that are being added by this PR.
 
+- 👉 [...]
+- 👉 [...]
+- 👉 [...]
+
 ---
 
-## 🔴 Does this introduce a breaking change?
+## 🔴 Does this introduce a breaking change❓
 
-- [ ] Yes
-- [ ] No
+- 📣 YES
+  - 👉 BREAKING CHANGE: [...]
+  - 👉 BREAKING CHANGE: [...]
+- ✅ no breaking change
 
 <!--
   If this introduces a breaking change:
