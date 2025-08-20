@@ -1,5 +1,14 @@
 packages:
-  - "@apps/*"
-  - "!**/test/**"
-  - "!**/mock/**"
-  - "!**/.vercel/**"
+  - '@apps/*'
+  - '!**/test/**'
+  - '!**/mock/**'
+  - '!**/.vercel/**'
+
+onlyBuiltDependencies:
+  - '@heroui/shared-utils'
+  - '@tailwindcss/oxide'
+  - chinese-conv
+  - esbuild
+  - lefthook
+  - sharp
+  - supabase

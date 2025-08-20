@@ -7,8 +7,8 @@ import clsx from 'clsx'
 import { Fragment, useReducer } from 'react'
 import type { Tables } from '~/db/database.types'
 import { CountryFlag } from '~/features/jin10/components/CountryFlag'
+import { Date } from '~/features/jin10/components/Date'
 import { EventCard } from '~/features/jin10/components/EventCard'
-import { days } from '~/utils/days'
 
 export function DayCard(props: {
   dayAt: string
@@ -26,24 +26,6 @@ export function DayCard(props: {
     }
   }
 
-  const date = (
-    <div
-      className={clsx([
-        'flex flex-row items-center gap-2',
-        variant === 'today' && [
-          'text-lg font-bold text-lime-500',
-          'dark:text-lime-400',
-        ],
-        variant === 'holiday' && ['text-blue-400'],
-      ])}
-    >
-      <div className='icon-[mdi--calendar-outline]'></div>
-      <div>
-        {props.dayAt} ({days(props.dayAt).format('ddd')})
-      </div>
-    </div>
-  )
-
   return (
     <Fragment>
       <Card
@@ -54,7 +36,17 @@ export function DayCard(props: {
         isPressable
         onPress={toggleDrawerOpen}
       >
-        <CardHeader>{date}</CardHeader>
+        <CardHeader>
+          <Date
+            value={props.dayAt}
+            color={
+              new Map([
+                [variant === 'today', 'green'],
+                [variant === 'holiday', 'blue'],
+              ] as const).get(true) || undefined
+            }
+          />
+        </CardHeader>
         <CardBody>
           <div className='flex flex-row gap-2'>
             {Object.entries(countryEventCounts).map(
@@ -81,7 +73,17 @@ export function DayCard(props: {
         }}
       >
         <DrawerContent>
-          <DrawerHeader>{date}</DrawerHeader>
+          <DrawerHeader>
+            <Date
+              value={props.dayAt}
+              color={
+                new Map([
+                  [variant === 'today', 'green'],
+                  [variant === 'holiday', 'blue'],
+                ] as const).get(true) || undefined
+              }
+            />
+          </DrawerHeader>
           <DrawerBody>
             <div className='flex flex-col gap-2'>
               {props.value.map((event) => {
