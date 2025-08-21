@@ -2,7 +2,7 @@ import { Card, CardBody } from '@heroui/card'
 import { Chip } from '@heroui/chip'
 import clsx from 'clsx'
 import { CountryFlag } from '~/features/jin10/components/CountryFlag'
-import { LocaleDatetimeAt } from '~/features/jin10/components/LocaleDatetimeAt'
+import { Datetime } from '~/features/jin10/components/Datetime'
 
 export function EventCard(
   props: React.PropsWithChildren<{
@@ -50,11 +50,7 @@ export function EventCard(
         <div className='flex flex-row items-center gap-2'>
           <CountryFlag country={props.country} />
           <span className='text-sm dark:text-zinc-400'>({props.country})</span>
-          <LocaleDatetimeAt
-            value={props.publishAt}
-            format='MM/DD HH:mm'
-            className='w-full'
-          />
+          <Datetime value={props.publishAt} />
         </div>
         <div>{props.title}</div>
         <div className={clsx(hasNoNumbers && 'hidden')}>{numbers}</div>

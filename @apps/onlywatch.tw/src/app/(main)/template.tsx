@@ -57,7 +57,7 @@ export default function Template(props: React.PropsWithChildren) {
           <NavbarMenuItem>登入</NavbarMenuItem>
         </NavbarMenu> */}
       </Navbar>
-      {props.children}
+      <div className='p-2'>{props.children}</div>
     </Fragment>
   )
 }
