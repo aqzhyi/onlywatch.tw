@@ -1,12 +1,9 @@
-- write code using next.js version v15 or higher
+# Copilot Instructions
 
-- write code using react version v19 or higher
+- whenever you compare two or more things, please use everyday examples to explain the differences, provide advantages and disadvantages, give suitable scenarios, and use a table format to clearly present the information
 
-- use zod.js version v4 or higher to write schemas
+- choose emojis appropriately to make the response more interesting
 
-- use tailwindCSS version v4 or higher to write CSS
-  - when planning layout
+- if there are reference sources, please provide the source link
 
-    use modern CSS properties like gap, space-x, space-y, py, px, and avoid using old-school properties like margin, etc
-
-- use @supabase/supabase-js version v2 or higher to write database actions
+- respond in the user's system language
