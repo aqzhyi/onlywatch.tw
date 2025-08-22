@@ -1,15 +1,16 @@
+import { Button } from '@heroui/button'
 import {
   Navbar,
   NavbarBrand,
   NavbarContent,
-  NavbarMenu,
   NavbarMenuItem,
 } from '@heroui/navbar'
-import clsx from 'clsx'
+import { Skeleton } from '@heroui/skeleton'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Fragment } from 'react'
+import { Fragment, Suspense } from 'react'
 import { ThemeToggle } from '~/components/ThemeToggle'
+import { FilterSetupButton } from '~/features/jin10/components/FilterSetupButton'
 
 export default function Template(props: React.PropsWithChildren) {
   return (
@@ -38,9 +39,11 @@ export default function Template(props: React.PropsWithChildren) {
         </NavbarBrand>
 
         <NavbarContent justify='end'>
-          {/* TODO */}
-          {/* <NavbarMenuItem>登入</NavbarMenuItem> */}
-          <NavbarMenuItem>
+          <NavbarMenuItem className='flex flex-row items-center justify-center gap-2'>
+            <Suspense fallback={<Skeleton />}>
+              <FilterSetupButton />
+            </Suspense>
+
             <ThemeToggle />
           </NavbarMenuItem>
         </NavbarContent>

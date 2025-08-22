@@ -6,6 +6,7 @@ import { constants } from '~/features/jin10/constants'
 import { days } from '~/utils/days'
 
 const propsSchema = z.object({
+  q: z.string().optional(),
   startOf: z.iso.datetime({ offset: false }),
   endOf: z.iso.datetime({ offset: false }),
 })
@@ -32,11 +33,40 @@ export async function findManyEvents(
     return { error: input.error, data: [] }
   }
 
+  // ! ⛑️ avoid sql injection
+  const sanitizeQuery = (query: string): string => {
+    return (
+      query
+        // allow Chinese, English, numbers, spaces, hyphens, underscores, and dots
+        .replace(/[^a-zA-Z0-9\u4e00-\u9fff\s\-_.]/g, '')
+        .trim()
+    )
+  }
+
+  const queries =
+    input.data.q
+      ?.split(/[,\s]/)
+      .map((query) => sanitizeQuery(query))
+      .filter((query) => query.length > 0) || []
+
   const supabase = getSupabase()
 
-  const { data, error } = await supabase
-    .from('jin10_events')
-    .select('*')
+  let queryBuilder = supabase.from('jin10_events').select('*')
+
+  if (queries.length > 0) {
+    // ! ⛑️ use individual ilike filters with proper parameter binding
+    // ! build `OR` conditions safely without string interpolation in the SQL
+    const orConditions = queries
+      .flatMap((query) => [
+        `display_title.ilike.%${query}%`,
+        `country.ilike.%${query}%`,
+      ])
+      .join(',')
+
+    queryBuilder = queryBuilder.or(orConditions)
+  }
+
+  const { data, error } = await queryBuilder
     .gte('publish_at', input.data.startOf)
     .lte('publish_at', input.data.endOf)
     .order('publish_at', { ascending: true })

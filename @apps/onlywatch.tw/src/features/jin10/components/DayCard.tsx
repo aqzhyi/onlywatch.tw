@@ -2,9 +2,10 @@
 
 import { Badge } from '@heroui/badge'
 import { Card, CardBody, CardHeader } from '@heroui/card'
-import { Drawer, DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
+import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
 import clsx from 'clsx'
 import { Fragment, useReducer } from 'react'
+import { Drawer } from '~/components/Drawer'
 import type { Tables } from '~/db/database.types'
 import { CountryFlag } from '~/features/jin10/components/CountryFlag'
 import { Date } from '~/features/jin10/components/Date'
@@ -62,10 +63,6 @@ export function DayCard(props: {
         isOpen={isDrawerOpen}
         placement='right'
         onOpenChange={toggleDrawerOpen}
-        classNames={{
-          base: 'sm:m-4 rounded-large',
-          closeButton: 'text-2xl text-gray-900 dark:text-white',
-        }}
       >
         <DrawerContent>
           <DrawerHeader>

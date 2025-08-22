@@ -1,4 +1,3 @@
-import { Card, CardBody } from '@heroui/card'
 import clsx from 'clsx'
 import { range } from 'lodash'
 import type { Tables } from '~/db/database.types'
@@ -8,25 +7,29 @@ import { days } from '~/utils/days'
 
 export const revalidate = 180
 
-export default async function Page() {
+export default async function Page(props: {
+  searchParams: Promise<{ q: string }>
+}) {
   const END_DAYS = 30
+
   const today = days().startOf('days')
 
   /** always start from Monday */
   const startDay = days().startOf('weeks').add(1, 'days').startOf('days')
-  const endDay = days().add(END_DAYS, 'days').endOf('weeks').endOf('days')
+  const endDay = days().add(END_DAYS, 'days').endOf('weeks')
 
   const events = await findManyEvents({
+    q: (await props.searchParams).q,
     startOf: startDay.toISOString(),
     endOf: endDay.toISOString(),
   })
 
-  const dailyEventsInWeek = new Map<string, Tables<'jin10_events'>[]>()
+  const dailyEventsInRange = new Map<string, Tables<'jin10_events'>[]>()
 
   for (const day of range(0, Math.abs(startDay.diff(endDay, 'days')))) {
     const dayKey = startDay.add(day, 'days').format('YYYY-MM-DD')
 
-    dailyEventsInWeek.set(dayKey, events.dataGroupedByDate?.[dayKey] || [])
+    dailyEventsInRange.set(dayKey, events.dataGroupedByDate?.[dayKey] || [])
   }
 
   /** string of monday, tuesday, wednesday etc */
@@ -44,7 +47,7 @@ export default async function Page() {
           {title}
         </div>
       ))}
-      {Array.from(dailyEventsInWeek.entries()).map(([dayAt, events]) => {
+      {Array.from(dailyEventsInRange.entries()).map(([dayAt, events]) => {
         const isHoliday = [0, 6].includes(days(dayAt).weekday())
         const isUpcoming = days(dayAt).isAfter(today)
         const isPast = days(dayAt).isBefore(today)
