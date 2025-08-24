@@ -19,13 +19,14 @@
 
 provide with calendar to observe international 🇺🇲🇪🇺🇯🇵🇨🇭🇨🇦🇬🇧🇦🇺🇳🇿 's economic event data trends so they can plan quarterly short-term swing trades
 
+## ⚡ try it now
+
+<https://onlywatch.tw/?q=%E9%9D%9E%E8%BE%B2+cpi+pce+%E5%88%A9%E7%8E%87%E6%B1%BA%E5%AE%9A+%E5%B0%B1%E6%A5%AD%E4%BA%BA%E6%95%B8+%E8%B2%BF%E6%98%93%E5%B8%B3+%E5%A4%B1%E6%A5%AD%E9%87%91%E4%BA%BA%E6%95%B8+%E9%AE%91%E5%A8%81%E7%88%BE+%E5%B7%9D%E6%99%AE+%E6%99%AE%E4%BA%AC+%E9%9B%B6%E5%94%AE%E9%8A%B7%E5%94%AE+PMI>
+
 ---
 
-<a href="https://onlywatch.tw/"><img src='./@apps/onlywatch.tw/public/site-sign-in-preview.png' /></a>
-
----
-
-![site preview](./@apps/onlywatch.tw/public/site-preview.png)
+![site preview](@apps/onlywatch.tw/public/preview-events-filter.png)
+![site preview](@apps/onlywatch.tw/public/preview-events-view.png)
 
 ---
 

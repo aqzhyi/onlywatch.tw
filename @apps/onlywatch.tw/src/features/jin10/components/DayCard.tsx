@@ -2,9 +2,10 @@
 
 import { Badge } from '@heroui/badge'
 import { Card, CardBody, CardHeader } from '@heroui/card'
-import { Drawer, DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
+import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
 import clsx from 'clsx'
 import { Fragment, useReducer } from 'react'
+import { Drawer } from '~/components/Drawer'
 import type { Tables } from '~/db/database.types'
 import { CountryFlag } from '~/features/jin10/components/CountryFlag'
 import { Date } from '~/features/jin10/components/Date'
@@ -13,9 +14,9 @@ import { EventCard } from '~/features/jin10/components/EventCard'
 export function DayCard(props: {
   dayAt: string
   value: Tables<'jin10_events'>[]
-  variant?: 'default' | 'today' | 'past' | 'upcoming' | 'holiday'
+  variant?: undefined | 'today' | 'past'
 }) {
-  const { variant = 'default' } = props
+  const { variant } = props
   const [isDrawerOpen, toggleDrawerOpen] = useReducer((prev) => !prev, false)
   const countryEventCounts: Record<string, number> = {}
 
@@ -31,24 +32,19 @@ export function DayCard(props: {
       <Card
         className={clsx([
           'w-full cursor-pointer',
+          variant === 'today' && [
+            'border border-teal-500 dark:border-lime-500',
+          ],
           variant === 'past' && ['opacity-50'],
         ])}
         isPressable
         onPress={toggleDrawerOpen}
       >
         <CardHeader>
-          <Date
-            value={props.dayAt}
-            color={
-              new Map([
-                [variant === 'today', 'green'],
-                [variant === 'holiday', 'blue'],
-              ] as const).get(true) || undefined
-            }
-          />
+          <Date value={props.dayAt} />
         </CardHeader>
         <CardBody>
-          <div className='flex flex-row gap-2'>
+          <div className='flex flex-row flex-wrap gap-4'>
             {Object.entries(countryEventCounts).map(
               ([countryCode, eventCount]) => (
                 <Badge
@@ -67,22 +63,10 @@ export function DayCard(props: {
         isOpen={isDrawerOpen}
         placement='right'
         onOpenChange={toggleDrawerOpen}
-        classNames={{
-          base: 'sm:m-2 rounded-medium',
-          closeButton: 'text-2xl text-gray-900 dark:text-white',
-        }}
       >
         <DrawerContent>
           <DrawerHeader>
-            <Date
-              value={props.dayAt}
-              color={
-                new Map([
-                  [variant === 'today', 'green'],
-                  [variant === 'holiday', 'blue'],
-                ] as const).get(true) || undefined
-              }
-            />
+            <Date value={props.dayAt} />
           </DrawerHeader>
           <DrawerBody>
             <div className='flex flex-col gap-2'>
