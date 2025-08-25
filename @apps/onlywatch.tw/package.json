@@ -13,7 +13,8 @@
     "lint": "oxlint",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "gen:db:types": "tsx ./scripts/generateDatabaseTypes.ts"
+    "typegen:nextjs": "tsx ./scripts/typegen-nextjs.ts",
+    "typegen:supabase": "tsx ./scripts/typegen-supabase.ts"
   },
   "dependencies": {
     "@heroui/badge": "2.2.15",
