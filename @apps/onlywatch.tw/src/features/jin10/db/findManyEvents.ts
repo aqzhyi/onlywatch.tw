@@ -1,12 +1,14 @@
 import { groupBy } from 'lodash'
+import { cacheLife } from 'next/dist/server/use-cache/cache-life'
 import z from 'zod'
 import type { Tables } from '~/db/database.types'
 import { getSupabase } from '~/db/getSupabase'
 import { constants } from '~/features/jin10/constants'
+import { stringWithDBSchema } from '~/schemas/stringWithDBSchema'
 import { days } from '~/utils/days'
 
 const propsSchema = z.object({
-  q: z.string().optional(),
+  q: stringWithDBSchema.optional(),
   startOf: z.iso.datetime({ offset: false }),
   endOf: z.iso.datetime({ offset: false }),
 })
@@ -19,7 +21,9 @@ const propsSchema = z.object({
  *   })
  */
 export async function findManyEvents(
-  props: z.infer<typeof propsSchema>,
+  startOf: z.infer<typeof propsSchema>['startOf'],
+  endOf: z.infer<typeof propsSchema>['endOf'],
+  q?: z.infer<typeof propsSchema>['q'],
 ): Promise<{
   error: null | Error
   data: Tables<'jin10_events'>[]
@@ -27,7 +31,10 @@ export async function findManyEvents(
     [YYYY_MM_DD: string]: Tables<'jin10_events'>[]
   }
 }> {
-  const input = propsSchema.safeParse(props)
+  'use cache'
+  cacheLife('minutes')
+
+  const input = propsSchema.safeParse({ q, startOf, endOf })
 
   if (!input.success) {
     return { error: input.error, data: [] }
@@ -71,6 +78,7 @@ export async function findManyEvents(
     .lte('publish_at', input.data.endOf)
     .order('publish_at', { ascending: true })
     .order('display_title', { ascending: true })
+    .limit(5000)
 
   const dataGroupedByDate = data
     ? groupBy(data, (event) => {
