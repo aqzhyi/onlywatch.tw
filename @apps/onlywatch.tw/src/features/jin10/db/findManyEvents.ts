@@ -1,3 +1,4 @@
+import consola from 'consola'
 import { groupBy } from 'lodash'
 import { cacheLife } from 'next/dist/server/use-cache/cache-life'
 import z from 'zod'
@@ -39,6 +40,8 @@ export async function findManyEvents(
   if (!input.success) {
     return { error: input.error, data: [] }
   }
+
+  consola.info('findManyEvents(input)', { input })
 
   // ! ⛑️ avoid sql injection
   const sanitizeQuery = (query: string): string => {

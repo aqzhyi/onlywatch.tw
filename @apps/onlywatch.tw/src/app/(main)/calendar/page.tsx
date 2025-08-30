@@ -1,72 +1,72 @@
-import clsx from 'clsx'
-import { range } from 'lodash'
-import type { Tables } from '~/db/database.types'
+import { Calendar } from '~/features/jin10/components/Calendar'
 import { DayCard } from '~/features/jin10/components/DayCard'
+import { ManyEventsDrawer } from '~/features/jin10/components/ManyEventsDrawer'
+import { WeekdayTitle } from '~/features/jin10/components/WeekdayTitle'
 import { findManyEvents } from '~/features/jin10/db/findManyEvents'
 import { days } from '~/utils/days'
+import { getIsoToday } from '~/utils/getIsoToday'
 
-export const revalidate = 180
-
-export default async function Page(props: {
-  searchParams: Promise<{ q: string }>
-}) {
-  const END_DAYS = 30
-
-  const today = days().startOf('days')
-
-  /** always start from Monday */
-  const startDay = days().startOf('weeks').add(1, 'days').startOf('days')
-  const endDay = days().add(END_DAYS, 'days').endOf('weeks')
-
-  const events = await findManyEvents({
-    q: (await props.searchParams).q,
-    startOf: startDay.toISOString(),
-    endOf: endDay.toISOString(),
-  })
-
-  const dailyEventsInRange = new Map<string, Tables<'jin10_events'>[]>()
-
-  for (const day of range(0, Math.abs(startDay.diff(endDay, 'days')))) {
-    const dayKey = startDay.add(day, 'days').format('YYYY-MM-DD')
-
-    dailyEventsInRange.set(dayKey, events.dataGroupedByDate?.[dayKey] || [])
-  }
-
-  /** string of monday, tuesday, wednesday etc */
-  const weekdayTitles = range(0, 7).map((day) =>
-    startDay.add(day, 'days').format('ddd'),
-  )
+export default async function Page(
+  props: PageProps<'/calendar'> & {
+    searchParams: Promise<{
+      q: undefined | string
+    }>
+  },
+) {
+  const today = getIsoToday()
 
   return (
-    <div className='grid grid-cols-1 gap-2 md:grid-cols-7'>
-      {weekdayTitles.map((title) => (
-        <div
-          key={title}
-          className={clsx(['text-center text-xl font-bold', 'hidden md:block'])}
-        >
-          {title}
-        </div>
-      ))}
-      {Array.from(dailyEventsInRange.entries()).map(([dayAt, events]) => {
-        const isHoliday = [0, 6].includes(days(dayAt).weekday())
-        const isUpcoming = days(dayAt).isAfter(today)
-        const isPast = days(dayAt).isBefore(today)
-        const isToday = today.format('YYYY-MM-DD') === dayAt
-
+    <Calendar
+      targetWeek={today}
+      startOfWeek={-2}
+      endOfWeek={2}
+      classNames={{
+        base: 'gap-2',
+      }}
+      renderHeadCell={function RenderHeadCell({ index }) {
         return (
-          <DayCard
-            key={dayAt}
-            dayAt={dayAt}
-            value={events}
-            variant={
-              new Map([
-                [isToday, 'today'],
-                [isPast, 'past'],
-              ] as const).get(true) || undefined
-            }
+          <WeekdayTitle
+            key={index}
+            value={index}
           />
         )
-      })}
-    </div>
+      }}
+      renderCell={async function RenderCell({
+        isodate,
+        index,
+        startOf,
+        endOf,
+      }) {
+        const { dataGroupedByDate } = await findManyEvents(
+          startOf,
+          endOf,
+          (await props.searchParams).q,
+        )
+
+        const events = dataGroupedByDate?.[isodate] || []
+
+        const isPast = days(isodate).isBefore(await today)
+        const isToday = (await today) === isodate
+
+        return (
+          <ManyEventsDrawer
+            isodate={isodate}
+            events={events}
+            toggleBy={
+              <DayCard
+                dayAt={isodate}
+                value={events}
+                variant={
+                  new Map([
+                    [isToday, 'today'],
+                    [isPast, 'past'],
+                  ] as const).get(true) || undefined
+                }
+              />
+            }
+          ></ManyEventsDrawer>
+        )
+      }}
+    ></Calendar>
   )
 }

@@ -1,4 +1,3 @@
-import { Button } from '@heroui/button'
 import {
   Navbar,
   NavbarBrand,
@@ -12,7 +11,7 @@ import { Fragment, Suspense } from 'react'
 import { ThemeToggle } from '~/components/ThemeToggle'
 import { FilterSetupButton } from '~/features/jin10/components/FilterSetupButton'
 
-export default function Template(props: React.PropsWithChildren) {
+export default function Layout(props: LayoutProps<'/'>) {
   return (
     <Fragment>
       <Navbar

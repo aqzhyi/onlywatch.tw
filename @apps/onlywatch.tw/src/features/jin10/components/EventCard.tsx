@@ -1,6 +1,8 @@
+import { Badge } from '@heroui/badge'
 import { Card, CardBody } from '@heroui/card'
 import { Chip } from '@heroui/chip'
 import clsx from 'clsx'
+import { twMerge } from 'tailwind-merge'
 import { CountryFlag } from '~/features/jin10/components/CountryFlag'
 import { Datetime } from '~/features/jin10/components/Datetime'
 
@@ -19,10 +21,22 @@ export function EventCard(
   const hasPublished = !!props.numbers?.[2]
 
   const numbers = (
-    <div className='flex flex-row items-center gap-2'>
-      <span title='前次公佈值'>{props.numbers?.[0] || noContent}</span>
+    <div className='flex flex-row items-center md:gap-2'>
+      <Chip
+        variant='bordered'
+        size='sm'
+        startContent={<span>前值</span>}
+      >
+        <span title='前次公佈值'>{props.numbers?.[0] || noContent}</span>
+      </Chip>
       <span className='icon-[mdi--keyboard-arrow-right]' />
-      <span title='預測公布值'>{props.numbers?.[1] || noContent}</span>
+      <Chip
+        variant='bordered'
+        size='sm'
+        startContent={<span>預測</span>}
+      >
+        <span title='預測公布值'>{props.numbers?.[1] || noContent}</span>
+      </Chip>
       <span className='icon-[mdi--keyboard-arrow-right]' />
       <Chip
         variant={'bordered'}
@@ -39,7 +53,7 @@ export function EventCard(
   return (
     <Card aria-label='數據內容卡片'>
       <CardBody
-        className={clsx([
+        className={twMerge([
           'p-2',
           'transition-all duration-200',
           'hover:border-zinc-300 hover:bg-zinc-200',
@@ -53,7 +67,7 @@ export function EventCard(
           <Datetime value={props.publishAt} />
         </div>
         <div>{props.title}</div>
-        <div className={clsx(hasNoNumbers && 'hidden')}>{numbers}</div>
+        <div className={twMerge([hasNoNumbers && 'hidden'])}>{numbers}</div>
       </CardBody>
     </Card>
   )
