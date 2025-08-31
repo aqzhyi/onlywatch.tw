@@ -5,6 +5,7 @@ import z from 'zod'
 import type { Tables } from '~/db/database.types'
 import { getSupabase } from '~/db/getSupabase'
 import { constants } from '~/features/jin10/constants'
+import { sanitizeAndSplitQuery } from '~/features/jin10/utils/sanitizeAndSplitQuery'
 import { stringWithDBSchema } from '~/schemas/stringWithDBSchema'
 import { days } from '~/utils/days'
 
@@ -43,21 +44,7 @@ export async function findManyEvents(
 
   consola.info('findManyEvents(input)', { input })
 
-  // ! ⛑️ avoid sql injection
-  const sanitizeQuery = (query: string): string => {
-    return (
-      query
-        // allow Chinese, English, numbers, spaces, hyphens, underscores, and dots
-        .replace(/[^a-zA-Z0-9\u4e00-\u9fff\s\-_.]/g, '')
-        .trim()
-    )
-  }
-
-  const queries =
-    input.data.q
-      ?.split(/[,\s]/)
-      .map((query) => sanitizeQuery(query))
-      .filter((query) => query.length > 0) || []
+  const queries = sanitizeAndSplitQuery(input.data.q)
 
   const supabase = getSupabase()
 
