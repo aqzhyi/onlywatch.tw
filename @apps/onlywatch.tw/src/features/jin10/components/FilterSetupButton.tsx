@@ -6,36 +6,42 @@ import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
 import { Form } from '@heroui/form'
 import { Input } from '@heroui/input'
 import clsx from 'clsx'
+import { without } from 'lodash'
+import { useRouter } from 'next/navigation'
 import { parseAsString, useQueryState } from 'nuqs'
 import { useReducer } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { Drawer } from '~/components/Drawer'
 
 const EXAMPLES_SEARCH_KEYWORDS = [
-  'USD',
-  '非農',
-  '利率決定',
-  'PCE',
-  'CPI',
-  'PMI',
-  'ADP',
   '失業',
+  '利率決定',
+  '非農',
   '美聯儲',
   '零售',
+  'ADP',
   'CAD',
-  'JPY',
   'CHF',
+  'CPI',
+  'FOMC',
+  'GDP',
+  'JPY',
+  'PCE',
+  'PMI',
+  'USD',
 ]
 
 const PRESET_IMPORTANT_KEYWORDS =
   '非農 cpi pce 利率決定 就業人數 貿易帳 失業金人數 鮑威爾 川普 普京 零售銷售 PMI 央行'
 
 export function FilterSetupButton() {
+  const router = useRouter()
   const [isOpen, toggleOpen] = useReducer((isOpen) => !isOpen, false)
   const [query, setQuery] = useQueryState(
     'q',
-    parseAsString
-      .withDefault('')
-      .withOptions({ history: 'push', throttleMs: 500, shallow: false }),
+    parseAsString.withDefault('').withOptions({
+      history: 'push',
+    }),
   )
 
   return (
@@ -59,6 +65,7 @@ export function FilterSetupButton() {
             <Form
               onSubmit={(event) => {
                 event.preventDefault()
+                router.refresh()
                 toggleOpen()
               }}
             >
@@ -67,13 +74,22 @@ export function FilterSetupButton() {
                 label='搜尋'
                 variant='bordered'
                 value={query}
-                onValueChange={(value) => {
-                  setQuery(value)
+                onValueChange={async (value) => {
+                  await setQuery(value, {
+                    limitUrlUpdates: { method: 'debounce', timeMs: 1000 },
+                  })
+                  router.refresh()
+                }}
+                onKeyDown={async (event) => {
+                  if (event.key === 'Enter') {
+                    await setQuery(event.currentTarget.value)
+                    router.refresh()
+                  }
                 }}
                 description={
                   <div className='flex flex-col justify-center gap-2'>
                     <div
-                      className={clsx(
+                      className={twMerge(
                         'flex flex-row items-center gap-2',
                         'font-bold',
                         'text-zinc-600 dark:text-zinc-100',
@@ -85,9 +101,9 @@ export function FilterSetupButton() {
                         className={clsx('cursor-pointer')}
                         color='success'
                         variant='dot'
-                        onClick={(event) => {
-                          setQuery(PRESET_IMPORTANT_KEYWORDS)
-                          toggleOpen()
+                        onClick={async (event) => {
+                          await setQuery(PRESET_IMPORTANT_KEYWORDS)
+                          router.refresh()
                         }}
                       >
                         重要數據
@@ -95,7 +111,7 @@ export function FilterSetupButton() {
                     </div>
 
                     <div
-                      className={clsx(
+                      className={twMerge(
                         'flex flex-row flex-wrap items-center gap-2',
                         'text-zinc-600 dark:text-zinc-300',
                       )}
@@ -105,13 +121,30 @@ export function FilterSetupButton() {
                       {EXAMPLES_SEARCH_KEYWORDS.map((keyword) => (
                         <Chip
                           key={keyword}
-                          className={clsx('cursor-pointer')}
+                          className={twMerge('cursor-pointer')}
                           size='sm'
-                          color='primary'
+                          color={
+                            query.split(' ').includes(keyword)
+                              ? 'primary'
+                              : 'default'
+                          }
                           variant='dot'
-                          onClick={(event) => {
-                            setQuery(keyword)
-                            toggleOpen()
+                          onClick={async (event) => {
+                            await setQuery((prevKeywords) => {
+                              let keywordsArray = prevKeywords
+                                .split(' ')
+                                .map((k) => k.trim())
+
+                              if (keywordsArray.includes(keyword)) {
+                                keywordsArray = without(keywordsArray, keyword)
+                              } else {
+                                keywordsArray = [...keywordsArray, keyword]
+                              }
+
+                              return keywordsArray.join(' ')
+                            })
+
+                            router.refresh()
                           }}
                         >
                           {keyword}
@@ -124,9 +157,9 @@ export function FilterSetupButton() {
                 endContent={
                   <div
                     className='icon-[mdi--clear-box] cursor-pointer'
-                    onClick={() => {
-                      setQuery('')
-                      toggleOpen()
+                    onClick={async () => {
+                      await setQuery('')
+                      router.refresh()
                     }}
                   ></div>
                 }
@@ -138,14 +171,6 @@ export function FilterSetupButton() {
               />
 
               <ButtonGroup fullWidth>
-                <Button
-                  color='default'
-                  onPress={() => {
-                    toggleOpen()
-                  }}
-                >
-                  放棄
-                </Button>
                 <Button
                   color='primary'
                   type='submit'
