@@ -5,6 +5,8 @@ import z from 'zod'
 import type { Tables } from '~/db/database.types'
 import { getSupabaseAdmin } from '~/db/getSupabaseAdmin.server-only'
 import { crawlManyEvents } from '~/features/jin10/crawler/crawlManyEvents'
+import { isSlowMarket } from '~/features/jin10/utils/isSlowMarket'
+import { isWeekend } from '~/features/jin10/utils/isWeekend'
 import { days } from '~/utils/days'
 
 const paramsSchema = z.strictObject({
@@ -17,6 +19,13 @@ const DEFAULT_END_OF = days().add(4, 'days').format('YYYY-MM-DD')
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
+
+  if (isWeekend(days().toISOString()) || isSlowMarket(days().toISOString())) {
+    return NextResponse.json(
+      { message: 'Today is weekend or slow market, skipping crawling.' },
+      { status: 200 },
+    )
+  }
 
   const parsedParams = paramsSchema.safeParse(Object.fromEntries(searchParams))
 
