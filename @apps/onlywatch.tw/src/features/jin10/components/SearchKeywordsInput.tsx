@@ -57,14 +57,6 @@ export function SearchKeywordsInput({
     await onValueChange('')
   }
 
-  const setKeywordsWhenEnter = async (
-    event: React.KeyboardEvent<HTMLInputElement>,
-  ) => {
-    if (event.key === 'Enter') {
-      await onValueChange(event.currentTarget.value)
-    }
-  }
-
   return (
     <Input
       type='text'
@@ -74,7 +66,6 @@ export function SearchKeywordsInput({
       onValueChange={async (newValue) => {
         await onValueChange(newValue)
       }}
-      onKeyDown={setKeywordsWhenEnter}
       description={
         <div className='flex flex-col justify-center gap-2'>
           <div
