@@ -45,7 +45,7 @@ export function SearchKeywordsInput({
       keywordsArray = [...keywordsArray, keyword]
     }
 
-    const newValue = keywordsArray.join(' ')
+    const newValue = keywordsArray.join(' ').trim()
     await onValueChange(newValue)
   }
 

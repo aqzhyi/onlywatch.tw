@@ -3,21 +3,18 @@
 import { Button, ButtonGroup } from '@heroui/button'
 import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
 import { Form } from '@heroui/form'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { parseAsString, useQueryState } from 'nuqs'
+import qs from 'query-string'
 import { useReducer } from 'react'
 import { Drawer } from '~/components/Drawer'
 import { SearchKeywordsInput } from './SearchKeywordsInput'
 
 export function FilterSetupButton() {
+  const pathname = usePathname()
   const router = useRouter()
   const [isOpen, toggleOpen] = useReducer((isOpen) => !isOpen, false)
-  const [query, setQuery] = useQueryState(
-    'q',
-    parseAsString.withDefault('').withOptions({
-      history: 'push',
-    }),
-  )
+  const [query, setQuery] = useQueryState('q', parseAsString.withDefault(''))
 
   return (
     <div>
@@ -40,17 +37,15 @@ export function FilterSetupButton() {
             <Form
               onSubmit={(event) => {
                 event.preventDefault()
-                router.refresh()
+
                 toggleOpen()
+                router.push(`${pathname}?${qs.stringify({ q: query })}`)
               }}
             >
               <SearchKeywordsInput
                 value={query}
                 onValueChange={async (value) => {
-                  await setQuery(value, {
-                    limitUrlUpdates: { method: 'debounce', timeMs: 1000 },
-                  })
-                  router.refresh()
+                  await setQuery(value)
                 }}
               />
 

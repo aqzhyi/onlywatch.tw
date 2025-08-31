@@ -19,7 +19,6 @@ export function ManyEventsDrawer({
   isodate,
   events,
 }: DrawerOfManyEvents) {
-  const router = useRouter()
   const [isDrawerOpen, toggleDrawerOpen] = useReducer(
     (isOpen) => !isOpen,
     false,
@@ -31,7 +30,6 @@ export function ManyEventsDrawer({
         className='contents'
         aria-label={`點擊展開抽屜查看日期 ${isodate} 的所有事件`}
         onClick={() => {
-          router.refresh()
           toggleDrawerOpen()
         }}
       >
