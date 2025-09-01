@@ -28,8 +28,7 @@ export async function findManyEvents(
   q?: z.infer<typeof propsSchema>['q'],
 ): Promise<{
   error: null | Error
-  data: Tables<'jin10_events'>[]
-  dataGroupedByDate?: {
+  data: null | {
     [YYYY_MM_DD: string]: Tables<'jin10_events'>[]
   }
 }> {
@@ -39,7 +38,7 @@ export async function findManyEvents(
   const input = propsSchema.safeParse({ q, startOf, endOf })
 
   if (!input.success) {
-    return { error: input.error, data: [] }
+    return { error: input.error, data: null }
   }
 
   consola.info('findManyEvents(input)', { input })
@@ -80,5 +79,5 @@ export async function findManyEvents(
       })
     : {}
 
-  return { error: null, data: data || [], dataGroupedByDate }
+  return { error: null, data: dataGroupedByDate }
 }

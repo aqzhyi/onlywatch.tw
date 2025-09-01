@@ -3,8 +3,7 @@ import { DayCard } from '~/features/jin10/components/DayCard'
 import { ManyEventsDrawer } from '~/features/jin10/components/ManyEventsDrawer'
 import { WeekdayTitle } from '~/features/jin10/components/WeekdayTitle'
 import { findManyEvents } from '~/features/jin10/db/findManyEvents'
-import { days } from '~/utils/days'
-import { getIsoToday } from '~/utils/getIsoToday'
+import { getIsoWeekdays } from '~/utils/getIsoWeekdays'
 
 export default async function Page(
   props: PageProps<'/calendar'> & {
@@ -13,13 +12,19 @@ export default async function Page(
     }>
   },
 ) {
-  const today = getIsoToday()
+  const weeks = await getIsoWeekdays(-2, 2, true)
+
+  const eventsPromise = findManyEvents(
+    weeks.at(0)!,
+    weeks.at(-1)!,
+    (await props.searchParams).q,
+  )
+
+  console.info(`!!!🟢🟢🟢 `, eventsPromise)
 
   return (
     <Calendar
-      targetWeek={today}
-      startOfWeek={-2}
-      endOfWeek={2}
+      data={weeks}
       classNames={{
         base: 'gap-2',
       }}
@@ -31,37 +36,21 @@ export default async function Page(
           />
         )
       }}
-      renderCell={async function RenderCell({
-        isodate,
-        index,
-        startOf,
-        endOf,
-      }) {
-        const { dataGroupedByDate } = await findManyEvents(
-          startOf,
-          endOf,
-          (await props.searchParams).q,
-        )
-
-        const events = dataGroupedByDate?.[isodate] || []
-
-        const isPast = days(isodate).isBefore(await today)
-        const isToday = (await today) === isodate
-
+      renderCell={function RenderCell({ isodate, index }) {
         return (
           <ManyEventsDrawer
             isodate={isodate}
-            events={events}
+            value={eventsPromise}
             toggleBy={
               <DayCard
-                dayAt={isodate}
-                value={events}
-                variant={
-                  new Map([
-                    [isToday, 'today'],
-                    [isPast, 'past'],
-                  ] as const).get(true) || undefined
-                }
+                isodate={isodate}
+                value={eventsPromise}
+                // variant={
+                //   new Map([
+                //     [isToday, 'today'],
+                //     [isPast, 'past'],
+                //   ] as const).get(true) || undefined
+                // }
               />
             }
           ></ManyEventsDrawer>

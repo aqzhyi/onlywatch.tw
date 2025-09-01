@@ -2,27 +2,30 @@
 
 import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
 import { useRouter } from 'next/navigation'
-import { Fragment, useReducer } from 'react'
+import { Fragment, use, useReducer } from 'react'
 import { Drawer } from '~/components/Drawer'
 import type { Tables } from '~/db/database.types'
 import { Date } from '~/features/jin10/components/Date'
 import { EventCard } from '~/features/jin10/components/EventCard'
+import type { findManyEvents } from '~/features/jin10/db/findManyEvents'
 
 type DrawerOfManyEvents = {
   isodate: string
   toggleBy: React.ReactNode
-  events: Tables<'jin10_events'>[]
+  value: ReturnType<typeof findManyEvents>
 }
 
 export function ManyEventsDrawer({
   toggleBy,
   isodate,
-  events,
+  value,
 }: DrawerOfManyEvents) {
   const [isDrawerOpen, toggleDrawerOpen] = useReducer(
     (isOpen) => !isOpen,
     false,
   )
+
+  const { data } = use(value)
 
   return (
     <Fragment>
@@ -46,7 +49,7 @@ export function ManyEventsDrawer({
           </DrawerHeader>
           <DrawerBody>
             <div className='flex flex-col gap-2'>
-              {events.map((event) => {
+              {data?.[isodate]?.map((event) => {
                 return (
                   <EventCard
                     key={event.id}

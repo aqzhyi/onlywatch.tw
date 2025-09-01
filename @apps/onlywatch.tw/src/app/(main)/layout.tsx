@@ -59,7 +59,9 @@ export default function Layout(props: LayoutProps<'/'>) {
           <NavbarMenuItem>登入</NavbarMenuItem>
         </NavbarMenu> */}
       </Navbar>
-      <div className='p-2'>{props.children}</div>
+      <div className='p-2'>
+        <Suspense fallback={<Skeleton />}>{props.children}</Suspense>
+      </div>
     </Fragment>
   )
 }
