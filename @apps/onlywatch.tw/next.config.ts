@@ -12,8 +12,12 @@ const nextConfig: NextConfig = {
   rewrites: async () => {
     return [
       {
-        source: '/',
-        destination: '/calendar',
+        source: '/query/:query',
+        destination: '/calendar/:query',
+      },
+      {
+        source: '/:query*',
+        destination: '/calendar/query/:query*',
       },
     ]
   },

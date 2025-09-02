@@ -1,42 +1,53 @@
 import { Badge } from '@heroui/badge'
 import { Card, CardBody, CardHeader } from '@heroui/card'
 import { twMerge } from 'tailwind-merge'
-import type { Tables } from '~/db/database.types'
 import { CountryFlag } from '~/features/jin10/components/CountryFlag'
 import { Date } from '~/features/jin10/components/Date'
+import type { findManyEvents } from '~/features/jin10/db/findManyEvents'
+import { days } from '~/utils/days'
+import { getIsoToday } from '~/utils/getIsoToday'
 
-export async function DayCard(props: {
-  dayAt: string
-  value: Tables<'jin10_events'>[]
+export async function DayCard({
+  isodate,
+  variant,
+  ...props
+}: {
+  isodate: string
+  value: ReturnType<typeof findManyEvents>
   variant?: undefined | 'today' | 'past'
 }) {
-  const { variant, value } = props
+  const { data } = await props.value
 
-  const countryEventCounts = value
-    .filter((event) => event.country)
-    .reduce(
-      (counts, event) => {
-        const country = event.country!
-        counts[country] = (counts[country] || 0) + 1
-        return counts
-      },
-      {} as Record<string, number>,
-    )
+  const today = await getIsoToday()
+  const isToday = isodate === today
+  const isPast = days(isodate).isBefore(days(today), 'days')
+
+  const countryEventCounts =
+    data?.[isodate]
+      ?.filter((event) => event.country)
+      .reduce(
+        (counts, event) => {
+          const country = event.country!
+          counts[country] = (counts[country] || 0) + 1
+          return counts
+        },
+        {} as Record<string, number>,
+      ) || {}
 
   return (
     <Card
       className={twMerge([
         'md:min-h-44',
         'w-full cursor-pointer',
-        variant === 'today' && [
+        isToday && [
           'border-2 border-teal-500',
           'dark:border dark:border-lime-500',
         ],
-        variant === 'past' && ['opacity-50'],
+        isPast && ['opacity-50'],
       ])}
     >
       <CardHeader>
-        <Date value={props.dayAt} />
+        <Date value={isodate} />
       </CardHeader>
       <CardBody>
         <div className='flex flex-row flex-wrap gap-4'>

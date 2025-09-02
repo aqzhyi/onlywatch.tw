@@ -5,27 +5,11 @@ import { Input } from '@heroui/input'
 import clsx from 'clsx'
 import { without } from 'lodash'
 import { twMerge } from 'tailwind-merge'
+import { constants } from '~/features/jin10/constants'
 
-const EXAMPLES_SEARCH_KEYWORDS = [
-  '失業',
-  '利率決定',
-  '非農',
-  '美聯儲',
-  '零售',
-  'ADP',
-  'CAD',
-  'CHF',
-  'CPI',
-  'FOMC',
-  'GDP',
-  'JPY',
-  'PCE',
-  'PMI',
-  'USD',
-]
-
-const PRESET_IMPORTANT_KEYWORDS =
-  '非農 cpi pce 利率決定 就業人數 貿易帳 失業金人數 鮑威爾 川普 普京 零售銷售 PMI 央行'
+const EXAMPLES_SEARCH_KEYWORDS: string[] = constants.prerenderKeywordsResult
+const PRESET_IMPORTANT_KEYWORDS: string =
+  constants.importantKeywordsPresets.at(0) || ''
 
 interface SearchKeywordsInputProps {
   value: string
