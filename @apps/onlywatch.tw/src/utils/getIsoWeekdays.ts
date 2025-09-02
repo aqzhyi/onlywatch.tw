@@ -1,6 +1,5 @@
 import { range } from 'lodash'
-import { cacheLife } from 'next/dist/server/use-cache/cache-life'
-import { cacheTag } from 'next/dist/server/use-cache/cache-tag'
+import { unstable_cacheLife, unstable_cacheTag } from 'next/cache'
 import { days } from '~/utils/days'
 
 /**
@@ -15,8 +14,8 @@ export const getIsoWeekdays = async (
 ): Promise<string[]> => {
   'use cache'
 
-  cacheLife('hours')
-  cacheTag('today')
+  unstable_cacheLife('hours')
+  unstable_cacheTag('today')
 
   const today = days()
 

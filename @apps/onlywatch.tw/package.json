@@ -7,14 +7,8 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "clean": "tsx ./scripts/clean.ts",
     "format": "oxlint --fix",
-    "tsc": "tsc --noEmit",
-    "lint": "oxlint",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
-    "typegen:nextjs": "tsx ./scripts/typegen-nextjs.ts",
-    "typegen:supabase": "tsx ./scripts/typegen-supabase.ts"
+    "tsc": "tsc --noEmit"
   },
   "dependencies": {
     "@heroui/badge": "2.2.15",
