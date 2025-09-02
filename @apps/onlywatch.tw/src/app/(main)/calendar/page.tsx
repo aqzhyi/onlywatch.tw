@@ -42,16 +42,17 @@ export default async function Page(
             isodate={isodate}
             value={eventsPromise}
             toggleBy={
-              <DayCard
-                isodate={isodate}
-                value={eventsPromise}
-                // variant={
-                //   new Map([
-                //     [isToday, 'today'],
-                //     [isPast, 'past'],
-                //   ] as const).get(true) || undefined
-                // }
-              />
+              <div>{isodate}</div>
+              // <DayCard
+              //   isodate={isodate}
+              //   value={eventsPromise}
+              //   // variant={
+              //   //   new Map([
+              //   //     [isToday, 'today'],
+              //   //     [isPast, 'past'],
+              //   //   ] as const).get(true) || undefined
+              //   // }
+              // />
             }
           ></ManyEventsDrawer>
         )
