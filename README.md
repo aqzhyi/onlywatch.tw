@@ -39,9 +39,9 @@
 
 [https://onlywatch.tw](https://onlywatch.tw)
 
-[https://onlywatch.tw?q={keyword:NFP}](https://onlywatch.tw/?q=%E9%9D%9E%E8%BE%B2)
+[https://onlywatch.tw/query/{keyword:利率決議}](https://onlywatch.tw/query/%E5%88%A9%E7%8E%87%E6%B1%BA%E8%AD%B0)
 
-[https://onlywatch.tw?q={keywords}](https://onlywatch.tw/?q=%E9%9D%9E%E8%BE%B2+cpi+pce+%E5%88%A9%E7%8E%87%E6%B1%BA%E5%AE%9A+%E5%B0%B1%E6%A5%AD%E4%BA%BA%E6%95%B8+%E8%B2%BF%E6%98%93%E5%B8%B3+%E5%A4%B1%E6%A5%AD%E9%87%91%E4%BA%BA%E6%95%B8+%E9%AE%91%E5%A8%81%E7%88%BE+%E5%B7%9D%E6%99%AE+%E6%99%AE%E4%BA%AC+%E9%9B%B6%E5%94%AE%E9%8A%B7%E5%94%AE+PMI)
+[https://onlywatch.tw/query/{...keywords}](https://onlywatch.tw/query/非農%20cpi%20pce%20利率決議%20就業人數%20貿易帳%20失業金人數%20鮑威爾%20川普%20普丁%20零售銷售%20PMI%20央行)
 
 ---
 
@@ -51,6 +51,16 @@
 ---
 
 ## 🔋 Technical Concerns
+
+### ⚡ performance
+
+- 🟢 Lighthouse is **green**
+
+  ![](./@apps/onlywatch.tw/public/lighthouse-preview.png)
+
+- ⏩ Vercel Speed Insights is **green**
+
+  ![](./@apps/onlywatch.tw/public/vercel-speed-insights-preview.pngs)
 
 ### 📝 Concerns
 
