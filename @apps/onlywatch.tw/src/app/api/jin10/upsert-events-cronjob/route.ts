@@ -4,6 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import z from 'zod'
 import type { Tables } from '~/db/database.types'
 import { getSupabaseAdmin } from '~/db/getSupabaseAdmin.server-only'
+import { envVars } from '~/envVars'
 import { crawlManyEvents } from '~/features/jin10/crawler/crawlManyEvents'
 import { isSlowMarket } from '~/features/jin10/utils/isSlowMarket'
 import { isWeekend } from '~/features/jin10/utils/isWeekend'
@@ -20,7 +21,11 @@ const DEFAULT_END_OF = days().add(4, 'days').format('YYYY-MM-DD')
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
 
-  if (isWeekend(days().toISOString()) || isSlowMarket(days().toISOString())) {
+  const whenDev = envVars.NODE_ENV === 'development'
+  const whenWeekend = isWeekend(days().toISOString())
+  const whenSlowMarket = isSlowMarket(days().toISOString())
+
+  if (!whenDev && (whenWeekend || whenSlowMarket)) {
     return NextResponse.json(
       { message: 'Today is weekend or slow market, skipping crawling.' },
       { status: 200 },
