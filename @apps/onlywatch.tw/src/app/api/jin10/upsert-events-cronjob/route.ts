@@ -79,6 +79,7 @@ export async function GET(request: NextRequest) {
             previous_number: event.previous_number,
             revised_number: event.revised_number,
             unit: event.unit,
+            latest_updated_at: event.latest_updated_at,
           }) satisfies Tables<'jin10_events'>,
       ) || [],
       {

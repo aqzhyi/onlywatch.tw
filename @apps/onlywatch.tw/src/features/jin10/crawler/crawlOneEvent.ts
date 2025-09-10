@@ -122,6 +122,7 @@ const convertJin10ToEconomicEvent = (
       publish_at: timeAt || null,
       unit: unit || null,
       display_title: `${displayText}`,
+      latest_updated_at: null,
     })
   }
 
