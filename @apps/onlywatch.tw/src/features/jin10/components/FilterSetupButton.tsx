@@ -15,7 +15,7 @@ export function FilterSetupButton() {
   const [isOpen, toggleOpen] = useReducer((isOpen) => !isOpen, false)
   const { query: queryParam } = useParams() as Record<string, string>
   const [query, setQuery] = useState(() =>
-    (queryParam || '').replace(/query/g, ''),
+    decodeURIComponent(queryParam || '').replace(/query/g, ''),
   )
 
   return (
