@@ -3,12 +3,10 @@ import 'server-only'
 import axios from 'axios'
 import { tifyJson } from 'chinese-conv/dist'
 import { z } from 'zod'
-import type { Tables } from '~/db/database.types'
 import { envVars } from '~/envVars'
-import type { Jin10 } from '~/features/jin10/types'
-import { countryNameToCountryCode } from '~/utils/countryNameToCountryCode'
-import { countryNameToCurrencyName } from '~/utils/countryNameToCurrencyName'
+import { convertToOurEventDto } from '~/features/jin10/utils/convertToOurEventDto'
 import { days } from '~/utils/days'
+import { convertToOurDict } from '~/features/jin10/utils/convertToOurDict'
 
 const schema = z.object({
   dayAt: z.iso.date(),
@@ -55,7 +53,9 @@ export async function crawlOneEvent(params: z.infer<typeof schema>) {
     headers: headers,
   })
 
-  let ourEvents = convertJin10ToEconomicEvent(tifyJson([...events, ...data]))
+  let ourEvents = convertToOurDict(
+    convertToOurEventDto(tifyJson([...events, ...data])),
+  )
 
   ourEvents = ourEvents.map((event) => {
     return {
@@ -74,56 +74,4 @@ export async function crawlOneEvent(params: z.infer<typeof schema>) {
   ourEvents = ourEvents.filter((event) => Boolean(event.country))
 
   return ourEvents
-}
-
-/**
- * the data from Jin10 needs to be changed to match our format
- */
-const convertJin10ToEconomicEvent = (
-  eventsOfJin10: (Jin10.Event | Jin10.Data)[],
-): Tables<'jin10_events'>[] => {
-  const eventsOfAll: Tables<'jin10_events'>[] = []
-
-  for (const datum of eventsOfJin10) {
-    if ('time_status' in datum && datum.time_status === '待定') {
-      continue
-    }
-
-    const country = countryNameToCurrencyName(datum.country || '')
-    const currency = countryNameToCountryCode(datum.country || '')
-
-    const displayText =
-      'indicator_name' in datum
-        ? datum.indicator_name
-        : 'event_content' in datum
-          ? datum.event_content
-          : ''
-
-    const id = 'data_id' in datum ? datum.data_id : datum.id
-    const revised = 'revised' in datum ? datum.revised : null
-    const previous = 'previous' in datum ? datum.previous : null
-    const consensus = 'consensus' in datum ? datum.consensus : null
-    const actual = 'actual' in datum ? datum.actual : null
-    const timeAt =
-      'event_time' in datum
-        ? datum.event_time
-        : 'pub_time' in datum
-          ? datum.pub_time
-          : null
-    const unit = 'unit' in datum ? datum.unit : null
-
-    eventsOfAll.push({
-      id: String(id),
-      country: country,
-      revised_number: revised || null,
-      previous_number: previous || null,
-      consensus_number: consensus || null,
-      actual_number: actual || null,
-      publish_at: timeAt || null,
-      unit: unit || null,
-      display_title: `${displayText}`,
-    })
-  }
-
-  return eventsOfAll
 }

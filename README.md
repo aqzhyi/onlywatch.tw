@@ -10,18 +10,38 @@
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
 ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
-![NextJS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+![NextJS-canary](https://img.shields.io/badge/Next@Canary-black?style=for-the-badge&logo=next.js&logoColor=white)
+![NextJS-canary](https://img.shields.io/badge/Next@PPR-black?style=for-the-badge&logo=next.js&logoColor=white)
+![NextJS-canary](https://img.shields.io/badge/Next@UseCache-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![HeroUI](https://img.shields.io/badge/HeroUI-black?style=for-the-badge&logo=heroui&logoColor=white)
 ![Zod](https://img.shields.io/badge/zod-%233068b7.svg?style=for-the-badge&logo=zod&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![iconify](https://img.shields.io/badge/iconify-%2338B2AC.svg?style=for-the-badge&logo=iconify&logoColor=white)
 
-provide with calendar to observe international 🇺🇲🇪🇺🇯🇵🇨🇭🇨🇦🇬🇧🇦🇺🇳🇿 's economic event data trends so they can plan quarterly short-term swing trades
+> [!TIP]
+>
+> this tool is mainly provided for long-term swing traders and fundamental investors in macroeconomics to plan their entry and exit trading strategies
+>
+> it could be very effective for monthly and quarterly swing traders
+
+## 🔋 Notable
+
+- 📅 a clearer browsing experience for events over the next several weeks
+
+  > expected to enhance the efficiency of planning quarterly swing trading
+
+- 🔍 quickly keywords search and shareable URLs
+
+  > expected to quickly find and save the upcoming `events` that only you care about
 
 ## ⚡ try it now
 
-<https://onlywatch.tw/?q=%E9%9D%9E%E8%BE%B2+cpi+pce+%E5%88%A9%E7%8E%87%E6%B1%BA%E5%AE%9A+%E5%B0%B1%E6%A5%AD%E4%BA%BA%E6%95%B8+%E8%B2%BF%E6%98%93%E5%B8%B3+%E5%A4%B1%E6%A5%AD%E9%87%91%E4%BA%BA%E6%95%B8+%E9%AE%91%E5%A8%81%E7%88%BE+%E5%B7%9D%E6%99%AE+%E6%99%AE%E4%BA%AC+%E9%9B%B6%E5%94%AE%E9%8A%B7%E5%94%AE+PMI>
+[https://onlywatch.tw](https://onlywatch.tw)
+
+[https://onlywatch.tw?q={keyword:NFP}](https://onlywatch.tw/?q=%E9%9D%9E%E8%BE%B2)
+
+[https://onlywatch.tw?q={keywords}](https://onlywatch.tw/?q=%E9%9D%9E%E8%BE%B2+cpi+pce+%E5%88%A9%E7%8E%87%E6%B1%BA%E5%AE%9A+%E5%B0%B1%E6%A5%AD%E4%BA%BA%E6%95%B8+%E8%B2%BF%E6%98%93%E5%B8%B3+%E5%A4%B1%E6%A5%AD%E9%87%91%E4%BA%BA%E6%95%B8+%E9%AE%91%E5%A8%81%E7%88%BE+%E5%B7%9D%E6%99%AE+%E6%99%AE%E4%BA%AC+%E9%9B%B6%E5%94%AE%E9%8A%B7%E5%94%AE+PMI)
 
 ---
 

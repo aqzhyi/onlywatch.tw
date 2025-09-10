@@ -1,95 +1,69 @@
-'use client'
-
 import { Badge } from '@heroui/badge'
 import { Card, CardBody, CardHeader } from '@heroui/card'
-import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
-import clsx from 'clsx'
-import { Fragment, useReducer } from 'react'
-import { Drawer } from '~/components/Drawer'
-import type { Tables } from '~/db/database.types'
+import { twMerge } from 'tailwind-merge'
 import { CountryFlag } from '~/features/jin10/components/CountryFlag'
 import { Date } from '~/features/jin10/components/Date'
-import { EventCard } from '~/features/jin10/components/EventCard'
+import type { findManyEvents } from '~/features/jin10/db/findManyEvents'
+import { days } from '~/utils/days'
+import { getIsoToday } from '~/utils/getIsoToday'
 
-export function DayCard(props: {
-  dayAt: string
-  value: Tables<'jin10_events'>[]
+export async function DayCard({
+  isodate,
+  variant,
+  ...props
+}: {
+  isodate: string
+  value: ReturnType<typeof findManyEvents>
   variant?: undefined | 'today' | 'past'
 }) {
-  const { variant } = props
-  const [isDrawerOpen, toggleDrawerOpen] = useReducer((prev) => !prev, false)
-  const countryEventCounts: Record<string, number> = {}
+  const { data } = await props.value
 
-  for (const event of props.value) {
-    if (event.country) {
-      countryEventCounts[event.country] =
-        (countryEventCounts[event.country] || 0) + 1
-    }
-  }
+  const today = await getIsoToday()
+  const isToday = isodate === today
+  const isPast = days(isodate).isBefore(days(today), 'days')
+
+  const countryEventCounts =
+    data?.[isodate]
+      ?.filter((event) => event.country)
+      .reduce(
+        (counts, event) => {
+          const country = event.country!
+          counts[country] = (counts[country] || 0) + 1
+          return counts
+        },
+        {} as Record<string, number>,
+      ) || {}
 
   return (
-    <Fragment>
-      <Card
-        className={clsx([
-          'w-full cursor-pointer',
-          variant === 'today' && [
-            'border border-teal-500 dark:border-lime-500',
-          ],
-          variant === 'past' && ['opacity-50'],
-        ])}
-        isPressable
-        onPress={toggleDrawerOpen}
-      >
-        <CardHeader>
-          <Date value={props.dayAt} />
-        </CardHeader>
-        <CardBody>
-          <div className='flex flex-row flex-wrap gap-4'>
-            {Object.entries(countryEventCounts).map(
-              ([countryCode, eventCount]) => (
-                <Badge
-                  key={countryCode}
-                  color='primary'
-                  content={eventCount}
-                >
-                  <CountryFlag country={countryCode} />
-                </Badge>
-              ),
-            )}
-          </div>
-        </CardBody>
-      </Card>
-      <Drawer
-        isOpen={isDrawerOpen}
-        placement='right'
-        onOpenChange={toggleDrawerOpen}
-      >
-        <DrawerContent>
-          <DrawerHeader>
-            <Date value={props.dayAt} />
-          </DrawerHeader>
-          <DrawerBody>
-            <div className='flex flex-col gap-2'>
-              {props.value.map((event) => {
-                return (
-                  <EventCard
-                    key={event.id}
-                    title={event.display_title}
-                    publishAt={event.publish_at}
-                    country={event.country}
-                    numbers={[
-                      event.previous_number,
-                      event.consensus_number,
-                      event.actual_number,
-                    ]}
-                    unit={event.unit}
-                  />
-                )
-              })}
-            </div>
-          </DrawerBody>
-        </DrawerContent>
-      </Drawer>
-    </Fragment>
+    <Card
+      className={twMerge([
+        'md:min-h-44',
+        'w-full cursor-pointer',
+        isToday && [
+          'border-2 border-teal-500',
+          'dark:border dark:border-lime-500',
+        ],
+        isPast && ['opacity-50'],
+      ])}
+    >
+      <CardHeader>
+        <Date value={isodate} />
+      </CardHeader>
+      <CardBody>
+        <div className='flex flex-row flex-wrap gap-4'>
+          {Object.entries(countryEventCounts).map(
+            ([countryCode, eventCount]) => (
+              <Badge
+                key={countryCode}
+                color='primary'
+                content={eventCount}
+              >
+                <CountryFlag country={countryCode} />
+              </Badge>
+            ),
+          )}
+        </div>
+      </CardBody>
+    </Card>
   )
 }

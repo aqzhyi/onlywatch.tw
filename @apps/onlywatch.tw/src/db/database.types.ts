@@ -7,7 +7,7 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instanciate createClient with right options
+  // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
     PostgrestVersion: "12.2.3 (519615d)"
@@ -21,6 +21,7 @@ export type Database = {
           country: string | null
           display_title: string | null
           id: string
+          latest_updated_at: string | null
           previous_number: string | null
           publish_at: string | null
           revised_number: string | null
@@ -32,6 +33,7 @@ export type Database = {
           country?: string | null
           display_title?: string | null
           id: string
+          latest_updated_at?: string | null
           previous_number?: string | null
           publish_at?: string | null
           revised_number?: string | null
@@ -43,6 +45,7 @@ export type Database = {
           country?: string | null
           display_title?: string | null
           id?: string
+          latest_updated_at?: string | null
           previous_number?: string | null
           publish_at?: string | null
           revised_number?: string | null
@@ -58,7 +61,19 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      currency:
+        | "USD"
+        | "JPY"
+        | "AUD"
+        | "HKD"
+        | "NZD"
+        | "CHF"
+        | "GBP"
+        | "EUR"
+        | "TWD"
+        | "CNH"
+        | "KRW"
+        | "CAD"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -185,6 +200,21 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      currency: [
+        "USD",
+        "JPY",
+        "AUD",
+        "HKD",
+        "NZD",
+        "CHF",
+        "GBP",
+        "EUR",
+        "TWD",
+        "CNH",
+        "KRW",
+        "CAD",
+      ],
+    },
   },
 } as const

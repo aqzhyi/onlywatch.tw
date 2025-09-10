@@ -1,12 +1,16 @@
+import consola from 'consola'
 import { groupBy } from 'lodash'
+import { cacheLife } from 'next/dist/server/use-cache/cache-life'
 import z from 'zod'
 import type { Tables } from '~/db/database.types'
 import { getSupabase } from '~/db/getSupabase'
 import { constants } from '~/features/jin10/constants'
+import { sanitizeAndSplitQuery } from '~/features/jin10/utils/sanitizeAndSplitQuery'
+import { stringWithDBSchema } from '~/schemas/stringWithDBSchema'
 import { days } from '~/utils/days'
 
 const propsSchema = z.object({
-  q: z.string().optional(),
+  q: stringWithDBSchema.optional(),
   startOf: z.iso.datetime({ offset: false }),
   endOf: z.iso.datetime({ offset: false }),
 })
@@ -19,35 +23,27 @@ const propsSchema = z.object({
  *   })
  */
 export async function findManyEvents(
-  props: z.infer<typeof propsSchema>,
+  startOf: z.infer<typeof propsSchema>['startOf'],
+  endOf: z.infer<typeof propsSchema>['endOf'],
+  q?: z.infer<typeof propsSchema>['q'],
 ): Promise<{
   error: null | Error
-  data: Tables<'jin10_events'>[]
-  dataGroupedByDate?: {
+  data: null | {
     [YYYY_MM_DD: string]: Tables<'jin10_events'>[]
   }
 }> {
-  const input = propsSchema.safeParse(props)
+  'use cache'
+  cacheLife('minutes')
+
+  const input = propsSchema.safeParse({ q, startOf, endOf })
 
   if (!input.success) {
-    return { error: input.error, data: [] }
+    return { error: input.error, data: null }
   }
 
-  // ! ⛑️ avoid sql injection
-  const sanitizeQuery = (query: string): string => {
-    return (
-      query
-        // allow Chinese, English, numbers, spaces, hyphens, underscores, and dots
-        .replace(/[^a-zA-Z0-9\u4e00-\u9fff\s\-_.]/g, '')
-        .trim()
-    )
-  }
+  consola.info('findManyEvents(input)', { input })
 
-  const queries =
-    input.data.q
-      ?.split(/[,\s]/)
-      .map((query) => sanitizeQuery(query))
-      .filter((query) => query.length > 0) || []
+  const queries = sanitizeAndSplitQuery(input.data.q)
 
   const supabase = getSupabase()
 
@@ -71,6 +67,7 @@ export async function findManyEvents(
     .lte('publish_at', input.data.endOf)
     .order('publish_at', { ascending: true })
     .order('display_title', { ascending: true })
+    .limit(5000)
 
   const dataGroupedByDate = data
     ? groupBy(data, (event) => {
@@ -82,5 +79,5 @@ export async function findManyEvents(
       })
     : {}
 
-  return { error: null, data: data || [], dataGroupedByDate }
+  return { error: null, data: dataGroupedByDate }
 }

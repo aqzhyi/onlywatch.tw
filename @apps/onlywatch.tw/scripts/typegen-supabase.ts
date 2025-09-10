@@ -6,3 +6,5 @@ dotenv.config({ path: './.env.local' })
 
 const { stdout: genSupabaseTypesResult } =
   await $`supabase gen types typescript --project-id ${process.env.SUPABASE_PROJECT_ID} > ./src/db/database.types.ts`
+
+console.info(genSupabaseTypesResult || 'supabase gen OK')

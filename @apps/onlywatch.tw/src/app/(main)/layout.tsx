@@ -1,4 +1,3 @@
-import { Button } from '@heroui/button'
 import {
   Navbar,
   NavbarBrand,
@@ -9,12 +8,14 @@ import { Skeleton } from '@heroui/skeleton'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Fragment, Suspense } from 'react'
+import { twMerge } from 'tailwind-merge'
 import { ThemeToggle } from '~/components/ThemeToggle'
 import { FilterSetupButton } from '~/features/jin10/components/FilterSetupButton'
 
-export default function Template(props: React.PropsWithChildren) {
+export default function Layout(props: LayoutProps<'/'>) {
   return (
-    <Fragment>
+    <div className='grid h-dvh grid-rows-[3rem_1fr]'>
+      {/* Header area */}
       <Navbar
         maxWidth='full'
         height='3rem'
@@ -60,7 +61,15 @@ export default function Template(props: React.PropsWithChildren) {
           <NavbarMenuItem>登入</NavbarMenuItem>
         </NavbarMenu> */}
       </Navbar>
-      <div className='p-2'>{props.children}</div>
-    </Fragment>
+
+      {/* Main area */}
+      <main className='overflow-hidden p-2'>
+        <Suspense
+          fallback={<Skeleton className={twMerge('h-full', 'rounded-md')} />}
+        >
+          {props.children}
+        </Suspense>
+      </main>
+    </div>
   )
 }
