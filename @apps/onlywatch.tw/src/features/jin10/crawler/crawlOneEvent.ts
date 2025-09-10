@@ -6,6 +6,7 @@ import { z } from 'zod'
 import { envVars } from '~/envVars'
 import { convertToOurEventDto } from '~/features/jin10/utils/convertToOurEventDto'
 import { days } from '~/utils/days'
+import { convertToOurDict } from '~/features/jin10/utils/convertToOurDict'
 
 const schema = z.object({
   dayAt: z.iso.date(),
@@ -52,7 +53,9 @@ export async function crawlOneEvent(params: z.infer<typeof schema>) {
     headers: headers,
   })
 
-  let ourEvents = convertToOurEventDto(tifyJson([...events, ...data]))
+  let ourEvents = convertToOurDict(
+    convertToOurEventDto(tifyJson([...events, ...data])),
+  )
 
   ourEvents = ourEvents.map((event) => {
     return {
