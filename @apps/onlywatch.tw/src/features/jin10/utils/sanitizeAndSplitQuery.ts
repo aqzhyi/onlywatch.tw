@@ -27,7 +27,7 @@ export function sanitizeAndSplitQuery(query?: string): string[] {
         .replace(/--+/g, '') // Remove SQL comment syntax
         .replace(/\/\*[\s\S]*?\*\//g, '') // Remove /* */ comments
         // Then allow only safe characters: Chinese, English, numbers, spaces, single hyphens, underscores, and dots
-        .replace(/[^a-zA-Z0-9\u4e00-\u9fff\s_.\-]/g, '')
+        .replace(/[^a-zA-Z0-9\u4e00-\u9fff\s_.-]/g, '')
         .trim()
     )
   }
