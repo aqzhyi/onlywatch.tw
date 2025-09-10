@@ -6,7 +6,6 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
     useCache: true,
     browserDebugInfoInTerminal: true,
-    devtoolSegmentExplorer: true,
     globalNotFound: true,
   },
   rewrites: async () => {
