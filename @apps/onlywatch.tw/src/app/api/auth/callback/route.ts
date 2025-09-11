@@ -1,7 +1,7 @@
 import consola from 'consola'
 import { NextRequest, NextResponse } from 'next/server'
 import { getSupabaseSSR } from '~/db/getSupabaseSSR'
-import { envVars } from '~/envVars'
+import { envSecretVars } from '~/envSecretVars'
 import { isValidRedirectUrl } from '~/utils/isValidRedirectUrl'
 
 /**
@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     if (!error) {
       /** original origin before load balancer */
       const forwardedHost = request.headers.get('x-forwarded-host')
-      const isLocalEnv = envVars.NODE_ENV === 'development'
+      const isLocalEnv = envSecretVars.NODE_ENV === 'development'
 
       if (isLocalEnv) {
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host

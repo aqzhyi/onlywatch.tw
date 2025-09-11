@@ -3,7 +3,7 @@ import 'server-only'
 import axios from 'axios'
 import { tifyJson } from 'chinese-conv/dist'
 import { z } from 'zod'
-import { envVars } from '~/envVars'
+import { envSecretVars } from '~/envSecretVars'
 import { convertToOurEventDto } from '~/features/jin10/utils/convertToOurEventDto'
 import { days } from '~/utils/days'
 import { convertToOurDict } from '~/features/jin10/utils/convertToOurDict'
@@ -25,17 +25,17 @@ export async function crawlOneEvent(params: z.infer<typeof schema>) {
   }
 
   const headers = {
-    'Origin': envVars.JIN10_HEADER_ORIGIN,
-    'Referer': envVars.JIN10_HEADER_ORIGIN,
+    'Origin': envSecretVars.JIN10_HEADER_ORIGIN,
+    'Referer': envSecretVars.JIN10_HEADER_ORIGIN,
     'User-Agent':
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0',
-    'X-app-id': envVars.JIN10_APP_ID,
+    'X-app-id': envSecretVars.JIN10_APP_ID,
     'x-version': '2.0',
   }
 
   const {
     data: { data: events },
-  } = await axios.get(`${envVars.JIN10_API_URL}/get/event`, {
+  } = await axios.get(`${envSecretVars.JIN10_API_URL}/get/event`, {
     params: {
       category: 'cj',
       date: input.dayAt,
@@ -45,7 +45,7 @@ export async function crawlOneEvent(params: z.infer<typeof schema>) {
 
   const {
     data: { data },
-  } = await axios.get(`${envVars.JIN10_API_URL}/get/data`, {
+  } = await axios.get(`${envSecretVars.JIN10_API_URL}/get/data`, {
     params: {
       category: 'cj',
       date: input.dayAt,
