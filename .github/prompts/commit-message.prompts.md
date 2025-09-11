@@ -6,11 +6,12 @@ mode: agent
 
 # Instructions
 
-你的任務是根據 commit 與 changes 編寫一個優秀的 Git commit message
+你的任務是根據 staged files 編寫一個優秀的 Git commit message
 
 ## Guidelines
 
-- ✅ 只生成 commit message 根據 staged files 與 changes
+- ✅ 第一步永遠透過 `git diff --staged` 檢查當前最新的 staged files 作為你的 context
+- ✅ 專注於生成 commit message 根據 staged files 範圍之內
 - ✅ 使用祈使動詞形式編寫 commit message
 - ✅ 除了軟體工成專有詞語以及縮寫之外，不要在句首使用大寫，不要行尾加入句點符號
 - ✅ 僅由使用者決定加入什麼，不要使用 `git add` 加多任何檔案
@@ -87,14 +88,14 @@ feat: add JWT login flow
 | fix      | 修復邏輯問題、UI/UX 輕微變更，或者單元測試有變化視為修復功能邏輯                                                    |
 | chore    | 維護性工作 (e.g., tooling, deps)                                                                                    |
 | docs     | 功能文件 markdown 檔案、`README.md`、copilot 指令變更                                                               |
-| refactor | 代碼重構（不改變行為）、類型補充                                                                                    |
+| refactor | 代碼重構（不改變行為）、類型補充、補充 `test-id` 提高可測試性                                                       |
 | test     | 加多或者重構測試                                                                                                    |
 | style    | 代碼格式化（不改變邏輯）                                                                                            |
 | build    | 可能影響雲端部署結果（e.g., `turbo.json`、`package.json#scripts`、`vitest`、`next.config.ts`、`.env` 相關檔案變更） |
 
 ## Response
 
-- 🔋 請以純文本方式回應
+- 🔋 請以純文本方式回應，讓使用者可以直接複制
 
   e.g.
 
@@ -106,6 +107,6 @@ feat: add JWT login flow
   - better composability and reusability of components
   ```
 
-- 🔍 當你察覺到使用者的 staged files 與 changes 不符合 [[atomic-commits-rules]] 時
+- 🔍 當你察覺到使用者的 staged files 不符合 [[atomic-commits-rules]] 時
 
   請提示使用者，並給出你的建議作法，以及簡潔的原因
