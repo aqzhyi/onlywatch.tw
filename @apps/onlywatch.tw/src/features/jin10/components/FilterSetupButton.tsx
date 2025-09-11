@@ -21,6 +21,7 @@ export function FilterSetupButton() {
   return (
     <div>
       <Button
+        data-testid='篩選抽屜打開按鈕'
         isIconOnly
         variant='bordered'
         color={query ? 'success' : 'default'}
@@ -29,6 +30,7 @@ export function FilterSetupButton() {
         <div className='icon-[mdi--search]'></div>
       </Button>
       <Drawer
+        data-testid='篩選抽屜'
         isOpen={isOpen}
         placement='right'
         onOpenChange={toggleOpen}
@@ -47,6 +49,10 @@ export function FilterSetupButton() {
               }}
             >
               <SearchKeywordsInput
+                testIDs={{
+                  input: '篩選關鍵字輸入框',
+                  clearButton: '篩選關鍵字清除按鈕',
+                }}
                 value={query}
                 onValueChange={async (value) => {
                   await setQuery(value)
@@ -55,6 +61,7 @@ export function FilterSetupButton() {
 
               <ButtonGroup fullWidth>
                 <Button
+                  data-testid='篩選關鍵字送出按鈕'
                   color='primary'
                   type='submit'
                 >
