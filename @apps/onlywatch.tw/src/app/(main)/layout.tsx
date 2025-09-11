@@ -63,7 +63,7 @@ export default function Layout(props: LayoutProps<'/'>) {
       </Navbar>
 
       {/* Main area */}
-      <main className='overflow-hidden p-2'>
+      <main className='p-2'>
         <Suspense
           fallback={<Skeleton className={twMerge('h-full', 'rounded-md')} />}
         >
