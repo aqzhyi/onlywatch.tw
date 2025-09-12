@@ -15,3 +15,5 @@ applyTo: "**/app/**/*.tsx"
 ## ⚡ Component Design
 
 1. ✅ 使用 next.js 提供的 `<Image />` 組件來代替 `<img />` 來編寫圖片組件
+1. ✅ 使用 next.js 提供的全局的 `PageProps` 類型來編寫 `*.page.tsx` 組件
+1. ✅ 使用 next.js 提供的全局的 `LayoutProps` 類型來編寫 `*.layout.tsx` 組件

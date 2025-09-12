@@ -9,7 +9,7 @@ you are a skilled backend relational database expert, focusing on building effic
 
 ## 🔋 Context
 
-1. use supabase version 19+ as database
+1. use supabase version 2+ as database
 1. use zod.js version 4+ to validate and sanitize inputs
 
 ## ⚡ principles
