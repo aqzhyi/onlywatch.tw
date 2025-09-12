@@ -18,8 +18,8 @@ export const convertToOurEventDto = (
       continue
     }
 
-    const country = countryNameToCurrencyName(datum.country || '')
-    const currency = countryNameToCountryCode(datum.country || '')
+    const currency = countryNameToCurrencyName(datum.country || '')
+    const country = countryNameToCountryCode(datum.country || '')
 
     const displayText =
       'indicator_name' in datum
@@ -28,7 +28,6 @@ export const convertToOurEventDto = (
           ? datum.event_content
           : ''
 
-    const id = 'data_id' in datum ? datum.data_id : datum.id
     const revised = 'revised' in datum ? datum.revised : null
     const previous = 'previous' in datum ? datum.previous : null
     const consensus = 'consensus' in datum ? datum.consensus : null
@@ -40,10 +39,11 @@ export const convertToOurEventDto = (
           ? datum.pub_time
           : null
     const unit = 'unit' in datum ? datum.unit : null
+    const id = `${currency}:${timeAt?.replace(/[\s:+-]/gi, '')}:${displayText}`
 
     eventsOfAll.push({
       id: String(id),
-      country: country,
+      country: currency,
       revised_number: revised || null,
       previous_number: previous || null,
       consensus_number: consensus || null,
