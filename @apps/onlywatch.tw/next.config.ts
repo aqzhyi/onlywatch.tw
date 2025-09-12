@@ -8,6 +8,16 @@ const nextConfig: NextConfig = {
     browserDebugInfoInTerminal: true,
     globalNotFound: true,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+        port: '',
+        pathname: '/a/**', // 限制只允許 Google 頭像路徑
+      },
+    ],
+  },
   rewrites: async () => {
     return [
       {
