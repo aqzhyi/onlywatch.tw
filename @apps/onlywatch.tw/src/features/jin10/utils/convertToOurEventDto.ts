@@ -12,6 +12,8 @@ export const convertToOurEventDto = (
 ): Tables<'jin10_events'>[] => {
   const eventsOfAll: Tables<'jin10_events'>[] = []
 
+  const duplicatesCheckSet = new Set<string>()
+
   for (const datum of eventsOfJin10) {
     // Skip events with pending time status
     if ('time_status' in datum && datum.time_status === '待定') {
@@ -41,6 +43,10 @@ export const convertToOurEventDto = (
     const unit = 'unit' in datum ? datum.unit : null
     const id = `${currency}:${timeAt?.replace(/[\s:+-]/gi, '')}:${displayText}`
 
+    if (duplicatesCheckSet.has(id)) {
+      continue
+    }
+
     eventsOfAll.push({
       id: String(id),
       country: currency,
@@ -53,6 +59,7 @@ export const convertToOurEventDto = (
       display_title: `${displayText}`,
       latest_updated_at: days().tz('UTC', true).toISOString(),
     })
+    duplicatesCheckSet.add(id)
   }
 
   return eventsOfAll
