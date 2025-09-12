@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 import type { Database } from '~/db/database.types'
-import { envVars } from '~/envVars'
+import { envPublicVars } from '~/envPublicVars'
 
 /**
  * in next.js server-side and API route, you need to create a new supabase
@@ -13,8 +13,8 @@ export async function getSupabaseSSR() {
   // Create a server's supabase client with newly configured cookie,
   // which could be used to maintain user's session
   return createServerClient<Database>(
-    envVars.NEXT_PUBLIC_SUPABASE_URL,
-    envVars.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+    envPublicVars.NEXT_PUBLIC_SUPABASE_URL,
+    envPublicVars.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
         getAll() {

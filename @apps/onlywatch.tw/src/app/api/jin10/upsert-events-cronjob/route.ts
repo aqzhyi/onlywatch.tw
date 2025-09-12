@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import z from 'zod'
 import type { Tables } from '~/db/database.types'
 import { getSupabaseAdmin } from '~/db/getSupabaseAdmin.server-only'
-import { envVars } from '~/envVars'
+import { envSecretVars } from '~/envSecretVars'
 import { crawlManyEvents } from '~/features/jin10/crawler/crawlManyEvents'
 import { isSlowMarket } from '~/features/jin10/utils/isSlowMarket'
 import { isWeekend } from '~/features/jin10/utils/isWeekend'
@@ -21,7 +21,7 @@ const DEFAULT_END_OF = days().add(4, 'days').format('YYYY-MM-DD')
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
 
-  const whenDev = envVars.NODE_ENV === 'development'
+  const whenDev = envSecretVars.NODE_ENV === 'development'
   const whenWeekend = isWeekend(days().toISOString())
   const whenSlowMarket = isSlowMarket(days().toISOString())
 

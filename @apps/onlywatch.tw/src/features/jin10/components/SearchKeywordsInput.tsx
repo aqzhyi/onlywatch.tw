@@ -1,7 +1,7 @@
 'use client'
 
 import { Chip } from '@heroui/chip'
-import { Input } from '@heroui/input'
+import { Input, type InputProps } from '@heroui/input'
 import clsx from 'clsx'
 import { without } from 'lodash'
 import { twMerge } from 'tailwind-merge'
@@ -14,11 +14,16 @@ const PRESET_IMPORTANT_KEYWORDS: string =
 interface SearchKeywordsInputProps {
   value: string
   onValueChange: (value: string) => Promise<unknown>
+  testIDs?: {
+    input?: string
+    clearButton?: string
+  }
 }
 
 export function SearchKeywordsInput({
   value,
   onValueChange,
+  testIDs: testids,
 }: SearchKeywordsInputProps) {
   const toggleKeyword = async (keyword: string) => {
     let keywordsArray = value.split(' ').map((k: string) => k.trim())
@@ -43,6 +48,7 @@ export function SearchKeywordsInput({
 
   return (
     <Input
+      data-testid={testids?.input}
       type='text'
       label='搜尋'
       variant='bordered'
@@ -99,6 +105,7 @@ export function SearchKeywordsInput({
       }
       endContent={
         <div
+          data-testid={testids?.clearButton}
           className='icon-[mdi--clear-box] cursor-pointer'
           onClick={clearKeywords}
         ></div>

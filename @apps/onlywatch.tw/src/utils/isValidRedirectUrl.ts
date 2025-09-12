@@ -1,5 +1,3 @@
-import { envVars } from '~/envVars'
-
 /**
  * ! to check `open redirect` attacks
  *

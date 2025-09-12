@@ -2,12 +2,12 @@ import 'server-only'
 
 import { createBrowserClient } from '@supabase/ssr'
 import { type Database } from '~/db/database.types'
-import { envVars } from '~/envVars'
+import { envSecretVars } from '~/envSecretVars'
 
 export const getSupabaseAdmin = () => {
   return createBrowserClient<Database>(
-    envVars.NEXT_PUBLIC_SUPABASE_URL,
-    envVars.SUPABASE_SERVICE_KEY,
+    envSecretVars.NEXT_PUBLIC_SUPABASE_URL,
+    envSecretVars.SUPABASE_SERVICE_KEY,
     {
       auth: {
         autoRefreshToken: false,

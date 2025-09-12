@@ -7,12 +7,17 @@ import {
 import { Skeleton } from '@heroui/skeleton'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Fragment, Suspense } from 'react'
+import { Suspense } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { ThemeToggle } from '~/components/ThemeToggle'
+import { getSupabaseSSR } from '~/db/getSupabaseSSR'
 import { FilterSetupButton } from '~/features/jin10/components/FilterSetupButton'
+import { UserAuthActionsDropdown } from '~/features/members/components/UserAuthActionsDropdown'
+import { UserAvatar } from '~/features/members/components/UserAvatar'
 
-export default function Layout(props: LayoutProps<'/'>) {
+export default async function Layout(props: LayoutProps<'/'>) {
+  const userResponse = (await getSupabaseSSR()).auth.getUser()
+
   return (
     <div className='grid h-dvh grid-rows-[3rem_1fr]'>
       {/* Header area */}
@@ -39,12 +44,27 @@ export default function Layout(props: LayoutProps<'/'>) {
           </Link>
         </NavbarBrand>
 
-        <NavbarContent justify='end'>
-          <NavbarMenuItem className='flex flex-row items-center justify-center gap-2'>
+        <NavbarContent
+          justify='end'
+          className='gap-2'
+        >
+          <NavbarMenuItem>
             <Suspense fallback={<Skeleton />}>
               <FilterSetupButton />
             </Suspense>
+          </NavbarMenuItem>
 
+          <NavbarMenuItem>
+            <UserAuthActionsDropdown user={userResponse}>
+              <UserAvatar
+                avatarUrl={
+                  (await userResponse).data.user?.user_metadata?.avatar_url
+                }
+              />
+            </UserAuthActionsDropdown>
+          </NavbarMenuItem>
+
+          <NavbarMenuItem>
             <ThemeToggle />
           </NavbarMenuItem>
         </NavbarContent>
@@ -63,7 +83,7 @@ export default function Layout(props: LayoutProps<'/'>) {
       </Navbar>
 
       {/* Main area */}
-      <main className='overflow-hidden p-2'>
+      <main className='p-2'>
         <Suspense
           fallback={<Skeleton className={twMerge('h-full', 'rounded-md')} />}
         >

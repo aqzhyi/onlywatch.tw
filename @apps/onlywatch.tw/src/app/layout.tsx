@@ -3,10 +3,12 @@ import { Noto_Sans, Noto_Sans_Mono } from 'next/font/google'
 import { site } from '~/site'
 import './globals.css'
 import { GoogleAnalytics } from '@next/third-parties/google'
-import { envVars } from '~/envVars'
 import { Providers } from '~/app/Providers'
 import { NuqsAdapter } from 'nuqs/adapters/next'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { envPublicVars } from '~/envPublicVars'
+import { Suspense } from 'react'
+import { Skeleton } from '@heroui/skeleton'
 
 const fontSans = Noto_Sans({
   variable: '--font-sans',
@@ -78,10 +80,14 @@ export default function RootLayout({
       className='dark'
       suppressHydrationWarning
     >
-      <GoogleAnalytics gaId={`G-${envVars.NEXT_PUBLIC_GA_ID}`} />
+      <GoogleAnalytics gaId={`G-${envPublicVars.NEXT_PUBLIC_GA_ID}`} />
       <body className={`${fontClassNames}`}>
         <NuqsAdapter>
-          <Providers>{children}</Providers>
+          <Providers>
+            <Suspense fallback={<Skeleton className='h-dvh rounded-md' />}>
+              {children}
+            </Suspense>
+          </Providers>
         </NuqsAdapter>
         <SpeedInsights />
       </body>
