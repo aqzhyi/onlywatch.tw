@@ -102,3 +102,11 @@
 - Dan Abramov - Blog <https://overreacted.io/>
 - Mark Erikson - Blog <https://blog.isquaredsoftware.com/>
 - Daniel Saewitz - Blog <https://saewitz.com/>
+
+### 🔋 guides
+
+- Vercel [microfrontends](https://vercel.com/guides/incremental-migrations-with-microfrontends)
+  - monorepo
+  - microfrontends
+  - migration strategy
+  - feature flags
