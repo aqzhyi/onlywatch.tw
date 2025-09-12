@@ -6,6 +6,7 @@ import type { Tables } from '~/db/database.types'
 import { getSupabaseAdmin } from '~/db/getSupabaseAdmin.server-only'
 import { envSecretVars } from '~/envSecretVars'
 import { crawlManyEvents } from '~/features/jin10/crawler/crawlManyEvents'
+import { isEventsPeriod } from '~/features/jin10/utils/isEventsPeriod'
 import { isSlowMarket } from '~/features/jin10/utils/isSlowMarket'
 import { isWeekend } from '~/features/jin10/utils/isWeekend'
 import { days } from '~/utils/days'
@@ -24,8 +25,9 @@ export async function GET(request: NextRequest) {
   const whenDev = envSecretVars.NODE_ENV === 'development'
   const whenWeekend = isWeekend(days().toISOString())
   const whenSlowMarket = isSlowMarket(days().toISOString())
+  const whenEventPeriod = isEventsPeriod(days().toISOString())
 
-  if (!whenDev && (whenWeekend || whenSlowMarket)) {
+  if (!whenDev && (whenWeekend || whenSlowMarket || !whenEventPeriod)) {
     return NextResponse.json(
       { message: 'Today is weekend or slow market, skipping crawling.' },
       { status: 200 },
