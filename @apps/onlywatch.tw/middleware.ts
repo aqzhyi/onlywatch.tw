@@ -2,7 +2,8 @@ import { type NextRequest } from 'next/server'
 import { updateSession } from '~/features/members/utils/updateSession'
 
 export async function middleware(request: NextRequest) {
-  return await updateSession(request)
+  // return await updateSession(request)
+  return request
 }
 
 export const config = {
