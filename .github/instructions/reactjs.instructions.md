@@ -9,8 +9,22 @@ instructions for building high-quality ReactJS applications with modern patterns
 
 ## 🔋 Context
 
-1. use React version 19+
-1. follow React's official style guide and best practices
+1. ✅ React version 19+
+1. ✅ follow React's official style guide and best practices
+
+## 🔍 Component Style
+
+1. ✅ 使用獨立的 type 來為組件的 props 定義類型
+
+   e.g.
+
+   ```tsx
+   type MyButtonProps = React.PropsWithChildren;
+
+   export function MyButton({ children }: MyButtonProps) {
+     return <button>{children}</button>;
+   }
+   ```
 
 ## ⚡ Component Design
 
