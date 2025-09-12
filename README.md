@@ -60,7 +60,7 @@
 
 - ⏩ Vercel Speed Insights is **green**
 
-  ![](./@apps/onlywatch.tw/public/vercel-speed-insights-preview.pngs)
+  ![](./@apps/onlywatch.tw/public/vercel-speed-insights-preview.png)
 
 ### 📝 Concerns
 
