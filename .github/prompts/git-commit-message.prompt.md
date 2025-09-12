@@ -11,7 +11,7 @@ mode: agent
 ## Guidelines
 
 - ✅ 第一步永遠透過 `git diff --staged` 檢查當前最新的 staged files 作為你的 context
-- ✅ 專注於生成 commit message 根據 staged files 範圍之內
+- ✅ 專注於生成 commit message 根據 staged files 範圍之內，你不需要關心其他沒有被 staged 的檔案
 - ✅ 使用祈使動詞形式編寫 commit message
 - ✅ 除了軟體工成專有詞語以及縮寫之外，不要在句首使用大寫，不要行尾加入句點符號
 - ✅ 僅由使用者決定加入什麼，不要使用 `git add` 加多任何檔案
@@ -46,15 +46,16 @@ BREAKING CHANGE: <breaking change summary>
 
 ```md
 feat: add JWT login flow
-feat: better search keywords UI
+feat: refine search keywords UI
 fix: handle null pointer in sidebar
 refactor: split user controller logic
 docs: add usage section
-chore: bump npm:packages
-chore: bump npm:packages for heroui
-chore: bump npm:packages for supabase
-chore: bump npm:packages for types
-chore: bump pnpm-lock file
+build: add npm:package `@heroui/dropdown`
+build: bump npm:packages
+build: bump npm:packages for heroui
+build: bump npm:packages for supabase
+build: bump npm:packages for types
+build: bump pnpm-lock file
 ```
 
 ## Examples with `<message title>` and Body
@@ -62,15 +63,58 @@ chore: bump pnpm-lock file
 ```md
 feat: add JWT login flow
 
-- implemented JWT token validation logic
-- added documentation for the validation component
+- implement JWT token validation logic
+- add documentation for the validation component
 ```
 
 ## Rules
 
 - ✅ 每一句句尾不要有額外的空白字元
+- ✅ 如果是{組件名稱}或{函數名稱}，請使用例如 `<{組件名稱} />` 或者 `{函數名稱}` 的格式來表示
+
+  例如，有關於以下組件
+
+  ```tsx
+  function MyComponent() {}
+  ```
+
+  你將使用 `<MyComponent />` 來在句子中表示，並為它們加上反引號
+
 - ✅ 除了軟體工成專有詞語以及縮寫之外，不要在句首使用大寫，不要行尾加入句點符號
 - ✅ 使用祈使動詞形式，簡潔明確地描述，整行句子不要超過 80 個字元
+- ✅ 使用詞匯盡可能統一，但確保語意清晰
+
+  💬 不好的示例 👎
+
+  ```md
+  - implement `<UserProfile />` component
+  - add `<UserAvatar />` component
+  ```
+
+  💬 不好的示例 👎
+
+  ```md
+  - improve `<UserProfile />` component
+  - refine `<UserAvatar />` component
+  - enhance `<UserAvatar />` component
+  ```
+
+  > 你應該使用相同的動詞來描述相同的行為 👍
+
+  💬 好的示例 👍
+
+  ```md
+  - implement `<UserProfile />` component
+  - implement `<UserAvatar />` component
+  ```
+
+  💬 好的示例 👍
+
+  ```md
+  - refine `<UserProfile />` component
+  - refine `<UserAvatar />` component
+  ```
+
 - ✅ 使用正文（可選）來解釋 **WHY**，而不僅僅是 **WHAT**
 - ✅ 條列摘要應該簡潔並且高層次
 
@@ -82,22 +126,24 @@ feat: add JWT login flow
 
 ## Allowed Types
 
-| Type     | Description                                                                                                         |
-| -------- | ------------------------------------------------------------------------------------------------------------------- |
-| feat     | 新功能特性、UI/UX 明顯變化或新增、CSS 美術明顯變化、功能邏輯變更、UI/UX 行為變更                                    |
-| fix      | 修復邏輯問題、UI/UX 輕微變更，或者單元測試有變化視為修復功能邏輯                                                    |
-| chore    | 維護性工作 (e.g., tooling, deps)                                                                                    |
-| docs     | 功能文件 markdown 檔案、`README.md`、copilot 指令變更                                                               |
-| refactor | 代碼重構（不改變行為）、類型補充、補充 `test-id` 提高可測試性                                                       |
-| test     | 加多或者重構測試                                                                                                    |
-| style    | 代碼格式化（不改變邏輯）                                                                                            |
-| build    | 可能影響雲端部署結果（e.g., `turbo.json`、`package.json#scripts`、`vitest`、`next.config.ts`、`.env` 相關檔案變更） |
+| Type     | Description                                                                                                                       |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| feat     | 新功能特性、UI/UX 明顯變化或新增、CSS 美術明顯變化、功能邏輯變更、UI/UX 行為變更                                                  |
+| fix      | 修復邏輯問題、UI/UX 輕微變更，或者單元測試有變化視為修復功能邏輯                                                                  |
+| chore    | 維護性工作 (e.g., tooling, deps)                                                                                                  |
+| docs     | 功能文件 markdown 檔案、`README.md`、copilot 指令變更                                                                             |
+| refactor | 代碼重構（不改變行為）、類型補充、補充 `test-id` 提高可測試性                                                                     |
+| test     | 加多或者重構測試                                                                                                                  |
+| style    | 代碼格式化（不改變邏輯）                                                                                                          |
+| build    | 可能影響雲端部署結果（e.g., `turbo.json`、`package.json#scripts`、`vitest`、`next.config.ts`、`.env`, npm:packages 相關檔案變更） |
 
 ## Response
 
 - 🔋 請以純文本方式回應，讓使用者可以直接複制
 
   e.g.
+
+  ✨ commit message 已產生 👇
 
   ```md
   feat: the UI and components now with next@canary features
