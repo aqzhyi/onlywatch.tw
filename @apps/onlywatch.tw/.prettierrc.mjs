@@ -43,7 +43,6 @@ const config = {
   bracketSpacing: true,
   insertPragma: false,
   jsxSingleQuote: true,
-  parser: 'typescript',
   printWidth: 80,
   proseWrap: 'preserve',
   quoteProps: 'consistent',
