@@ -5,6 +5,7 @@
 
 # dependencies
 /node_modules
+**/node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -15,6 +16,14 @@
 
 # testing
 /coverage
+**/coverage/
+
+# package build outputs
+**/dist/
+
+# package temp files
+**/.turbo
+**/*.tsbuildinfo
 
 # next.js
 /.next/
@@ -42,10 +51,8 @@ yarn-error.log*
 
 # vercel
 .vercel
-.turbo
 
 # typescript
-*.tsbuildinfo
 next-env.d.ts
 
 # Playwright
