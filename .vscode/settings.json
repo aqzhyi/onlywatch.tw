@@ -1,13 +1,5 @@
 {
   "biome.enabled": false,
-  "chat.instructionsFilesLocations": {
-    "./.github/instructions": true,
-    "./*/.github/*instructions": true
-  },
-  "chat.promptFilesLocations": {
-    "./.github/prompt": true,
-    "./*/.github/*prompt": true
-  },
   "cSpell.enabled": true,
   "cSpell.userWords": [
     // npm:chinese-conv
