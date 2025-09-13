@@ -53,6 +53,7 @@ export function SearchKeywordsInput({
       label='搜尋'
       variant='bordered'
       value={value}
+      isClearable
       onValueChange={async (newValue) => {
         await onValueChange(newValue)
       }}
@@ -102,13 +103,6 @@ export function SearchKeywordsInput({
             <div>, etc</div>
           </div>
         </div>
-      }
-      endContent={
-        <div
-          data-testid={testids?.clearButton}
-          className='icon-[mdi--clear-box] cursor-pointer'
-          onClick={clearKeywords}
-        ></div>
       }
       startContent={
         <div className='pointer-events-none flex items-center'>
