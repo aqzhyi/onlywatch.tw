@@ -10,9 +10,11 @@ import { parseCatchAllParams } from '~/utils/parseCatchAllParams'
 import { SearchKeywordsInput } from './SearchKeywordsInput'
 import { decodeURLString } from '~/utils/decodeURLString'
 import { MonthPicker } from '~/features/jin10/components/MonthPicker'
+import { useMatchMedia } from '~/hooks/useMatchMedia'
 
 export function FilterSetupButton() {
   const router = useRouter()
+  const isMD = useMatchMedia('md')
   const [isOpen, toggleOpen] = useReducer((isOpen) => !isOpen, false)
   const nextParams = parseCatchAllParams<['query', 'date']>(
     useParams().params as string[],
@@ -59,6 +61,10 @@ export function FilterSetupButton() {
                 }
 
                 router.push(url)
+
+                if (isMD) return
+
+                toggleOpen()
               }}
             >
               <SearchKeywordsInput
