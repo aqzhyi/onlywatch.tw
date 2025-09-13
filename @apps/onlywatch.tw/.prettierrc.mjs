@@ -19,6 +19,15 @@ const overrides = {
       options: { parser: 'json-stringify' },
     },
     {
+      files: [
+        'i18n/**/*.json',
+        'i18n/*.json',
+        'locales/**/*.json',
+        'locales/*.json',
+      ],
+      options: { parser: 'json' },
+    },
+    {
       // some files like tsconfig.json are written in jsonc so comments are allowed
       files: ['.oxlintrc.json', 'tsconfig.json', 'tsconfig.*.json'],
       options: { parser: 'json' },
@@ -43,7 +52,6 @@ const config = {
   bracketSpacing: true,
   insertPragma: false,
   jsxSingleQuote: true,
-  parser: 'typescript',
   printWidth: 80,
   proseWrap: 'preserve',
   quoteProps: 'consistent',

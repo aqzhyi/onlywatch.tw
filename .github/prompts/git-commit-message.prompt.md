@@ -1,6 +1,5 @@
 ---
 description: "generating guidelines for commit messages"
-tools: ["changes", "runCommands"]
 mode: agent
 ---
 
@@ -15,7 +14,7 @@ mode: agent
 - ✅ 使用祈使動詞形式編寫 commit message
 - ✅ 除了軟體工成專有詞語以及縮寫之外，不要在句首使用大寫，不要行尾加入句點符號
 - ✅ 僅由使用者決定加入什麼，不要使用 `git add` 加多任何檔案
-- ✅ 遵循 [[atomic-commits-rules]]
+- ✅ 遵循 [](../wiki/atomic-commits-rules.md) 中的原則
 - ✅ 遵循以下規則來撰寫提交信息
 
 ## Formats
@@ -153,6 +152,6 @@ feat: add JWT login flow
   - better composability and reusability of components
   ```
 
-- 🔍 當你察覺到使用者的 staged files 不符合 [[atomic-commits-rules]] 時
+- 🔍 當你察覺到使用者的 staged files 不符合 [](../wiki/atomic-commits-rules.md) 原則時
 
   請提示使用者，並給出你的建議作法，以及簡潔的原因

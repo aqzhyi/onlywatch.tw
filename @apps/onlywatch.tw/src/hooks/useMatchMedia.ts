@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react'
 import { isClientSide } from '~/utils/isClientSide'
 
+const breakpointQueries = new Map([
+  ['sm', '(min-width: 40rem)'],
+  ['md', '(min-width: 48rem)'],
+  ['lg', '(min-width: 64rem)'],
+  ['xl', '(min-width: 80rem)'],
+  ['2xl', '(min-width: 96rem)'],
+])
+
 /**
  * @example
  *   const isMD = useMatchMedia('md') // true if screen width >= 768px
@@ -23,14 +31,6 @@ export function useMatchMedia(
    */
   query: (string & {}) | 'sm' | 'md' | 'lg' | 'xl' | '2xl',
 ) {
-  const breakpointQueries = new Map([
-    ['sm', '(min-width: 40rem)'],
-    ['md', '(min-width: 48rem)'],
-    ['lg', '(min-width: 64rem)'],
-    ['xl', '(min-width: 80rem)'],
-    ['2xl', '(min-width: 96rem)'],
-  ])
-
   const [queryState, setQueryState] = useState(() => {
     const query_ = breakpointQueries.get(query) || query
 
@@ -43,7 +43,8 @@ export function useMatchMedia(
 
   useEffect(() => {
     const clearController = new AbortController()
-    const mediaQueryList = globalThis.window.matchMedia(query)
+    const query_ = breakpointQueries.get(query) || query
+    const mediaQueryList = globalThis.window.matchMedia(query_)
 
     setQueryState(() => mediaQueryList.matches)
 

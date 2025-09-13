@@ -1,3 +1,4 @@
+import createNextIntlPlugin from 'next-intl/plugin'
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
@@ -18,18 +19,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  rewrites: async () => {
+  redirects: async () => {
     return [
+      // 首頁重定向到日曆頁面
       {
-        source: '/query/:query',
-        destination: '/calendar/:query',
-      },
-      {
-        source: '/:query*',
-        destination: '/calendar/query/:query*',
+        source: '/',
+        destination: '/calendar',
+        permanent: false, // 使用 302 臨時重定向，方便未來調整
       },
     ]
   },
 }
 
-export default nextConfig
+const withNextIntl = createNextIntlPlugin({
+  requestConfig: './src/features/i18n/request.ts',
+})
+
+export default withNextIntl(nextConfig)

@@ -3,20 +3,28 @@
 import { Button, ButtonGroup } from '@heroui/button'
 import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
 import { Form } from '@heroui/form'
-import { useParams, usePathname, useRouter } from 'next/navigation'
-import { parseAsString, useQueryState } from 'nuqs'
-import qs from 'query-string'
+import { useParams, useRouter } from 'next/navigation'
 import { useReducer, useState } from 'react'
 import { Drawer } from '~/components/Drawer'
+import { parseCatchAllParams } from '~/utils/parseCatchAllParams'
 import { SearchKeywordsInput } from './SearchKeywordsInput'
+import { decodeURLString } from '~/utils/decodeURLString'
+import { MonthPicker } from '~/features/jin10/components/MonthPicker'
+import { useMatchMedia } from '~/hooks/useMatchMedia'
 
 export function FilterSetupButton() {
   const router = useRouter()
+  const isMD = useMatchMedia('md')
   const [isOpen, toggleOpen] = useReducer((isOpen) => !isOpen, false)
-  const { query: queryParam } = useParams() as Record<string, string>
-  const [query, setQuery] = useState(() =>
-    decodeURIComponent(queryParam || '').replace(/query/g, ''),
+  const nextParams = parseCatchAllParams<['query', 'date']>(
+    useParams().params as string[],
   )
+
+  const [query, setQuery] = useState(() =>
+    decodeURLString(nextParams.query || ''),
+  )
+
+  const [date, setDate] = useState(() => nextParams.date)
 
   return (
     <div>
@@ -41,11 +49,22 @@ export function FilterSetupButton() {
             <Form
               onSubmit={(event) => {
                 event.preventDefault()
+
+                let url = '/calendar'
+
                 if (query) {
-                  router.push(`/query/${query}`)
-                } else {
-                  router.push('/')
+                  url = `${url}/query/${encodeURIComponent(query)}`
                 }
+
+                if (date) {
+                  url = `${url}/date/${date}`
+                }
+
+                router.push(url)
+
+                if (isMD) return
+
+                toggleOpen()
               }}
             >
               <SearchKeywordsInput
@@ -57,6 +76,11 @@ export function FilterSetupButton() {
                 onValueChange={async (value) => {
                   await setQuery(value)
                 }}
+              />
+
+              <MonthPicker
+                value={date}
+                onValueChange={setDate}
               />
 
               <ButtonGroup fullWidth>

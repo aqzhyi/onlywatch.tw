@@ -54,13 +54,17 @@
 
 ### ⚡ performance
 
+- ✨ Next.js (app router) with `PPR` and `'use cache'` enabled
+
+  ![](./@apps/onlywatch.tw/public/next-build-preview.png)
+
 - 🟢 Lighthouse is **green**
 
   ![](./@apps/onlywatch.tw/public/lighthouse-preview.png)
 
 - ⏩ Vercel Speed Insights is **green**
 
-  ![](./@apps/onlywatch.tw/public/vercel-speed-insights-preview.pngs)
+  ![](./@apps/onlywatch.tw/public/vercel-speed-insights-preview.png)
 
 ### 📝 Concerns
 
