@@ -1,6 +1,5 @@
 ---
 description: "Review and refactor codebase in your project according to defined instructions"
-tools: ["changes", "runCommands"]
 mode: agent
 ---
 
@@ -15,6 +14,8 @@ mode: agent
   - 👉 減少重複 - 抽取重複的程式碼到共用 function 或 component
   - 👉 提升可讀性 - 使用能揭示意圖的命名與問題領域一致的清晰結構與命名
   - 👉 採用 SOLID 原則 - 單一職責、相依性反轉之類的原則
+  - 👉 採用 feature-based folder structure
+    - 👉 特別注意避免功能模組間的循環依賴，建立清晰的依賴層級
 
 ## 任務
 
