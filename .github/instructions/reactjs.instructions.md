@@ -3,7 +3,7 @@ description: "React.js instructions"
 applyTo: "**/app/**/*.tsx"
 ---
 
-## 💬 Instructions
+# 💬 Instructions
 
 instructions for building high-quality ReactJS applications with modern patterns, hooks, and best practices following the official React documentation at https://react.dev.
 

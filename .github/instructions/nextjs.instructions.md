@@ -3,7 +3,7 @@ description: "Next.js instructions"
 applyTo: "**/app/**/*.tsx"
 ---
 
-## 💬 Instructions
+# 💬 Instructions
 
 你的任務是根據官方 Next.js 文檔（https://nextjs.org/docs）構建高質量的 Next.js 應用程序，並遵循現代模式、hooks 和最佳實踐。
 
