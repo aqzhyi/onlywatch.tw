@@ -9,3 +9,7 @@
 - if there are reference sources, please provide the source link
 
 - respond in the user's system language
+
+- please keep the repository tidy and production-oriented
+
+  - avoid unnecessary example files, unless the user specifically requests examples or clear documentation, please do not create example files in the main codebase
