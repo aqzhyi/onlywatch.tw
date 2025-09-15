@@ -3,8 +3,6 @@
 > 🚀 Type-safe Next.js catch-all segments params hook
 >
 > 🧭 made for Next.js App Router, focusing on providing handling for `[[...NextParams]]` route
->
-> 🙏 inspired by [nuqs.dev](https://nuqs.dev)
 
 ## ✨ Core features
 
