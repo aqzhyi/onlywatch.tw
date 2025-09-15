@@ -71,7 +71,9 @@ export function SearchKeywordsInput({
             <div>採用模板搜尋</div>
             <Chip
               className={clsx('cursor-pointer')}
-              color='success'
+              color={
+                value === PRESET_IMPORTANT_KEYWORDS ? 'success' : 'default'
+              }
               variant='dot'
               onClick={applyKeywordsPreset}
             >
@@ -93,7 +95,9 @@ export function SearchKeywordsInput({
                 className={twMerge('cursor-pointer')}
                 size='sm'
                 color={
-                  value.split(' ').includes(keyword) ? 'primary' : 'default'
+                  value.trim().split(' ').includes(keyword)
+                    ? 'success'
+                    : 'default'
                 }
                 variant='dot'
                 onClick={() => toggleKeyword(keyword)}

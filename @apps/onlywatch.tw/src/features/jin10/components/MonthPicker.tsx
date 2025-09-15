@@ -48,7 +48,7 @@ export function MonthPicker({ onValueChange, value }: MonthPickerProps) {
                   <Chip
                     key={month}
                     className={'cursor-pointer'}
-                    color={isCurrentMonth ? 'primary' : 'default'}
+                    color={isCurrentMonth ? 'success' : 'default'}
                     variant='dot'
                     size='sm'
                     onClick={() => {
