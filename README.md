@@ -3,6 +3,7 @@
 <!-- shields.io supports icons from https://simpleicons.org -->
 
 ![Copilot](https://img.shields.io/badge/Copilot-%23222222.svg?style=for-the-badge&logo=githubcopilot&logoColor=3bb1ff)
+![AGENTS.md](https://img.shields.io/badge/AGENTS.md-%23222222.svg?style=for-the-badge&logo=githubcopilot&logoColor=3bb1ff)
 ![ESM](https://img.shields.io/badge/ESM-%2300367d.svg?style=for-the-badge&logo=pkgsrc&logoColor=3bb1ff)
 ![PNPM](https://img.shields.io/badge/pnpm-%234a4a4a.svg?style=for-the-badge&logo=pnpm&logoColor=f69220)
 ![Turborepo](https://img.shields.io/badge/Turborepo-%230F0813.svg?style=for-the-badge&logo=Turborepo&logoColor=white)
