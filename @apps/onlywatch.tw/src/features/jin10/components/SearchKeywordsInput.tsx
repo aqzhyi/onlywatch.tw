@@ -57,6 +57,7 @@ export function SearchKeywordsInput({
       onValueChange={async (newValue) => {
         await onValueChange(newValue)
       }}
+      onClear={clearKeywords}
       description={
         <div className='flex flex-col justify-center gap-2'>
           <div
