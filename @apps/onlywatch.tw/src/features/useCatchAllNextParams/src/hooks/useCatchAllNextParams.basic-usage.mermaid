@@ -1,0 +1,14 @@
+sequenceDiagram
+    user  ->>nextjs: visit URL /mall/search/4090
+    nextjs->>useCatchAllNextParams: NextParams ['mall', 'search', '4090']
+    useCatchAllNextParams->>MyComponent: with baseUrl: '/mall'
+    note over useCatchAllNextParams,MyComponent: {<br>params, <br>setParams, <br>pushUrl, <br>replaceUrl,<br>}<br> = useCatchAllNextParams('/mall')
+
+    MyComponent->>Input: value={'4090'} onChange={function() { setParams(...) }
+    user-->>Input: typing words '5070'
+    Input->>useCatchAllNextParams: setParams((prev) => { ...prev, search: '5070'})
+    useCatchAllNextParams->>Input: value={'5070'}
+    user-->>Submit: click
+    Submit->>useCatchAllNextParams: pushUrl()
+    useCatchAllNextParams->>nextjs: router.push('/mall/search/5070')
+    nextjs->>user: URL changed to /mall/search/5070<br>page re-rendered

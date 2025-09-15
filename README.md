@@ -2,6 +2,7 @@
 
 <!-- shields.io supports icons from https://simpleicons.org -->
 
+![Copilot](https://img.shields.io/badge/Copilot-%23222222.svg?style=for-the-badge&logo=githubcopilot&logoColor=3bb1ff)
 ![ESM](https://img.shields.io/badge/ESM-%2300367d.svg?style=for-the-badge&logo=pkgsrc&logoColor=3bb1ff)
 ![PNPM](https://img.shields.io/badge/pnpm-%234a4a4a.svg?style=for-the-badge&logo=pnpm&logoColor=f69220)
 ![Turborepo](https://img.shields.io/badge/Turborepo-%230F0813.svg?style=for-the-badge&logo=Turborepo&logoColor=white)
@@ -37,13 +38,23 @@
 
   > expected to quickly find and save the upcoming `events` that only you care about
 
-## ⚡ try it now
+## ⚡ Try it now
 
-[https://onlywatch.tw](https://onlywatch.tw)
+> [!TIP]
+>
+> Production
 
-[https://onlywatch.tw/calendar/query/{keyword:利率決議}](https://onlywatch.tw/calendar/query/%E5%88%A9%E7%8E%87%E6%B1%BA%E8%AD%B0)
+- ⚡ [https://onlywatch.tw](https://onlywatch.tw)
 
-[https://onlywatch.tw/calendar/query/{...keywords}](https://onlywatch.tw/calendar/query/非農%20cpi%20pce%20利率決議%20就業人數%20貿易帳%20鮑威爾%20川普%20普丁%20央行)
+- ⚡ [https://onlywatch.tw/calendar/query/{keyword:利率決議}](https://onlywatch.tw/calendar/query/%E5%88%A9%E7%8E%87%E6%B1%BA%E8%AD%B0)
+
+- ⚡ [https://onlywatch.tw/calendar/query/{...keywords}](https://onlywatch.tw/calendar/query/非農%20cpi%20pce%20利率決議%20就業人數%20貿易帳%20鮑威爾%20川普%20普丁%20央行)
+
+> [!TIP]
+>
+> Staging
+
+- ⛑️ [https://beta.onlywatch.tw](https://beta.onlywatch.tw)
 
 ---
 
