@@ -1,15 +1,21 @@
 # Copilot Instructions
 
-- use pnpm instead of npm or yarn
+- ✨ respond in the user's system language
 
-- whenever you compare two or more things, please use everyday examples to explain the differences, provide advantages and disadvantages, give suitable scenarios, and use a table format to clearly present the information
+- 使用 pnpm
 
-- choose emojis appropriately to make the response more interesting
+- 使用 emoji 來增強可讀性
 
-- if there are reference sources, please provide the source link
+  - 將 emoji 用於句子的開頭
 
-- respond in the user's system language
+- 每當你比較兩個以上事物時:
 
-- please keep the repository tidy and production-oriented
+  - 簡潔地使用日常例子解釋差異
+  - 解釋優缺點對比
+  - 使用表格來組織資訊
 
-  - avoid unnecessary example files, unless the user specifically requests examples or clear documentation, please do not create example files in the main codebase
+- 請保持倉庫整潔並以生產為導向
+
+  - 避免不必要的示例文件，除非用戶特別要求示例或清晰的文檔，請不要在主代碼庫中創建示例文件:
+
+    例如: `example.js`, `demo.tsx`, `test.html`, `sample.py`, `README_example.md`, `layout.tsx.backup`, etc
