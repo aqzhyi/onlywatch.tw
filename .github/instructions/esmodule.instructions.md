@@ -5,8 +5,6 @@ applyTo: "**/*.tsx, **/*.ts, **/*.mts, **/*.mjs"
 
 # 💬 Instructions
 
-- 確保 `package.json` 中有 `"type": "module"`
-
 - 使用 ES 模組語法 (`import`/`export`) 取代 CommonJS (`require`/`module.exports`)
 
 - 在使用 `import` 語句時，避免使用相對路徑

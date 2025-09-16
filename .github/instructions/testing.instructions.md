@@ -36,7 +36,7 @@ applyTo: "**/*.test.tsx, **/*.test.ts, **/*.spec.tsx, **/*.spec.ts, **/*.e2e.tsx
 
 - 始終在測試覆蓋率報告格式配置中，至少包含 `'lcov'` 格式
 
-- 當自訂義類型被引用在 2 段不同代碼時，請為它們製作類型單元測試；例如使用 `toEqualTypeOf` 或 `toMatchTypeOf` 或 `assertType`, etc
+- 當自訂義類型被引用在 2 段不同代碼時，請為它們製作類型單元測試；例如使用 `toEqualTypeOf`, etc
 
 ### ⛑️ E2E Testing
 
