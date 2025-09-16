@@ -3,28 +3,21 @@
 import { Button, ButtonGroup } from '@heroui/button'
 import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
 import { Form } from '@heroui/form'
-import { useParams, useRouter } from 'next/navigation'
-import { useReducer, useState } from 'react'
+import { useCatchAllNextParams } from '@onlywatch/use-catch-all-next-params'
+import { useReducer } from 'react'
 import { Drawer } from '~/components/Drawer'
-import { parseCatchAllParams } from '~/utils/parseCatchAllParams'
-import { SearchKeywordsInput } from './SearchKeywordsInput'
-import { decodeURLString } from '~/utils/decodeURLString'
 import { MonthPicker } from '~/features/jin10/components/MonthPicker'
+import { SearchKeywordsInput } from '~/features/jin10/components/SearchKeywordsInput'
 import { useMatchMedia } from '~/hooks/useMatchMedia'
 
 export function FilterSetupButton() {
-  const router = useRouter()
   const isMD = useMatchMedia('md')
   const [isOpen, toggleOpen] = useReducer((isOpen) => !isOpen, false)
-  const nextParams = parseCatchAllParams<['query', 'date']>(
-    useParams().params as string[],
-  )
 
-  const [query, setQuery] = useState(() =>
-    decodeURLString(nextParams.query || ''),
-  )
+  const { params, setParams, pushUrl } =
+    useCatchAllNextParams<['query', 'date']>('/calendar')
 
-  const [date, setDate] = useState(() => nextParams.date)
+  const { query = '', date = '' } = params
 
   return (
     <div>
@@ -47,20 +40,16 @@ export function FilterSetupButton() {
           <DrawerHeader>設定篩選器</DrawerHeader>
           <DrawerBody>
             <Form
-              onSubmit={(event) => {
+              onSubmit={async (event) => {
                 event.preventDefault()
 
-                let url = '/calendar'
+                // Update URL parameters - history and shallow are set in hook config
+                setParams({
+                  query: query || undefined,
+                  date: date || undefined,
+                })
 
-                if (query) {
-                  url = `${url}/query/${encodeURIComponent(query)}`
-                }
-
-                if (date) {
-                  url = `${url}/date/${date}`
-                }
-
-                router.push(url)
+                pushUrl()
 
                 if (isMD) return
 
@@ -74,13 +63,15 @@ export function FilterSetupButton() {
                 }}
                 value={query}
                 onValueChange={async (value) => {
-                  await setQuery(value)
+                  setParams((prev) => ({ ...prev, query: value || undefined }))
                 }}
               />
 
               <MonthPicker
                 value={date}
-                onValueChange={setDate}
+                onValueChange={(newDate) => {
+                  setParams((prev) => ({ ...prev, date: newDate }))
+                }}
               />
 
               <ButtonGroup fullWidth>

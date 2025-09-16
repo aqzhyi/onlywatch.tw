@@ -2,10 +2,13 @@
 
 <!-- shields.io supports icons from https://simpleicons.org -->
 
+![Copilot](https://img.shields.io/badge/Copilot-%23222222.svg?style=for-the-badge&logo=githubcopilot&logoColor=3bb1ff)
+![AGENTS.md](https://img.shields.io/badge/AGENTS.md-%23222222.svg?style=for-the-badge&logo=githubcopilot&logoColor=3bb1ff)
 ![ESM](https://img.shields.io/badge/ESM-%2300367d.svg?style=for-the-badge&logo=pkgsrc&logoColor=3bb1ff)
 ![PNPM](https://img.shields.io/badge/pnpm-%234a4a4a.svg?style=for-the-badge&logo=pnpm&logoColor=f69220)
 ![Turborepo](https://img.shields.io/badge/Turborepo-%230F0813.svg?style=for-the-badge&logo=Turborepo&logoColor=white)
 ![Vitest](https://img.shields.io/badge/-Vitest-252529?style=for-the-badge&logo=vitest&logoColor=FCC72B)
+![Playwright](https://img.shields.io/badge/-Playwright-252529?style=for-the-badge&logo=googlechrome&logoColor=FCC72B)
 ![OxLint](https://img.shields.io/badge/oxc-%2338B2AC?style=for-the-badge&logo=eslint&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
@@ -13,6 +16,7 @@
 ![NextJS-canary](https://img.shields.io/badge/Next@Canary-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![NextJS-canary](https://img.shields.io/badge/Next@PPR-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![NextJS-canary](https://img.shields.io/badge/Next@UseCache-black?style=for-the-badge&logo=next.js&logoColor=white)
+![next-intl](https://img.shields.io/badge/i18n@nextintl-black?style=for-the-badge&logo=languagetool&logoColor=white)
 ![HeroUI](https://img.shields.io/badge/HeroUI-black?style=for-the-badge&logo=heroui&logoColor=white)
 ![Zod](https://img.shields.io/badge/zod-%233068b7.svg?style=for-the-badge&logo=zod&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -35,16 +39,27 @@
 
   > expected to quickly find and save the upcoming `events` that only you care about
 
-## ⚡ try it now
+## ⚡ Try it now
 
-[https://onlywatch.tw](https://onlywatch.tw)
+> [!TIP]
+>
+> Production
 
-[https://onlywatch.tw/query/{keyword:利率決議}](https://onlywatch.tw/query/%E5%88%A9%E7%8E%87%E6%B1%BA%E8%AD%B0)
+- ⚡ [https://onlywatch.tw](https://onlywatch.tw)
 
-[https://onlywatch.tw/query/{...keywords}](https://onlywatch.tw/query/非農%20cpi%20pce%20利率決議%20就業人數%20貿易帳%20失業金人數%20鮑威爾%20川普%20普丁%20零售銷售%20PMI%20央行)
+- ⚡ [https://onlywatch.tw/calendar/query/{keyword:利率決議}](https://onlywatch.tw/calendar/query/%E5%88%A9%E7%8E%87%E6%B1%BA%E8%AD%B0)
+
+- ⚡ [https://onlywatch.tw/calendar/query/{...keywords}](https://onlywatch.tw/calendar/query/非農%20cpi%20pce%20利率決議%20就業人數%20貿易帳%20鮑威爾%20川普%20普丁%20央行)
+
+> [!TIP]
+>
+> Staging
+
+- ⛑️ [https://beta.onlywatch.tw](https://beta.onlywatch.tw)
 
 ---
 
+![site preview](@apps/onlywatch.tw/public/preview-calandar-page.png)
 ![site preview](@apps/onlywatch.tw/public/preview-events-filter.png)
 ![site preview](@apps/onlywatch.tw/public/preview-events-view.png)
 

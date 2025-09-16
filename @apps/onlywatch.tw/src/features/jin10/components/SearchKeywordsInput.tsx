@@ -53,9 +53,11 @@ export function SearchKeywordsInput({
       label='搜尋'
       variant='bordered'
       value={value}
+      isClearable
       onValueChange={async (newValue) => {
         await onValueChange(newValue)
       }}
+      onClear={clearKeywords}
       description={
         <div className='flex flex-col justify-center gap-2'>
           <div
@@ -69,7 +71,9 @@ export function SearchKeywordsInput({
             <div>採用模板搜尋</div>
             <Chip
               className={clsx('cursor-pointer')}
-              color='success'
+              color={
+                value === PRESET_IMPORTANT_KEYWORDS ? 'success' : 'default'
+              }
               variant='dot'
               onClick={applyKeywordsPreset}
             >
@@ -91,7 +95,9 @@ export function SearchKeywordsInput({
                 className={twMerge('cursor-pointer')}
                 size='sm'
                 color={
-                  value.split(' ').includes(keyword) ? 'primary' : 'default'
+                  value.trim().split(' ').includes(keyword)
+                    ? 'success'
+                    : 'default'
                 }
                 variant='dot'
                 onClick={() => toggleKeyword(keyword)}
@@ -102,13 +108,6 @@ export function SearchKeywordsInput({
             <div>, etc</div>
           </div>
         </div>
-      }
-      endContent={
-        <div
-          data-testid={testids?.clearButton}
-          className='icon-[mdi--clear-box] cursor-pointer'
-          onClick={clearKeywords}
-        ></div>
       }
       startContent={
         <div className='pointer-events-none flex items-center'>

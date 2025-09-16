@@ -11,11 +11,19 @@ export const constants = {
     { from: /(普京|普亭)/gi, to: '普丁' },
   ],
   prerenderKeywordsResult: [
+    '川普',
+    '央行',
+    '央行行長',
     '失業',
     '利率決議',
     '非農',
     '美聯儲',
+    '美聯儲主席',
+    '就業人數',
+    '普丁',
+    '貿易帳',
     '零售',
+    '鮑威爾',
     'ADP',
     'CAD',
     'CHF',
@@ -28,6 +36,6 @@ export const constants = {
     'USD',
   ],
   importantKeywordsPresets: [
-    '非農 cpi pce 利率決議 就業人數 貿易帳 失業金人數 鮑威爾 川普 普丁 零售銷售 PMI 央行',
+    '非農 FOMC ADP CPI PCE GDP 利率決議 美聯儲主席 就業 貿易帳 川普 普丁 央行行長',
   ] as const,
 }

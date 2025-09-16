@@ -11,6 +11,25 @@ import { days } from '~/utils/days'
 import { getIsoWeekdays } from '~/utils/getIsoWeekdays'
 import { parseCatchAllParams } from '~/utils/parseCatchAllParams'
 
+/**
+ * 生成日期和關鍵字組合的靜態路由
+ *
+ * @complexity O(n * m) 其中 n 是日期數量，m 是關鍵字數量
+ */
+function generateDateKeywordCombinationRoutes(
+  dates: string[],
+): { params: string[] }[] {
+  const combinationRoutes: { params: string[] }[] = []
+
+  dates.forEach((date) => {
+    constants.prerenderKeywordsResult.forEach((keyword) => {
+      combinationRoutes.push({ params: ['date', date, 'query', keyword] })
+    })
+  })
+
+  return combinationRoutes
+}
+
 export async function generateStaticParams() {
   const routes: { params: string[] }[] = []
 
@@ -31,13 +50,19 @@ export async function generateStaticParams() {
 
   // 3. 預渲染重要的歷史日期
   const importantDates = [
-    // 最近 6 個月的每月 15 日
+    // 最近 12 個月的每月 15 日
+    days().subtract(12, 'month').date(15).format('YYYY-MM-DD'),
+    days().subtract(11, 'month').date(15).format('YYYY-MM-DD'),
+    days().subtract(10, 'month').date(15).format('YYYY-MM-DD'),
+    days().subtract(9, 'month').date(15).format('YYYY-MM-DD'),
+    days().subtract(8, 'month').date(15).format('YYYY-MM-DD'),
+    days().subtract(7, 'month').date(15).format('YYYY-MM-DD'),
+    days().subtract(6, 'month').date(15).format('YYYY-MM-DD'),
     days().subtract(5, 'month').date(15).format('YYYY-MM-DD'),
     days().subtract(4, 'month').date(15).format('YYYY-MM-DD'),
     days().subtract(3, 'month').date(15).format('YYYY-MM-DD'),
     days().subtract(2, 'month').date(15).format('YYYY-MM-DD'),
     days().subtract(1, 'month').date(15).format('YYYY-MM-DD'),
-    days().date(15).format('YYYY-MM-DD'),
   ]
 
   importantDates.forEach((date) => {
@@ -45,11 +70,7 @@ export async function generateStaticParams() {
   })
 
   // 4. 預渲染一些重要日期 + 關鍵字的組合
-  constants.prerenderKeywordsResult.forEach((date) => {
-    constants.prerenderKeywordsResult.forEach((keyword) => {
-      routes.push({ params: ['date', date, 'query', keyword] })
-    })
-  })
+  routes.push(...generateDateKeywordCombinationRoutes(importantDates))
 
   return routes
 }

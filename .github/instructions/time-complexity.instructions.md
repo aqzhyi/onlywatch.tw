@@ -1,6 +1,5 @@
 ---
-description: "time-complexity instructions"
-applyTo: "**/*.tsx, **/*.ts"
+applyTo: "**/*.ts, **/*.tsx, **/*.mjs, **/*.mts"
 ---
 
 # 💬 Instructions
