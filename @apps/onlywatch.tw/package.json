@@ -33,6 +33,7 @@
     "@heroui/system": "2.4.22",
     "@heroui/theme": "2.4.22",
     "@next/third-parties": "15.5.3",
+    "@onlywatch/use-catch-all-next-params": "workspace:^0.1.0",
     "@supabase/ssr": "0.7.0",
     "@supabase/supabase-js": "2.57.4",
     "@vercel/speed-insights": "1.2.0",

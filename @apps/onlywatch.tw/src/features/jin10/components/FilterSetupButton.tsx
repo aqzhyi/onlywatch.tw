@@ -3,11 +3,11 @@
 import { Button, ButtonGroup } from '@heroui/button'
 import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
 import { Form } from '@heroui/form'
+import { useCatchAllNextParams } from '@onlywatch/use-catch-all-next-params'
 import { useReducer } from 'react'
 import { Drawer } from '~/components/Drawer'
 import { MonthPicker } from '~/features/jin10/components/MonthPicker'
 import { SearchKeywordsInput } from '~/features/jin10/components/SearchKeywordsInput'
-import { useCatchAllNextParams } from '~/features/useCatchAllNextParams/src'
 import { useMatchMedia } from '~/hooks/useMatchMedia'
 
 export function FilterSetupButton() {
