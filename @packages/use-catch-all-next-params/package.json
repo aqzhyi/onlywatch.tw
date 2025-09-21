@@ -17,8 +17,8 @@
     "README.md"
   ],
   "scripts": {
-    "dev": "vite build --watch",
-    "build": "vite build",
+    "dev": "tsdown --watch",
+    "build": "tsdown",
     "tsc": "tsc --noEmit",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
@@ -37,9 +37,8 @@
     "prettier-plugin-jsdoc": "1.3.3",
     "react": "19.1.1",
     "react-dom": "19.1.1",
+    "tsdown": "0.15.4",
     "typescript": "5.9.2",
-    "vite": "7.1.5",
-    "vite-plugin-dts": "4.5.4",
     "vitest": "3.2.4"
   },
   "peerDependencies": {
