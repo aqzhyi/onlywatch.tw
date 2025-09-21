@@ -112,6 +112,7 @@
 
 ### ⚡ Blogs
 
+- VoidZero <https://voidzero.dev/blog>
 - logrocket <https://blog.logrocket.com/dev>
 - developer-way <https://www.developerway.com/>
 - builder.io <https://www.builder.io/blog>
