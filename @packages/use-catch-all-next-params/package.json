@@ -2,7 +2,7 @@
   "private": false,
   "name": "@onlywatch/use-catch-all-next-params",
   "description": "A React Hook for managing NextParams of the route with Next.js Catch-All Segments",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -10,6 +10,10 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils/index.js",
+      "types": "./dist/utils/index.d.ts"
     }
   },
   "files": [

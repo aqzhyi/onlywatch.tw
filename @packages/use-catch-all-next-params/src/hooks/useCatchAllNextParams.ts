@@ -1,225 +1,240 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-import { useCallback, useMemo, useRef, useState } from 'react'
-import type { ParamsObject } from '../types/ParamsObject'
-import { buildParamsToUrl } from '../utils/buildParamsToUrl'
-import { filterValidParams } from '../utils/filterValidParams'
-import { parseUrlToParams } from '../utils/parseUrlToParams'
-
-const DEFAULT_MAX_PARAM_VALUE_LENGTH = 1000
+import { useCallback, useMemo, useState } from 'react'
+import type {
+  NextParamsObject,
+  NextParamsObjectNilable,
+} from '../types/NextParamsObject'
+import { buildUrlFromTemplate } from '../utils/buildUrlFromTemplate'
+import { parseUrlByTemplate } from '../utils/parseUrlByTemplate'
 
 /**
- * Hook for managing Next.js catch-all route parameters with type safety
- *
- * Provides separated concerns for parameter management and navigation:
- *
- * - setParams: Updates parameter state without triggering navigation
- * - pushUrl/replaceUrl: Navigates using router.push/replace with current
- *   parameter state
- *
- * Key features:
- *
- * - Automatic URL parsing and parameter extraction from pathname
- * - Type-safe parameter object with specified keys
- * - Concurrent state update protection with queuing system
- * - URL encoding/decoding for special characters and Unicode
- * - Parameter value length truncation to prevent URL overflow
- * - Graceful error handling for malformed URLs and base paths
+ * 🎯 Hook for managing URL parameters with type safety
  *
  * @example
- *   // Basic e-commerce filter usage
+ *   // 🚀 Basic Interfaces
  *   const { params, setParams, pushUrl, replaceUrl } =
- *     useCatchAllNextParams<['brand', 'search']>('/mall')
- *
- *   // URL: /mall/brand/nvidia/search/5090
- *   // params: { brand: 'nvidia', search: '5090' }
- *
- *   setParams({ brand: 'amd', search: '7900xtx' }) // Updates state only
- *   pushUrl() // Navigates to /mall/brand/amd/search/7900xtx
+ *     useCatchAllNextParams('/search/{query}')
  *
  * @example
- *   // Functional updates and navigation workflow
- *   setParams((prev) => ({ ...prev, search: '4080' })) // Merge with existing params
- *   replaceUrl() // Replace current URL without adding to history
+ *   // 🚀 More complex baseUrl
+ *   useCatchAllNextParams('/mall/brand/{brand}/search/{query}')
+ *   useCatchAllNextParams('/calendar/search/{query}/date/{date}/')
  *
  * @example
- *   // Complex search with multiple filters
- *   const { params, setParams } =
- *     useCatchAllNextParams<
- *       ['q', 'category', 'price-min', 'price-max', 'sort']
- *     >('/search')
+ *   // 🚀 Basic Usage
+ *   const { params, setParams, pushUrl } =
+ *     useCatchAllNextParams('/search/{query}')
  *
- *   // URL: /search/q/gaming%20laptop/category/computers/page/2
- *   // params: { q: 'gaming laptop', category: 'computers', page: '2' }
+ *   // set params to { query: 'rtx 5080' }
+ *   setParams({ query: 'rtx 5080' })
+ *
+ *   // navigates the URL to '/search/rtx 5080'
+ *   pushUrl()
  *
  * @example
- *   // Custom parameter value length limit
- *   const { params, setParams } = useCatchAllNextParams<['description']>(
- *     '/products',
- *     { maxParamValueLength: 500 },
- *   )
+ *   // assume baseUrl set to '/mall/brand/{brand}/search/{search}'
+ *   // assume current URL is '/mall/brand/amd/search/rtx 5090'
  *
- * @complexity O(n + m * k) where n is pathname parsing, m is number of parameters, and k is average parameter value length
+ *   // 🚀 params is { brand: 'amd', search: 'rtx 5090' }
+ *   console.info(params)
+ *
+ * @example
+ *   // assume baseUrl set to '/mall/brand/{brand}/search/{search}'
+ *   // assume current URL is '/mall/brand/amd/search/rtx 5090'
+ *
+ *   // 🚀 replace all params with new NextParams:
+ *
+ *   // now params is { brand: 'msi' }
+ *   setParams({ brand: 'msi' })
+ *
+ *   // now params is { brand: 'gigabyte' }
+ *   setParams({ brand: 'gigabyte' })
+ *
+ *   // now params is { search: '1080' }
+ *   setParams({ search: 'rtx 1080' })
+ *
+ *   // now params is { brand: 'nvidia', search: 'rtx 2080' }
+ *   setParams({ brand: 'nvidia', search: 'rtx 2080' })
+ *
+ * @example
+ *   // assume baseUrl set to '/mall/brand/{brand}/search/{search}'
+ *   // assume current URL is '/mall/brand/amd/search/rtx 5090'
+ *
+ *   // 🚀 merging with prev NextParams:
+ *
+ *   // now params is { brand: 'amd', search: 'rtx 2080' }
+ *   setParams((prev) => ({ ...prev, search: 'rtx 2080' }))
+ *
+ *   // now params is { brand: 'nvda', search: 'rtx 5090' }
+ *   setParams((prev) => ({ ...prev, brand: 'nvda' }))
+ *
+ * @example
+ *   // assume baseUrl set to '/mall/brand/{brand}/search/{search}'
+ *   // assume current URL is '/mall/brand/amd/search/rtx 5090'
+ *
+ *   // 🚀 remove both parameters:
+ *   setParams((prev) => ({ ...prev, brand: undefined, search: undefined }))
+ *
+ *   // now the URL will be '/mall'
+ *   pushUrl()
+ *
+ * @example
+ *   // assume baseUrl set to '/mall/brand/{brand}/search/{search}'
+ *   // assume current URL is '/mall/brand/amd/search/rtx 5090'
+ *
+ *   //
+ *   // 🚀 remove the specified parameter 'search':
+ *   setParams((prev) => ({ ...prev, search: null }))
+ *
+ *   // now the URL will be '/mall/brand/amd'
+ *   pushUrl()
+ *
+ *   //
+ *   // 🚀 remove the specified parameter 'brand':
+ *   setParams((prev) => ({ ...prev, brand: null }))
+ *
+ *   // now the URL will be '/mall/search/rtx 5090'
+ *   pushUrl()
  */
-export function useCatchAllNextParams<
-  SearchParamsKeys extends readonly string[],
->(
-  baseUrl: string,
-  options: UseCatchAllNextParamsOptions = {},
-): UseCatchAllNextParamsReturn<SearchParamsKeys> {
+export function useCatchAllNextParams<TUrlTemplate extends string>(
+  /**
+   * @example
+   *   '/mall/brand/{brand}/search/{search}'
+   */
+  baseUrl: TUrlTemplate,
+): UseCatchAllNextParamsReturn<TUrlTemplate> {
   const pathname = usePathname()
   const router = useRouter()
 
-  const { maxParamValueLength = DEFAULT_MAX_PARAM_VALUE_LENGTH } = options
-
-  /** Prevent circular updates and manage concurrent calls */
-  const isUpdatingRef = useRef(false)
-  const updateQueueRef = useRef<Array<() => void>>([])
-
-  const normalizedBaseUrl = useMemo(() => normalizeBaseUrl(baseUrl), [baseUrl])
-
-  // Initialize parameters from URL
-  const initialParams = useMemo(() => {
+  //  Parse current URL parameters
+  const params = useMemo(() => {
     try {
-      const parsedParams = parseUrlToParams(pathname, normalizedBaseUrl)
-      return parsedParams as ParamsObject<SearchParamsKeys>
+      const parsedParams = parseUrlByTemplate(pathname, baseUrl)
+      return parsedParams as NextParamsObject<TUrlTemplate>
     } catch {
-      return {} as ParamsObject<SearchParamsKeys>
+      // Return empty params on parse error
+      return {} as NextParamsObject<TUrlTemplate>
     }
-  }, [pathname, normalizedBaseUrl])
+  }, [baseUrl, pathname])
 
-  // Use internal state to manage parameters
-  const [params, setInternalParams] =
-    useState<ParamsObject<SearchParamsKeys>>(initialParams)
+  // 🎯 Current merged params state for setParams operations
+  const [currentParams, setCurrentParams] =
+    useState<NextParamsObject<TUrlTemplate>>(params)
 
-  // Sync internal state with URL changes
+  // 🔄 Sync params with URL changes
   useMemo(() => {
-    try {
-      const parsedParams = parseUrlToParams(pathname, normalizedBaseUrl)
-      setInternalParams(parsedParams as ParamsObject<SearchParamsKeys>)
-    } catch {
-      setInternalParams({} as ParamsObject<SearchParamsKeys>)
-    }
-  }, [pathname, normalizedBaseUrl])
+    setCurrentParams(params)
+  }, [params])
 
-  const processNextQueuedUpdate = useCallback(() => {
-    const nextUpdate = updateQueueRef.current.shift()
-    nextUpdate?.()
-  }, [])
-
+  /**
+   * 🎯 Set new parameters with state sync
+   */
   const setParams = useCallback(
     (
-      updater:
-        | ParamsObject<SearchParamsKeys>
+      newParams:
+        | NextParamsObjectNilable<TUrlTemplate>
         | ((
-            prev: ParamsObject<SearchParamsKeys>,
-          ) => ParamsObject<SearchParamsKeys>),
+            current: NextParamsObject<TUrlTemplate>,
+          ) => NextParamsObjectNilable<TUrlTemplate>),
     ) => {
-      // Queue concurrent calls to prevent race conditions
-      if (isUpdatingRef.current) {
-        updateQueueRef.current.push(() => setParams(updater))
-        return
+      const paramsToSet =
+        typeof newParams === 'function' ? newParams(currentParams) : newParams
+
+      // Handle parameter updates with proper logic
+      let mergedParams: NextParamsObject<TUrlTemplate>
+
+      if (typeof newParams === 'function') {
+        // Function mode: merge with current params (allows precise control)
+        mergedParams = { ...currentParams }
+
+        // Process each parameter in the new params
+        for (const [key, value] of Object.entries(paramsToSet)) {
+          if (value === undefined || value === null || value === '') {
+            // Remove the parameter when value is undefined, null, or empty string
+            delete mergedParams[key as keyof typeof mergedParams]
+          } else {
+            // Set or update the parameter
+            ;(mergedParams as any)[key] = value
+          }
+        }
+      } else {
+        // Object mode: replace all params (as per JSDoc "replace all params with new NextParams")
+        mergedParams = {} as NextParamsObject<TUrlTemplate>
+
+        // Only set parameters that have valid values
+        for (const [key, value] of Object.entries(paramsToSet)) {
+          if (value !== undefined && value !== null && value !== '') {
+            ;(mergedParams as any)[key] = value
+          }
+        }
       }
 
-      isUpdatingRef.current = true
-
-      try {
-        const newParams =
-          typeof updater === 'function' ? updater(params) : updater
-        const processedParams = processParameterValues(
-          newParams,
-          maxParamValueLength,
-        )
-
-        // Update internal parameter state
-        setInternalParams(processedParams as ParamsObject<SearchParamsKeys>)
-      } catch (error) {
-        console.warn('Failed to update URL parameters:', error)
-      } finally {
-        isUpdatingRef.current = false
-        // Process next queued update asynchronously
-        setTimeout(processNextQueuedUpdate, 0)
-      }
+      setCurrentParams(mergedParams)
     },
-    [params, processNextQueuedUpdate, maxParamValueLength],
+    [currentParams],
   )
 
+  /**
+   * 🚀 Navigate to new URL using router.push
+   */
   const pushUrl = useCallback(() => {
-    // Build URL from current parameters and push
-    const currentPath = buildParamsToUrl(params, normalizedBaseUrl)
-    router.push(currentPath)
-  }, [params, normalizedBaseUrl, router])
+    try {
+      const newUrl = buildUrlFromTemplate(baseUrl, currentParams)
+      router.push(newUrl)
+    } catch (buildError) {
+      // Silently fail if URL building fails
+      console.warn('Failed to build URL for navigation:', buildError)
+    }
+  }, [baseUrl, currentParams, router])
 
+  /**
+   * 🔄 Navigate to new URL using router.replace
+   */
   const replaceUrl = useCallback(() => {
-    // Build URL from current parameters and replace
-    const currentPath = buildParamsToUrl(params, normalizedBaseUrl)
-    router.replace(currentPath)
-  }, [params, normalizedBaseUrl, router])
+    try {
+      const newUrl = buildUrlFromTemplate(baseUrl, currentParams)
+      router.replace(newUrl)
+    } catch (buildError) {
+      // Silently fail if URL building fails
+      console.warn('Failed to build URL for navigation:', buildError)
+    }
+  }, [baseUrl, currentParams, router])
 
-  return { params, setParams, pushUrl, replaceUrl }
+  return {
+    params: currentParams,
+    setParams,
+    pushUrl,
+    replaceUrl,
+  }
 }
 
-export type UseCatchAllNextParamsOptions = {
+/**
+ * 🎯 Return type for useCatchAllNextParams hook
+ */
+export type UseCatchAllNextParamsReturn<TUrlTemplate extends string> = {
   /**
-   * Maximum allowed length for URL parameter values to prevent overflow
+   * the current states maintained by the internal state of react-hook
    *
-   * @default 1000
+   * @example
+   *   // assume baseUrl is '/mall/brand/{brand}/search/{search}'
+   *   // the type of ParamsObject expect to be { brand: string; search: string }
    */
-  maxParamValueLength?: number
-}
+  params: NextParamsObject<TUrlTemplate>
 
-export type UseCatchAllNextParamsReturn<T extends readonly string[]> = {
-  params: ParamsObject<T>
+  /** Function to update parameters */
   setParams: (
-    updater: ParamsObject<T> | ((prev: ParamsObject<T>) => ParamsObject<T>),
+    newParams:
+      | NextParamsObjectNilable<TUrlTemplate>
+      | ((
+          current: NextParamsObject<TUrlTemplate>,
+        ) => NextParamsObjectNilable<TUrlTemplate>),
   ) => void
-  /**
-   * Trigger navigation using router.push with current URL
-   *
-   * Forces the router to push the current URL to history stack
-   */
+
+  /** Navigate to new URL with updated parameters using router.push */
   pushUrl: () => void
-  /**
-   * Trigger navigation using router.replace with current URL
-   *
-   * Forces the router to replace the current URL in history stack
-   */
+
+  /** Navigate to new URL with updated parameters using router.replace */
   replaceUrl: () => void
-}
-
-/**
- * Normalizes base URL by removing trailing slashes and duplicate slashes
- */
-function normalizeBaseUrl(baseUrl: string): string {
-  try {
-    const cleaned = baseUrl.replace(/\/+/g, '/').replace(/\/$/, '') || '/'
-    return cleaned === '/' ? '' : cleaned
-  } catch {
-    return ''
-  }
-}
-
-/**
- * Filters and processes parameters with length truncation
- *
- * Combines filtering of valid parameters with truncation of overly long values
- * to prevent URL overflow while maintaining data integrity
- */
-function processParameterValues(
-  params: Record<string, unknown>,
-  maxParamValueLength: number,
-): Record<string, unknown> {
-  const validParams = filterValidParams(params)
-  const processed: Record<string, unknown> = {}
-
-  for (const [key, value] of validParams) {
-    const truncatedValue =
-      value.length > maxParamValueLength
-        ? value.slice(0, maxParamValueLength) + '...'
-        : value
-    processed[key] = truncatedValue
-  }
-
-  return processed
 }

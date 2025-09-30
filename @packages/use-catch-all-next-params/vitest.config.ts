@@ -9,6 +9,7 @@ export default defineConfig({
       reporter: ['text', 'json', 'html', 'lcov'],
       exclude: [
         'node_modules/**',
+        'e2e/**',
         'dist/**',
         '**/*.test.{ts,tsx}',
         '**/*.spec.{ts,tsx}',
