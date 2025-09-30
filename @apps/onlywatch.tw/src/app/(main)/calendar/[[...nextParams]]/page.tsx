@@ -1,4 +1,5 @@
 import { Skeleton } from '@heroui/skeleton'
+import { parseUrlByTemplate } from '@onlywatch/use-catch-all-next-params/utils'
 import { cacheLife } from 'next/dist/server/use-cache/cache-life'
 import { Suspense } from 'react'
 import { Calendar } from '~/features/jin10/components/Calendar'
@@ -9,7 +10,6 @@ import { constants } from '~/features/jin10/constants'
 import { findManyEvents } from '~/features/jin10/db/findManyEvents'
 import { days } from '~/utils/days'
 import { getIsoWeekdays } from '~/utils/getIsoWeekdays'
-import { parseCatchAllParams } from '~/utils/parseCatchAllParams'
 
 /**
  * 生成日期和關鍵字組合的靜態路由
@@ -76,29 +76,36 @@ export async function generateStaticParams() {
 }
 
 export default async function Page(
-  props: PageProps<'/calendar/[[...params]]'>,
+  props: PageProps<'/calendar/[[...nextParams]]'>,
 ) {
   'use cache'
   cacheLife('minutes')
 
+  const { nextParams = [] } = await props.params
+
+  const params = parseUrlByTemplate(
+    nextParams,
+    '/calendar/query/{query}/date/{date}',
+  )
+
   // 新的通用方式：使用泛型指定支援的參數類型
-  const parsedParams = await parseCatchAllParams<['query', 'date']>(props)
+  // const parsedParams = await parseCatchAllParams<['query', 'date']>(props)
 
   // 開發模式調試
   if (process.env.NODE_ENV === 'development') {
-    const { params } = await props.params
-    console.log('📊 Calendar params received:', params)
-    console.log('📊 Parsed params:', parsedParams)
+    console.log('📊 route template:', '/calendar/query/{query}/date/{date}')
+    console.log('📊 origin params:', nextParams)
+    console.log('📊 parsed params:', params)
   }
 
   // 計算週範圍
-  const weeks = await _calculateWeekRange(parsedParams.date)
+  const weeks = await _calculateWeekRange(params.date)
 
   // 查詢事件數據
   const eventsPromise = findManyEvents(
     days(weeks.at(0)!).startOf('days').toISOString(),
     days(weeks.at(-1)!).endOf('days').toISOString(),
-    parsedParams.query,
+    params.query,
   )
 
   return (
@@ -126,7 +133,7 @@ export default async function Page(
                   isodate={isodate}
                   value={eventsPromise}
                   variant={
-                    parsedParams.date === isodate
+                    params.date === isodate
                       ? 'today'
                       : days(isodate).isBefore(days(), 'day')
                         ? 'past'
