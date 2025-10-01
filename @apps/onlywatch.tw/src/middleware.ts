@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { routing } from '~/features/i18n/routing'
 import { updateSession } from '~/features/members/utils/updateSession'
 
-export default async function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   // return await updateSession(request)
 
   return createMiddleware(routing)(request)
