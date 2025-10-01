@@ -9,13 +9,17 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { twMerge } from 'tailwind-merge'
+import { LocaleDropdownButton } from '~/components/LocaleDropdownButton'
 import { ThemeToggle } from '~/components/ThemeToggle'
 import { getSupabaseSSR } from '~/db/getSupabaseSSR'
 import { FilterSetupButton } from '~/features/jin10/components/FilterSetupButton'
 import { UserAuthActionsDropdown } from '~/features/members/components/UserAuthActionsDropdown'
 import { UserAvatar } from '~/features/members/components/UserAvatar'
 
-export default async function Layout(props: LayoutProps<'/'>) {
+export default async function Layout({
+  params,
+  children,
+}: LayoutProps<'/[locale]'>) {
   const userResponse = (await getSupabaseSSR()).auth.getUser()
 
   return (
@@ -48,6 +52,10 @@ export default async function Layout(props: LayoutProps<'/'>) {
           justify='end'
           className='gap-2'
         >
+          <NavbarMenuItem>
+            <LocaleDropdownButton />
+          </NavbarMenuItem>
+
           <NavbarMenuItem>
             <Suspense fallback={<Skeleton />}>
               <FilterSetupButton />
@@ -87,7 +95,7 @@ export default async function Layout(props: LayoutProps<'/'>) {
         <Suspense
           fallback={<Skeleton className={twMerge('h-full', 'rounded-md')} />}
         >
-          {props.children}
+          {children}
         </Suspense>
       </main>
     </div>

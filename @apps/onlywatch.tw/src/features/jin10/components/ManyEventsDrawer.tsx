@@ -1,6 +1,7 @@
 'use client'
 
 import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
+import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/navigation'
 import { Fragment, use, useReducer } from 'react'
 import { Drawer } from '~/components/Drawer'
@@ -20,6 +21,7 @@ export function ManyEventsDrawer({
   isodate,
   value,
 }: DrawerOfManyEvents) {
+  const $t = useTranslations()
   const [isDrawerOpen, toggleDrawerOpen] = useReducer(
     (isOpen) => !isOpen,
     false,
@@ -49,6 +51,7 @@ export function ManyEventsDrawer({
           </DrawerHeader>
           <DrawerBody>
             <div className='flex flex-col gap-2'>
+              {!data?.[isodate]?.length && <div>{$t('events.notFound')}</div>}
               {data?.[isodate]?.map((event) => {
                 return (
                   <EventCard

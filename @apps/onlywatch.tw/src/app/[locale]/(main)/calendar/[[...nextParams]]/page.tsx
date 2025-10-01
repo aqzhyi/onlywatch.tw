@@ -2,6 +2,7 @@ import { Skeleton } from '@heroui/skeleton'
 import { parseUrlByTemplate } from '@onlywatch/use-catch-all-next-params/utils'
 import { cacheLife } from 'next/dist/server/use-cache/cache-life'
 import { Suspense } from 'react'
+import { routing } from '~/features/i18n/routing'
 import { Calendar } from '~/features/jin10/components/Calendar'
 import { DayCard } from '~/features/jin10/components/DayCard'
 import { ManyEventsDrawer } from '~/features/jin10/components/ManyEventsDrawer'
@@ -35,6 +36,10 @@ export async function generateStaticParams() {
 
   // 1. 預渲染默認路由
   routes.push({ params: [] })
+
+  for (const locale of routing.locales) {
+    routes.push({ params: [locale] })
+  }
 
   // 2. 預渲染關鍵字路由
   const prerenderQueryKeywords = [
@@ -76,7 +81,7 @@ export async function generateStaticParams() {
 }
 
 export default async function Page(
-  props: PageProps<'/calendar/[[...nextParams]]'>,
+  props: PageProps<'/[locale]/calendar/[[...nextParams]]'>,
 ) {
   'use cache'
   cacheLife('minutes')

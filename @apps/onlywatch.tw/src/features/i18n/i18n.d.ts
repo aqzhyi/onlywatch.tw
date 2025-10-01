@@ -1,11 +1,11 @@
-import { formats } from '@/i18n/request'
-import { routing } from '@/i18n/routing'
-import messages from '~/features/i18n/locales/zh-TW.json'
+// import { formats } from '~/features/i18n/request'
+import messages from '~/features/i18n/locales/zh-tw.json'
+import type { routing } from '~/features/i18n/routing'
 
 declare module 'next-intl' {
   interface AppConfig {
     Locale: (typeof routing.locales)[number]
-    Messages: typeof messages
-    Formats: typeof formats
+    Messages: Omit<typeof messages, 'eventTitles'>
+    // Formats: typeof formats
   }
 }

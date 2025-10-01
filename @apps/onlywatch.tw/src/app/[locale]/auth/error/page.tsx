@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import { Link } from '~/features/i18n/navigation'
 
 export default function AuthCodeError() {
   return (
