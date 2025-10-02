@@ -1,7 +1,6 @@
-import { Badge } from '@heroui/badge'
 import { Card, CardBody } from '@heroui/card'
 import { Chip } from '@heroui/chip'
-import clsx from 'clsx'
+import { useTranslations } from 'next-intl'
 import { twMerge } from 'tailwind-merge'
 import { CountryFlag } from '~/features/jin10/components/CountryFlag'
 import { Datetime } from '~/features/jin10/components/Datetime'
@@ -15,6 +14,7 @@ export function EventCard(
     unit: null | string
   }>,
 ) {
+  const $t = useTranslations()
   const hasNoNumbers = !props.numbers || props.numbers.every((n) => n === null)
   const noContent = ' ... '
 
@@ -25,7 +25,7 @@ export function EventCard(
       <Chip
         variant='bordered'
         size='sm'
-        startContent={<span>前值</span>}
+        startContent={<span>{$t('events.previousNumber')}</span>}
       >
         <span title='前次公佈值'>{props.numbers?.[0] || noContent}</span>
       </Chip>
@@ -33,7 +33,7 @@ export function EventCard(
       <Chip
         variant='bordered'
         size='sm'
-        startContent={<span>預測</span>}
+        startContent={<span>{$t('events.consensusNumber')}</span>}
       >
         <span title='預測公布值'>{props.numbers?.[1] || noContent}</span>
       </Chip>
@@ -66,7 +66,7 @@ export function EventCard(
           <span className='text-sm dark:text-zinc-400'>({props.country})</span>
           <Datetime value={props.publishAt} />
         </div>
-        <div>{props.title}</div>
+        <div>{$t(`eventTitles.${props.title}` as any)}</div>
         <div className={twMerge([hasNoNumbers && 'hidden'])}>{numbers}</div>
       </CardBody>
     </Card>

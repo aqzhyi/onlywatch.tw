@@ -14,8 +14,9 @@ export function FilterSetupButton() {
   const isMD = useMatchMedia('md')
   const [isOpen, toggleOpen] = useReducer((isOpen) => !isOpen, false)
 
-  const { params, setParams, pushUrl } =
-    useCatchAllNextParams<['query', 'date']>('/calendar')
+  const { params, setParams, pushUrl } = useCatchAllNextParams(
+    '/calendar/query/{query}/date/{date}',
+  )
 
   const { query = '', date = '' } = params
 
@@ -45,8 +46,8 @@ export function FilterSetupButton() {
 
                 // Update URL parameters - history and shallow are set in hook config
                 setParams({
-                  query: query || undefined,
-                  date: date || undefined,
+                  query: query,
+                  date: date,
                 })
 
                 pushUrl()
@@ -63,7 +64,7 @@ export function FilterSetupButton() {
                 }}
                 value={query}
                 onValueChange={async (value) => {
-                  setParams((prev) => ({ ...prev, query: value || undefined }))
+                  setParams((prev) => ({ ...prev, query: value }))
                 }}
               />
 

@@ -1,13 +1,14 @@
 packages:
-  - '@apps/*'
-  - '@packages/*'
-  - '!**/test/**'
-  - '!**/mock/**'
-  - '!**/.vercel/**'
+  - "@apps/*"
+  - "@packages/*/e2e/*"
+  - "@packages/*"
+  - "!**/test/**"
+  - "!**/mock/**"
+  - "!**/.vercel/**"
 
 onlyBuiltDependencies:
-  - '@heroui/shared-utils'
-  - '@tailwindcss/oxide'
+  - "@heroui/shared-utils"
+  - "@tailwindcss/oxide"
   - chinese-conv
   - esbuild
   - lefthook

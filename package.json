@@ -1,12 +1,15 @@
 {
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.15.0",
+  "packageManager": "pnpm@10.17.1",
   "devDependencies": {
-    "@types/node": "24.3.0",
-    "lefthook": "1.12.3",
-    "turbo": "2.5.6",
-    "typescript": "5.9.2"
+    "@changesets/changelog-git": "0.2.1",
+    "@changesets/cli": "2.29.7",
+    "@types/node": "24.6.2",
+    "changeset-conventional-commits": "0.2.5",
+    "lefthook": "1.13.6",
+    "turbo": "2.5.8",
+    "typescript": "5.9.3"
   },
   "scripts": {
     "build": "turbo run build",
@@ -14,6 +17,11 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "tsc": "turbo run tsc"
+    "tsc": "turbo run tsc",
+    "release:bump:README": "💡 Generate a changelog and create a new version number for all projects based on the commits",
+    "release:bump": "changeset-conventional && changeset version",
+    "release:publish:README": "💡 All ongoing projects that have not yet been published will be released accordingly.",
+    "release:publish": "changeset publish",
+    "release": "pnpm run release:bump && pnpm run release:publish"
   }
 }

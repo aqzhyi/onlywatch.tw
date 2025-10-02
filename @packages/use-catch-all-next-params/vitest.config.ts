@@ -8,7 +8,10 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
       exclude: [
+        'src/types/**',
+        'src/**/index.ts',
         'node_modules/**',
+        'e2e/**',
         'dist/**',
         '**/*.test.{ts,tsx}',
         '**/*.spec.{ts,tsx}',
@@ -18,6 +21,11 @@ export default defineConfig({
         '*.config.ts',
         '*.config.mjs',
       ],
+    },
+    typecheck: {
+      enabled: true,
+      include: ['**/*.test-d.ts', '**/*.test.ts'],
+      exclude: ['node_modules/**', 'dist/**'],
     },
   },
 })

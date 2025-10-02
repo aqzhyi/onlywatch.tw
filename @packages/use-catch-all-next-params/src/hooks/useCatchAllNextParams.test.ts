@@ -1,438 +1,617 @@
-import { renderHook, act } from '@testing-library/react'
-import { useRouter, usePathname } from 'next/navigation'
-import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
-import { useCatchAllNextParams } from './useCatchAllNextParams'
+import { act, renderHook } from '@testing-library/react'
+import { beforeEach, describe, expect, expectTypeOf, it, vi } from 'vitest'
 
-// Mock Next.js navigation hooks
-vi.mock('next/navigation', () => ({
-  useRouter: vi.fn(),
-  usePathname: vi.fn(),
-}))
-
+// 🎮 Mock Next.js hooks for testing
 const mockPush = vi.fn()
 const mockReplace = vi.fn()
-const mockUseRouter = vi.mocked(useRouter)
-const mockUsePathname = vi.mocked(usePathname)
 
-describe('useCatchAllNextParams', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
+vi.mock('next/navigation', () => ({
+  usePathname: vi.fn(() => '/mall/brand/nvidia/search/rtx-4090'),
+  useRouter: vi.fn(() => ({
+    push: mockPush,
+    replace: mockReplace,
+  })),
+}))
 
-    // Reset mock implementations to default behavior
-    mockPush.mockImplementation(() => {})
-    mockReplace.mockImplementation(() => {})
+const { useCatchAllNextParams } = await import('./useCatchAllNextParams')
 
-    mockUseRouter.mockReturnValue({
-      push: mockPush,
-      replace: mockReplace,
-    } as any)
+describe('🎯 useCatchAllNextParams Hook', () => {
+  let mockUsePathname: any
+
+  beforeEach(async () => {
+    // Get the mocked modules
+    const navigation = await import('next/navigation')
+    mockUsePathname = vi.mocked(navigation.usePathname)
+
+    // 🧹 Reset mocks
+    mockPush.mockClear()
+    mockReplace.mockClear()
   })
 
-  describe('API structure', () => {
-    it('should return the correct API structure with four properties', () => {
-      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/5090')
+  // ============================================================================
+  // 🚀 CORE FUNCTIONAL TESTS - Primary Business Logic (優先進行功能性測試)
+  // ============================================================================
 
+  describe('🎯 URL Parsing and Initialization', () => {
+    beforeEach(() => {
+      // 🧹 Reset mock to default URL before each test
+      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/rtx-4090')
+    })
+
+    it('should initialize with correct params from current URL', () => {
       const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
       )
 
-      // Test that the hook returns exactly the expected properties
-      expect(result.current).toHaveProperty('params')
-      expect(result.current).toHaveProperty('setParams')
-      expect(result.current).toHaveProperty('pushUrl')
-      expect(result.current).toHaveProperty('replaceUrl')
+      // 🧪 Verify initial state from mocked URL
+      expect(result.current.params).toEqual({
+        brand: 'nvidia',
+        search: 'rtx-4090',
+      })
+    })
 
-      // Ensure only these four properties exist
-      expect(Object.keys(result.current)).toEqual([
-        'params',
-        'setParams',
-        'pushUrl',
-        'replaceUrl',
-      ])
+    it('should handle empty parameter paths gracefully', () => {
+      // 🎮 Mock URL that matches template exactly (no parameters)
+      mockUsePathname.mockReturnValue('/mall')
 
-      // Test property types
-      expect(typeof result.current.params).toBe('object')
-      expect(typeof result.current.setParams).toBe('function')
-      expect(typeof result.current.pushUrl).toBe('function')
-      expect(typeof result.current.replaceUrl).toBe('function')
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🧪 Should return empty params object when no parameters in URL
+      expect(result.current.params).toEqual({})
+    })
+
+    it('should parse parameters from different URL structures', () => {
+      // Test case 1: Single parameter pattern
+      mockUsePathname.mockReturnValue('/user/id/user123')
+      const { result: singleParamResult } = renderHook(() =>
+        useCatchAllNextParams('/user/id/{id}'),
+      )
+      expect(singleParamResult.current.params).toEqual({ id: 'user123' })
+
+      // Test case 2: Multiple parameters with encoded values
+      mockUsePathname.mockReturnValue(
+        '/api/version/v1/userId/john%40example.com',
+      )
+      const { result: multiParamResult } = renderHook(() =>
+        useCatchAllNextParams('/api/version/{version}/userId/{userId}'),
+      )
+      expect(multiParamResult.current.params).toEqual({
+        version: 'v1',
+        userId: 'john@example.com', // %40 → @
+      })
+
+      // Test case 3: Complex multi-parameter pattern
+      mockUsePathname.mockReturnValue(
+        '/shop/category/electronics/brand/apple/model/macbook%20pro',
+      )
+      const { result: complexParamResult } = renderHook(() =>
+        useCatchAllNextParams(
+          '/shop/category/{category}/brand/{brand}/model/{model}',
+        ),
+      )
+      expect(complexParamResult.current.params).toEqual({
+        category: 'electronics',
+        brand: 'apple',
+        model: 'macbook pro', // URL decoding
+      })
     })
   })
 
-  describe('navigation functions', () => {
-    it('should call router.push when pushUrl is invoked', () => {
-      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/5090')
+  describe('🎮 URL Encoding Handling', () => {
+    it('should parse URL-encoded parameters correctly', () => {
+      // 🎮 Mock URL with encoded characters
+      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/rtx%205080')
 
       const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
       )
 
+      // 🧪 Verify URL decoding works correctly
+      expect(result.current.params).toEqual({
+        brand: 'nvidia',
+        search: 'rtx 5080', // Should decode %20 to space
+      })
+    })
+
+    it('should handle complex URL-encoded parameters', () => {
+      // 🎮 Mock URL with various encoded characters
+      mockUsePathname.mockReturnValue(
+        '/mall/brand/apple%20mac/search/macbook%20pro%2015%22%20%26%20air',
+      )
+
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🧪 Verify complex decoding
+      expect(result.current.params).toEqual({
+        brand: 'apple mac', // %20 → space
+        search: 'macbook pro 15" & air', // %20 → space, %22 → ", %26 → &
+      })
+    })
+  })
+
+  describe('📖 JSDoc Examples and Parameter Management', () => {
+    beforeEach(() => {
+      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/rtx-4090')
+      mockPush.mockClear()
+      mockReplace.mockClear()
+    })
+
+    it('should match Basic Usage example from JSDoc', () => {
+      // @example from JSDoc: Basic Usage
+      mockUsePathname.mockReturnValue('/search/initial-query')
+
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/search/{query}'),
+      )
+
+      // should initialize with query from URL
+      expect(result.current.params.query).toBe('initial-query')
+
+      // set params to { query: 'rtx 5080' } as shown in @example
+      act(() => {
+        result.current.setParams({ query: 'rtx 5080' })
+      })
+
+      expect(result.current.params.query).toBe('rtx 5080')
+
+      // navigates the URL to '/search/rtx 5080' when pushUrl() called
       act(() => {
         result.current.pushUrl()
       })
 
-      expect(mockPush).toHaveBeenCalledWith('/mall/brand/nvidia/search/5090')
-      expect(mockPush).toHaveBeenCalledTimes(1)
+      expect(mockPush).toHaveBeenCalledWith('/search/rtx 5080')
     })
 
-    it('should call router.replace when replaceUrl is invoked', () => {
-      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/5090')
-
+    it('should update params with object syntax (replacement mode)', () => {
       const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
       )
 
+      // 🧪 Test: Replace params (object mode replaces all params as per JSDoc)
+      act(() => {
+        result.current.setParams({ brand: 'msi' })
+      })
+      expect(result.current.params.brand).toBe('msi')
+      expect(result.current.params.search).toBeUndefined() // Other params removed per JSDoc
+
+      // 🧪 Test: Replace multiple params
+      act(() => {
+        result.current.setParams({ brand: 'nvidia', search: 'rtx 2080' })
+      })
+      expect(result.current.params.brand).toBe('nvidia')
+      expect(result.current.params.search).toBe('rtx 2080')
+    })
+
+    it('should update params with functional syntax (merge mode)', () => {
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🧪 Test: Functional update pattern
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, search: 'rtx 5090' }))
+      })
+      expect(result.current.params.brand).toBe('nvidia') // Preserved
+      expect(result.current.params.search).toBe('rtx 5090') // Updated
+
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, brand: 'amd' }))
+      })
+      expect(result.current.params.brand).toBe('amd') // Updated
+      expect(result.current.params.search).toBe('rtx 5090') // Preserved
+    })
+
+    it('should handle partial parameter setting with other parameters removed', () => {
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🧪 Test: Set only search parameter (brand should be removed)
+      act(() => {
+        result.current.setParams({ search: 'rtx 5090' })
+      })
+      expect(result.current.params.brand).toBeUndefined()
+      expect(result.current.params.search).toBe('rtx 5090')
+
+      // 🧪 Test: Set only brand parameter (search should be removed)
+      act(() => {
+        result.current.setParams({ brand: 'amd' })
+      })
+      expect(result.current.params.brand).toBe('amd')
+      expect(result.current.params.search).toBeUndefined()
+    })
+
+    it('should work with different URL template patterns', () => {
+      // 🧪 Single parameter template
+      const { result: singleParam } = renderHook(() =>
+        useCatchAllNextParams('/user/{id}/profile'),
+      )
+      expect(typeof singleParam.current.params).toBe('object')
+
+      // 🧪 No parameters template
+      const { result: noParams } = renderHook(() =>
+        useCatchAllNextParams('/about-us'),
+      )
+      expect(typeof noParams.current.params).toBe('object')
+
+      // 🧪 Multiple parameters template
+      const { result: multiParams } = renderHook(() =>
+        useCatchAllNextParams('/api/{version}/users/{userId}/posts/{postId}'),
+      )
+      expect(typeof multiParams.current.params).toBe('object')
+    })
+  })
+
+  describe('🗑️ Parameter Removal Handling', () => {
+    beforeEach(() => {
+      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/rtx-4090')
+    })
+
+    it('should demonstrate remove both parameters with undefined as in @example', () => {
+      mockUsePathname.mockReturnValue('/mall/brand/amd/search/rtx%205090')
+
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🚀 remove both parameters as shown in @example:
+      // setParams((prev) => ({ ...prev, brand: undefined, search: undefined }))
+      act(() => {
+        result.current.setParams({
+          brand: undefined,
+          search: undefined,
+        } as any)
+      })
+
+      expect(result.current.params.brand).toBeUndefined()
+      expect(result.current.params.search).toBeUndefined()
+
+      // now the URL will be '/mall' when pushUrl() called
+      act(() => {
+        result.current.pushUrl()
+      })
+
+      expect(mockPush).toHaveBeenCalledWith('/mall')
+    })
+
+    it('should demonstrate remove specific parameter with null as in @example', () => {
+      mockUsePathname.mockReturnValue('/mall/brand/amd/search/rtx%205090')
+
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🚀 remove the specified parameter 'search' as shown in @example:
+      // setParams((prev) => ({ ...prev, search: null }))
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, search: null }) as any)
+      })
+
+      expect(result.current.params.search).toBeUndefined()
+      expect(result.current.params.brand).toBe('amd') // should preserve other params
+    })
+
+    it('should remove parameters when set to undefined', () => {
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🧪 Test: Remove brand param using function mode (to preserve search param per JSDoc)
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, brand: undefined }))
+      })
+      expect(result.current.params.brand).toBeUndefined()
+      expect(result.current.params.search).toBe('rtx-4090') // Preserved due to function mode
+    })
+
+    it('should treat undefined, null, and empty string equivalently for parameter removal', () => {
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      const removalValues = [undefined, null, '']
+      const testCases = [
+        { mode: 'object', description: 'object mode' },
+        { mode: 'functional', description: 'functional mode' },
+      ]
+
+      testCases.forEach(({ mode }) => {
+        removalValues.forEach((value) => {
+          if (mode === 'object') {
+            // 🧪 Test object mode - replaces all params
+            act(() => {
+              result.current.setParams({
+                brand: 'nvidia',
+                search: value,
+              } as any)
+            })
+            expect(result.current.params.brand).toBe('nvidia')
+            expect(result.current.params.search).toBeUndefined()
+          } else {
+            // 🧪 Test functional mode - preserves other params
+            act(() => {
+              result.current.setParams({ brand: 'nvidia', search: 'rtx-4090' })
+            })
+            act(() => {
+              result.current.setParams(
+                (prev) => ({ ...prev, search: value }) as any,
+              )
+            })
+            expect(result.current.params.brand).toBe('nvidia') // Preserved
+            expect(result.current.params.search).toBeUndefined()
+          }
+        })
+      })
+
+      // 🧪 Test all removal values result in the same final state
+      act(() => {
+        result.current.setParams({ brand: '', search: null } as any)
+      })
+      expect(result.current.params.brand).toBeUndefined()
+      expect(result.current.params.search).toBeUndefined()
+    })
+  })
+
+  describe('🌐 URL Navigation Features', () => {
+    beforeEach(() => {
+      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/rtx-4090')
+      mockPush.mockClear()
+      mockReplace.mockClear()
+    })
+
+    it('should navigate using router.push and router.replace', () => {
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🧪 Test: Push navigation
+      act(() => {
+        result.current.setParams({ brand: 'nvidia', search: 'rtx 2080' })
+      })
+      act(() => {
+        result.current.pushUrl()
+      })
+
+      expect(mockPush).toHaveBeenCalledTimes(1)
+      expect(mockPush).toHaveBeenCalledWith(
+        '/mall/brand/nvidia/search/rtx 2080',
+      )
+
+      // 🧪 Test: Replace navigation
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, search: 'rtx 5090' }))
+      })
       act(() => {
         result.current.replaceUrl()
       })
 
-      expect(mockReplace).toHaveBeenCalledWith('/mall/brand/nvidia/search/5090')
       expect(mockReplace).toHaveBeenCalledTimes(1)
+      expect(mockReplace).toHaveBeenCalledWith(
+        '/mall/brand/nvidia/search/rtx 5090',
+      )
     })
 
-    it('should work with base URLs (no parameters)', () => {
-      mockUsePathname.mockReturnValue('/mall')
-
+    it('should handle URL encoding for special characters', () => {
       const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand']>('/mall'),
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
       )
 
+      // 🧪 Test: Special characters encoding
+      act(() => {
+        result.current.setParams({
+          brand: 'brand with spaces',
+          search: 'search/with/slashes',
+        })
+      })
+      act(() => {
+        result.current.pushUrl()
+      })
+
+      expect(mockPush).toHaveBeenCalledWith(
+        '/mall/brand/brand with spaces/search/search/with/slashes',
+      )
+    })
+
+    it('should handle partial param updates in navigation', () => {
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🧪 Test: Using function mode to preserve existing params
+      act(() => {
+        result.current.setParams((prev) => ({
+          ...prev,
+          brand: 'updated-brand',
+        }))
+      })
+      act(() => {
+        result.current.pushUrl()
+      })
+
+      expect(mockPush).toHaveBeenCalledWith(
+        '/mall/brand/updated-brand/search/rtx-4090',
+      )
+    })
+
+    it('should work with different parameter combinations', () => {
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      const testCases = [
+        {
+          brand: 'msi',
+          search: 'gaming laptop',
+          expected: '/mall/brand/msi/search/gaming laptop',
+        },
+        {
+          brand: 'apple',
+          search: 'macbook pro',
+          expected: '/mall/brand/apple/search/macbook pro',
+        },
+      ]
+
+      testCases.forEach(({ brand, search, expected }) => {
+        act(() => {
+          result.current.setParams({ brand, search })
+        })
+        act(() => {
+          result.current.pushUrl()
+        })
+        expect(mockPush).toHaveBeenCalledWith(expected)
+      })
+    })
+
+    it('should generate correct URLs for parameter removal scenarios', () => {
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🧪 Test: Remove all parameters - should navigate to base URL
+      act(() => {
+        result.current.setParams({ brand: undefined, search: undefined })
+      })
       act(() => {
         result.current.pushUrl()
       })
       expect(mockPush).toHaveBeenCalledWith('/mall')
 
+      // 🧪 Test: Only search parameter
       act(() => {
-        result.current.replaceUrl()
+        result.current.setParams({ search: 'rtx 5090' })
       })
-      expect(mockReplace).toHaveBeenCalledWith('/mall')
+      act(() => {
+        result.current.pushUrl()
+      })
+      expect(mockPush).toHaveBeenCalledWith('/mall/search/rtx 5090')
+
+      // 🧪 Test: Only brand parameter
+      act(() => {
+        result.current.setParams({ brand: 'amd' })
+      })
+      act(() => {
+        result.current.pushUrl()
+      })
+      expect(mockPush).toHaveBeenCalledWith('/mall/brand/amd')
     })
   })
 
-  describe('parsing parameters from pathname', () => {
-    it('should parse parameters correctly from pathname', () => {
-      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/5090')
+  // ============================================================================
+  // 🧬 Type Safety & API Interface Tests
+  // ============================================================================
 
+  describe('🧬 TypeScript Type Integration', () => {
+    it('should provide type-safe params based on URL template', () => {
       const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
       )
 
-      expect(result.current.params).toEqual({
+      // 🧪 Test: Type inference for params
+      expectTypeOf(result.current.params).toEqualTypeOf<{
+        brand: string
+        search: string
+      }>()
+
+      // 🧪 Test: Type safety for setParams function (should support undefined)
+      expectTypeOf(result.current.setParams).toEqualTypeOf<
+        (
+          updater:
+            | {
+                brand?: string | null | undefined
+                search?: string | null | undefined
+              }
+            | ((prev: { brand: string; search: string }) => {
+                brand?: string | null | undefined
+                search?: string | null | undefined
+              }),
+        ) => void
+      >()
+
+      // Basic interface validation
+      expect(result.current.pushUrl).toBeTypeOf('function')
+      expect(result.current.replaceUrl).toBeTypeOf('function')
+      expect(result.current.setParams).toBeTypeOf('function')
+    })
+
+    it('should support different URL template patterns with correct types', () => {
+      // 🧪 Test: Single parameter template
+      const { result: singleParam } = renderHook(() =>
+        useCatchAllNextParams('/user/{id}/profile'),
+      )
+      expectTypeOf(singleParam.current.params).toEqualTypeOf<{ id: string }>()
+
+      // 🧪 Test: No parameters template
+      const { result: noParams } = renderHook(() =>
+        useCatchAllNextParams('/about-us'),
+      )
+      expectTypeOf(noParams.current.params).toEqualTypeOf<{}>()
+
+      // 🧪 Test: Multiple parameters template
+      const { result: multiParams } = renderHook(() =>
+        useCatchAllNextParams('/api/{version}/users/{userId}/posts/{postId}'),
+      )
+      expectTypeOf(multiParams.current.params).toEqualTypeOf<{
+        version: string
+        userId: string
+        postId: string
+      }>()
+    })
+
+    it('should support type-safe setParams usage patterns', () => {
+      const { result } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+
+      // 🧪 Test: Object updater type compatibility (including undefined)
+      expectTypeOf(result.current.setParams).toBeCallableWith({
         brand: 'nvidia',
-        search: '5090',
+        search: 'rtx 4090',
       })
-    })
-
-    it('should return empty object for base URL with or without trailing slash', () => {
-      // Test base URL without trailing slash
-      mockUsePathname.mockReturnValue('/mall')
-
-      const { result: resultNoSlash } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
-      )
-
-      expect(resultNoSlash.current.params).toEqual({})
-
-      // Test base URL with trailing slash
-      mockUsePathname.mockReturnValue('/mall/')
-
-      const { result: resultWithSlash } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
-      )
-
-      expect(resultWithSlash.current.params).toEqual({})
-    })
-
-    it('should handle odd number of segments gracefully', () => {
-      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search')
-
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
-      )
-
-      expect(result.current.params).toEqual({
-        brand: 'nvidia',
+      expectTypeOf(result.current.setParams).toBeCallableWith({ brand: 'msi' })
+      expectTypeOf(result.current.setParams).toBeCallableWith({
+        brand: undefined,
+        search: undefined,
       })
-    })
-  })
-
-  describe('setParams functionality', () => {
-    beforeEach(() => {
-      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/5090')
-    })
-
-    it('should update parameters when setParams is called with object', () => {
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
-      )
-
-      act(() => {
-        result.current.setParams({
-          brand: 'amd',
-          search: '7900xtx',
-        })
+      expectTypeOf(result.current.setParams).toBeCallableWith({
+        search: undefined,
       })
 
-      // setParams should not trigger navigation directly
-      expect(mockReplace).not.toHaveBeenCalled()
-      expect(mockPush).not.toHaveBeenCalled()
-    })
-
-    it('should update parameters when setParams is called with function', () => {
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
-      )
-
-      act(() => {
-        result.current.setParams((prev) => ({
+      // 🧪 Test: Functional updater type compatibility
+      expectTypeOf(result.current.setParams).toBeCallableWith(
+        (prev: { brand: string; search: string }) => ({
           ...prev,
-          search: '4080',
-        }))
-      })
-
-      // setParams should not trigger navigation directly
-      expect(mockReplace).not.toHaveBeenCalled()
-      expect(mockPush).not.toHaveBeenCalled()
+          brand: 'amd',
+        }),
+      )
     })
 
-    it('should handle empty values appropriately', () => {
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
+    it('should provide consistent interface across different templates', () => {
+      const { result: mallHook } = renderHook(() =>
+        useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
+      )
+      const { result: userHook } = renderHook(() =>
+        useCatchAllNextParams('/user/{id}/settings/{tab}'),
       )
 
-      // Test handling empty values
-      act(() => {
-        result.current.setParams({
-          brand: 'nvidia',
-          search: '',
-        })
-      })
+      // 🧪 Test: Consistent interface structure
+      expect(mallHook.current.pushUrl).toBeTypeOf('function')
+      expect(mallHook.current.replaceUrl).toBeTypeOf('function')
+      expect(userHook.current.pushUrl).toBeTypeOf('function')
+      expect(userHook.current.replaceUrl).toBeTypeOf('function')
 
-      // setParams should not trigger navigation directly
-      expect(mockReplace).not.toHaveBeenCalled()
-      expect(mockPush).not.toHaveBeenCalled()
-
-      // Test handling all empty params
-      act(() => {
-        result.current.setParams({})
-      })
-
-      // setParams should not trigger navigation directly
-      expect(mockReplace).not.toHaveBeenCalled()
-      expect(mockPush).not.toHaveBeenCalled()
-
-      // Test handling null and undefined values
-      act(() => {
-        result.current.setParams({
-          brand: null as any,
-          search: undefined as any,
-        })
-      })
-
-      // setParams should not trigger navigation directly
-      expect(mockReplace).not.toHaveBeenCalled()
-      expect(mockPush).not.toHaveBeenCalled()
+      // 🧪 Test: Template-specific param types
+      expectTypeOf(mallHook.current.params).toEqualTypeOf<{
+        brand: string
+        search: string
+      }>()
+      expectTypeOf(userHook.current.params).toEqualTypeOf<{
+        id: string
+        tab: string
+      }>()
     })
-  })
-
-  // Type safety is enforced by TypeScript at compile time
-
-  describe('URL encoding and special characters', () => {
-    it('should handle URL encoding correctly in parsing and setting', () => {
-      // Test parsing encoded URLs
-      mockUsePathname.mockReturnValue(
-        '/mall/brand/nvidia%20rtx/search/rtx%205090',
-      )
-
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand', 'search']>('/mall'),
-      )
-
-      expect(result.current.params).toEqual({
-        brand: 'nvidia rtx',
-        search: 'rtx 5090',
-      })
-
-      // Test setting parameters with special characters
-      act(() => {
-        result.current.setParams({
-          brand: 'nvidia/gtx',
-          search: 'rtx "5090" & more',
-        })
-      })
-
-      // setParams should not trigger navigation directly
-      expect(mockReplace).not.toHaveBeenCalled()
-      expect(mockPush).not.toHaveBeenCalled()
-    })
-
-    it('should handle Unicode characters', () => {
-      mockUsePathname.mockReturnValue('/zh-tw/products/分類/電子產品/品牌/蘋果')
-
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['分類', '品牌']>('/zh-tw/products'),
-      )
-
-      expect(result.current.params).toEqual({
-        分類: '電子產品',
-        品牌: '蘋果',
-      })
-    })
-
-    it('should truncate extremely long parameter values', () => {
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['description']>('/mall'),
-      )
-
-      const longText = 'x'.repeat(1500) // Exceeds 1000 char limit
-
-      act(() => {
-        result.current.setParams({
-          description: longText,
-        })
-      })
-
-      // setParams should not trigger navigation directly
-      expect(mockReplace).not.toHaveBeenCalled()
-      expect(mockPush).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('concurrent state handling', () => {
-    beforeEach(() => {
-      mockUsePathname.mockReturnValue('/mall')
-    })
-
-    it('should handle rapid successive setParams calls', async () => {
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['query', 'page']>('/mall'),
-      )
-
-      // Simulate rapid clicks or input changes
-      act(() => {
-        result.current.setParams({ query: 'nvidia' })
-        result.current.setParams({ query: 'amd' })
-        result.current.setParams({ query: 'intel' })
-        result.current.setParams({ page: '2' })
-      })
-
-      // Wait for queue processing
-      await act(async () => {
-        await new Promise((resolve) => setTimeout(resolve, 10))
-      })
-
-      // setParams should not trigger navigation directly
-      expect(mockReplace).not.toHaveBeenCalled()
-      expect(mockPush).not.toHaveBeenCalled()
-    })
-  })
-
-  describe('error handling and edge cases', () => {
-    it('should handle malformed base URLs gracefully', () => {
-      mockUsePathname.mockReturnValue('/mall/brand/nvidia')
-
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['brand']>('//mall////'),
-      )
-
-      expect(result.current.params).toBeDefined()
-
-      expect(() => {
-        act(() => {
-          result.current.setParams({ brand: 'amd' })
-        })
-      }).not.toThrow()
-    })
-
-    it('should handle URL parsing errors gracefully', () => {
-      mockUsePathname.mockReturnValue('/invalid%GG%path')
-
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['test']>('/mall'),
-      )
-
-      expect(result.current.params).toEqual({})
-
-      expect(() => {
-        act(() => {
-          result.current.setParams({ test: 'value' })
-        })
-      }).not.toThrow()
-    })
-
-    it('should normalize base URLs with multiple slashes', () => {
-      mockUsePathname.mockReturnValue('/mall/category/electronics')
-
-      const { result } = renderHook(() =>
-        useCatchAllNextParams<['category']>('//mall///'),
-      )
-
-      act(() => {
-        result.current.setParams({ category: 'gaming' })
-      })
-
-      // setParams should not trigger navigation directly
-      expect(mockReplace).not.toHaveBeenCalled()
-      expect(mockPush).not.toHaveBeenCalled()
-    })
-  })
-})
-
-describe('Integration Tests with Real-World Scenarios', () => {
-  it('should handle e-commerce filter parameters', () => {
-    mockUsePathname.mockReturnValue(
-      '/shop/category/electronics/brand/apple/price-min/100/price-max/1000/sort/price-asc',
-    )
-
-    const { result } = renderHook(() =>
-      useCatchAllNextParams<
-        ['category', 'brand', 'price-min', 'price-max', 'sort']
-      >('/shop'),
-    )
-
-    expect(result.current.params).toEqual({
-      'category': 'electronics',
-      'brand': 'apple',
-      'price-min': '100',
-      'price-max': '1000',
-      'sort': 'price-asc',
-    })
-  })
-
-  it('should handle search with filters and pagination', () => {
-    mockUsePathname.mockReturnValue(
-      '/search/q/gaming%20laptop/category/computers/page/2/limit/20',
-    )
-
-    const { result } = renderHook(() =>
-      useCatchAllNextParams<['q', 'category', 'page', 'limit']>('/search'),
-    )
-
-    expect(result.current.params).toEqual({
-      q: 'gaming laptop',
-      category: 'computers',
-      page: '2',
-      limit: '20',
-    })
-  })
-})
-
-describe('Error Recovery Tests', () => {
-  it('should recover from navigation errors gracefully', () => {
-    mockUsePathname.mockReturnValue('/products/category/electronics')
-
-    // Mock router.replace to throw an error
-    mockReplace.mockImplementation(() => {
-      throw new Error('Navigation failed')
-    })
-
-    const { result } = renderHook(() =>
-      useCatchAllNextParams<['category']>('/products'),
-    )
-
-    expect(() => {
-      act(() => {
-        result.current.setParams({ category: 'books' })
-      })
-    }).not.toThrow()
   })
 })

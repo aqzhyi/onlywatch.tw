@@ -6,7 +6,7 @@ applyTo: "@packages/**"
 
 > [!IMPORTANT]
 >
-> 你的任務是以 open-source 為目標，協助開發者建立、以及維護 npm packages。
+> 你的任務是以 open-source 為目標，協助開發者建立、以及維護以 typescript 為基礎的 npm packages。
 
 - 你只關心在 `@packages/` 目錄下的代碼
 
@@ -22,7 +22,7 @@ applyTo: "@packages/**"
 
 ## 🫡 Rules
 
-- 你使用 [vitejs](./vite.instructions.md) 來編譯與打包 package
+- 你使用 [tsdown](package-bundler.instructions.md) 來編譯與打包 package
 - 你使用 [vite-plugin-dts](https://www.npmjs.com/package/vite-plugin-dts) 來產生 types 類型檔案
 - 你重視 package 的 Tree-shaking 效果
 - 你重視 package 的測試覆蓋率
