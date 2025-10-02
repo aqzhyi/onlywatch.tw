@@ -98,30 +98,30 @@ import { parseUrlByTemplate } from '../utils/parseUrlByTemplate'
  *   // now the URL will be '/mall/search/rtx 5090'
  *   pushUrl()
  */
-export function useCatchAllNextParams<TUrlTemplate extends string>(
+export function useCatchAllNextParams<RouteTemplate extends string>(
   /**
    * @example
    *   '/mall/brand/{brand}/search/{search}'
    */
-  baseUrl: TUrlTemplate,
-): UseCatchAllNextParamsReturn<TUrlTemplate> {
+  routeTemplate: RouteTemplate,
+): UseCatchAllNextParamsReturn<RouteTemplate> {
   const pathname = usePathname()
   const router = useRouter()
 
   //  Parse current URL parameters
   const params = useMemo(() => {
     try {
-      const parsedParams = parseUrlByTemplate(pathname, baseUrl)
-      return parsedParams as NextParamsObject<TUrlTemplate>
+      const parsedParams = parseUrlByTemplate(pathname, routeTemplate)
+      return parsedParams as NextParamsObject<RouteTemplate>
     } catch {
       // Return empty params on parse error
-      return {} as NextParamsObject<TUrlTemplate>
+      return {} as NextParamsObject<RouteTemplate>
     }
-  }, [baseUrl, pathname])
+  }, [routeTemplate, pathname])
 
   // 🎯 Current merged params state for setParams operations
   const [currentParams, setCurrentParams] =
-    useState<NextParamsObject<TUrlTemplate>>(params)
+    useState<NextParamsObject<RouteTemplate>>(params)
 
   // 🔄 Sync params with URL changes
   useMemo(() => {
@@ -134,16 +134,16 @@ export function useCatchAllNextParams<TUrlTemplate extends string>(
   const setParams = useCallback(
     (
       newParams:
-        | NextParamsObjectNilable<TUrlTemplate>
+        | NextParamsObjectNilable<RouteTemplate>
         | ((
-            current: NextParamsObject<TUrlTemplate>,
-          ) => NextParamsObjectNilable<TUrlTemplate>),
+            current: NextParamsObject<RouteTemplate>,
+          ) => NextParamsObjectNilable<RouteTemplate>),
     ) => {
       const paramsToSet =
         typeof newParams === 'function' ? newParams(currentParams) : newParams
 
       // Handle parameter updates with proper logic
-      let mergedParams: NextParamsObject<TUrlTemplate>
+      let mergedParams: NextParamsObject<RouteTemplate>
 
       if (typeof newParams === 'function') {
         // Function mode: merge with current params (allows precise control)
@@ -161,7 +161,7 @@ export function useCatchAllNextParams<TUrlTemplate extends string>(
         }
       } else {
         // Object mode: replace all params (as per JSDoc "replace all params with new NextParams")
-        mergedParams = {} as NextParamsObject<TUrlTemplate>
+        mergedParams = {} as NextParamsObject<RouteTemplate>
 
         // Only set parameters that have valid values
         for (const [key, value] of Object.entries(paramsToSet)) {
@@ -181,26 +181,26 @@ export function useCatchAllNextParams<TUrlTemplate extends string>(
    */
   const pushUrl = useCallback(() => {
     try {
-      const newUrl = buildUrlFromTemplate(baseUrl, currentParams)
+      const newUrl = buildUrlFromTemplate(routeTemplate, currentParams)
       router.push(newUrl)
     } catch (buildError) {
       // Silently fail if URL building fails
       console.warn('Failed to build URL for navigation:', buildError)
     }
-  }, [baseUrl, currentParams, router])
+  }, [routeTemplate, currentParams, router])
 
   /**
    * 🔄 Navigate to new URL using router.replace
    */
   const replaceUrl = useCallback(() => {
     try {
-      const newUrl = buildUrlFromTemplate(baseUrl, currentParams)
+      const newUrl = buildUrlFromTemplate(routeTemplate, currentParams)
       router.replace(newUrl)
     } catch (buildError) {
       // Silently fail if URL building fails
       console.warn('Failed to build URL for navigation:', buildError)
     }
-  }, [baseUrl, currentParams, router])
+  }, [routeTemplate, currentParams, router])
 
   return {
     params: currentParams,
