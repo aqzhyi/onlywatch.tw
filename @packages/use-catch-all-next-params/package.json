@@ -1,7 +1,10 @@
 {
   "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
   "name": "@onlywatch/use-catch-all-next-params",
-  "description": "A React Hook for managing NextParams of the route with Next.js Catch-All Segments",
+  "description": "Type-safe React Hook for managing URL parameters with Next.js Catch-All Segments and pre-rendering support",
   "version": "0.2.0",
   "type": "module",
   "main": "./dist/index.js",
@@ -20,17 +23,43 @@
     "dist",
     "README.md"
   ],
-  "scripts": {
-    "dev": "tsdown --watch",
-    "build": "tsdown",
-    "tsc": "tsc --noEmit",
-    "lint": "oxlint",
-    "test": "vitest run",
-    "test:coverage": "vitest run --coverage",
-    "clean": "del dist coverage node_modules",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
+  "keywords": [
+    "app-router",
+    "catch-all",
+    "client-components",
+    "dynamic",
+    "dynamic-route",
+    "dynamic-route-segments",
+    "dynamic-segments",
+    "hook",
+    "navigation",
+    "next",
+    "nextjs",
+    "params",
+    "parameters",
+    "pre-rendering",
+    "pre-rendered",
+    "PPR",
+    "SSR",
+    "SSG",
+    "react",
+    "route",
+    "router",
+    "route-template",
+    "segments",
+    "SEO",
+    "server-components",
+    "static-generation",
+    "url-management",
+    "url-parameters",
+    "url-parsing"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aqzhyi/onlywatch.tw.git",
+    "directory": "@packages/use-catch-all-next-params"
   },
+  "dependencies": {},
   "devDependencies": {
     "@testing-library/react": "16.3.0",
     "@types/react": "19.2.0",
@@ -51,20 +80,15 @@
     "next": ">=13.0.0",
     "react": ">=17.0.0"
   },
-  "keywords": [
-    "app-router",
-    "catch-all",
-    "dynamic-routes",
-    "hook",
-    "next",
-    "nextjs",
-    "params",
-    "react",
-    "segments"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/aqzhyi/onlywatch.tw",
-    "directory": "@packages/use-catch-all-next-params"
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "tsc": "tsc --noEmit",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "clean": "del dist coverage node_modules",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   }
 }
