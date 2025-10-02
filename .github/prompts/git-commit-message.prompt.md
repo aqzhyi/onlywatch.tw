@@ -23,7 +23,7 @@ mode: agent
 > 常見的場景
 
 ```md
-<type>:<message title>
+<type>(<scope>):<message title>
 
 <bullet points summarizing what was updated>
 ```
@@ -33,7 +33,7 @@ mode: agent
 > 如果有 BREAKING CHANGE 的場景
 
 ```md
-<type>!:<message title>
+<type>(<scope>)!:<message title>
 
 <bullet points summarizing what was updated>
 
@@ -43,50 +43,37 @@ BREAKING CHANGE: <breaking change summary>
 ### 📖 Examples with `<message title>`
 
 ```md
-feat: add JWT login flow
-feat: refine search keywords UI
-fix: handle null pointer in sidebar
-fix: missing clear action for `<SearchKeywordsInput />`
-refactor: split user controller logic
-docs: add usage section
-docs: refine copilot instructions
-docs: refine copilot prompts
-test: refine `<UserProfile />` unit tests
-build: add npm:package `@heroui/dropdown`
-build: bump npm:packages
-build: bump npm:packages for heroui
-build: bump npm:packages for supabase
-build: bump npm:packages for types
-build: bump pnpm-lock file
+build(monorepo): bump pnpm-lock file
+build(onlywatch): add npm:package `@heroui/dropdown`
+build(onlywatch): bump npm:packages
+build(onlywatch): bump npm:packages for heroui
+build(onlywatch): bump npm:packages for supabase
+build(onlywatch): bump npm:packages for types
+docs(monorepo): refine instructions
+docs(monorepo): refine prompts
+docs(onlywatch): refine AGENT.md
+feat(onlywatch): add JWT login flow
+feat(onlywatch): refine search keywords UI
+fix(onlywatch): handle null pointer in sidebar
+fix(onlywatch): missing clear action for `<SearchKeywordsInput />`
+refactor(onlywatch): split user controller logic
+test(onlywatch): refine `<UserProfile />` unit tests
 ```
+
+### 📖 Allow and Scopes list with `<scope>`
+
+- ✅ `<scope>` 總是從目錄中最靠近的 `package.json#name` 欄位中取得
+
+  例如: `onlywatch`, `use-catch-all-next-params`
+
+- ✅ 如果 `package.json#name` 欄位有 `@` 字元，請去掉 `@` 字元以及 `/` 字元前面的所有字串
+
+  例如: `@onlywatch/use-catch-all-next-params` 將截取為 `use-catch-all-next-params`
 
 ### 📖 Examples with `<message title>` and Body
 
-> [!TIP]
->
-> 如果沒有「WHY」的理由需要編寫的話
-
 ```md
-feat: add JWT login flow
-
-- implement JWT token validation logic
-- add documentation for the validation component
-```
-
-> [!TIP]
->
-> 如果有提供「WHY」的理由的話
-
-```md
-feat: refine login flow use `Better-Auth` instead of `supabase-auth`
-
-💬 WHY
-
-- `Better-Auth` has built-in support for connecting to LineApp Login features
-
----
-
-💬 WHAT
+feat(onlywatch): add JWT login flow
 
 - implement JWT token validation logic
 - add documentation for the validation component
@@ -175,16 +162,16 @@ feat: refine login flow use `Better-Auth` instead of `supabase-auth`
 
 ## 🙆‍♂️ Allowed Types
 
-| Type     | Description                                                                                                                       |
-| -------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| feat     | 新功能特性、UI/UX 明顯變化或新增、CSS 美術明顯變化、功能邏輯變更、UI/UX 行為變更                                                  |
-| fix      | 修復邏輯問題、UI/UX 輕微變更，或者單元測試有變化視為修復功能邏輯                                                                  |
-| chore    | 維護性工作 (e.g., tooling, deps)                                                                                                  |
-| docs     | 功能文件 markdown 檔案、`README.md`、copilot 指令變更                                                                             |
-| refactor | 代碼重構（不改變行為）、類型補充、補充 `test-id` 提高可測試性                                                                     |
-| test     | 加多或者重構測試                                                                                                                  |
-| style    | 代碼格式化（不改變邏輯）                                                                                                          |
-| build    | 可能影響雲端部署結果（e.g., `turbo.json`、`package.json#scripts`、`vitest`、`next.config.ts`、`.env`, npm:packages 相關檔案變更） |
+| Type     | Description                                                                                                                                    |
+| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| feat     | 新功能特性、UI/UX 明顯變化或新增、CSS 美術明顯變化、功能邏輯變更、UI/UX 行為變更                                                               |
+| fix      | 修復邏輯問題、UI/UX 輕微變更，或者單元測試有變化視為修復功能邏輯                                                                               |
+| docs     | 功能文件 markdown 檔案、`README.md`、copilot `instruments.md`, `prompts.md` 檔案變更                                                           |
+| build    | 可能影響 CI/CD 以及部署結果（e.g., deps, `turbo.json`、`package.json#scripts`、`vitest`、`next.config.ts`、`.env`, npm:packages 相關檔案變更） |
+| refactor | 代碼重構（不改變行為）、類型補充、補充 `test-id` 提高可測試性                                                                                  |
+| test     | 僅僅對於單元測試檔案，對其補充內容或者重構測試內容                                                                                             |
+| chore    | 維護性工作                                                                                                                                     |
+| style    | 代碼格式化（不改變邏輯）                                                                                                                       |
 
 ## ⛑️ Review
 
