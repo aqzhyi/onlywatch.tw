@@ -27,7 +27,7 @@
     "lint": "oxlint",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "clean": "del dist coverage",
+    "clean": "del dist coverage node_modules",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
