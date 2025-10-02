@@ -19,10 +19,10 @@
  *
  * @example
  *   parseUrlByTemplate(
- *     '/mall/brand/nvidia/search/rtx-4090',
+ *     '/mall/brand/nvidia/search/rtx 4090',
  *     '/mall/brand/{brand}/search/{search}',
  *   )
- *   // Returns: { brand: 'nvidia', search: 'rtx-4090' }
+ *   // Returns: { brand: 'nvidia', search: 'rtx 4090' }
  *
  *   parseUrlByTemplate('/search/hello-world', '/search/{query}')
  *   // Returns: { query: 'hello-world' }

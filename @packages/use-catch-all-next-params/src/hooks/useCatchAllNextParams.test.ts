@@ -102,7 +102,7 @@ describe('🎯 useCatchAllNextParams Hook', () => {
   describe('🎮 URL Encoding Handling', () => {
     it('should parse URL-encoded parameters correctly', () => {
       // 🎮 Mock URL with encoded characters
-      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/gtx%205080')
+      mockUsePathname.mockReturnValue('/mall/brand/nvidia/search/rtx%205080')
 
       const { result } = renderHook(() =>
         useCatchAllNextParams('/mall/brand/{brand}/search/{search}'),
@@ -111,7 +111,7 @@ describe('🎯 useCatchAllNextParams Hook', () => {
       // 🧪 Verify URL decoding works correctly
       expect(result.current.params).toEqual({
         brand: 'nvidia',
-        search: 'gtx 5080', // Should decode %20 to space
+        search: 'rtx 5080', // Should decode %20 to space
       })
     })
 
