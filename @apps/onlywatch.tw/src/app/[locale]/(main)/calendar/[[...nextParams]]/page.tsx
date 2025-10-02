@@ -1,5 +1,5 @@
 import { Skeleton } from '@heroui/skeleton'
-import { parseUrlByTemplate } from '@onlywatch/use-catch-all-next-params/utils'
+import { parseCatchAllSegments } from '@onlywatch/use-catch-all-next-params/utils'
 import { cacheLife } from 'next/dist/server/use-cache/cache-life'
 import { Suspense } from 'react'
 import { routing } from '~/features/i18n/routing'
@@ -88,7 +88,7 @@ export default async function Page(
 
   const { nextParams = [] } = await props.params
 
-  const params = parseUrlByTemplate(
+  const params = parseCatchAllSegments(
     nextParams,
     '/calendar/query/{query}/date/{date}',
   )
