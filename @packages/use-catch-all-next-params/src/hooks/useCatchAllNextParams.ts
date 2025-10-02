@@ -7,7 +7,7 @@ import type {
   NextParamsObjectNilable,
 } from '../types/NextParamsObject'
 import { buildUrlFromTemplate } from '../utils/buildUrlFromTemplate'
-import { parseUrlByTemplate } from '../utils/parseUrlByTemplate'
+import { parseCatchAllSegments } from '../utils/parseCatchAllSegments'
 
 /**
  * 🎯 Hook for managing URL parameters with type safety
@@ -111,7 +111,7 @@ export function useCatchAllNextParams<RouteTemplate extends string>(
   //  Parse current URL parameters
   const params = useMemo(() => {
     try {
-      const parsedParams = parseUrlByTemplate(pathname, routeTemplate)
+      const parsedParams = parseCatchAllSegments(pathname, routeTemplate)
       return parsedParams as NextParamsObject<RouteTemplate>
     } catch {
       // Return empty params on parse error

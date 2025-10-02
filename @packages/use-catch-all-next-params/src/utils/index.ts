@@ -1,2 +1,2 @@
 export { buildUrlFromTemplate } from './buildUrlFromTemplate'
-export { parseUrlByTemplate } from './parseUrlByTemplate'
+export { parseCatchAllSegments } from './parseCatchAllSegments'

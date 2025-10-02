@@ -5,7 +5,7 @@
   },
   "name": "@onlywatch/use-catch-all-next-params",
   "description": "Type-safe React Hook for managing URL parameters with Next.js Catch-All Segments and pre-rendering support",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

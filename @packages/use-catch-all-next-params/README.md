@@ -48,7 +48,7 @@ pnpm add @onlywatch/use-catch-all-next-params
 
 ```tsx
 import { useCatchAllNextParams } from '@onlywatch/use-catch-all-next-params'
-import { parseUrlByTemplate } from '@onlywatch/use-catch-all-next-params/utils'
+import { parseCatchAllSegments } from '@onlywatch/use-catch-all-next-params/utils'
 
 export async function generateMetadata(): Promise<Metadata> {
   // 💡 pre-rendered metadata
@@ -78,7 +78,7 @@ export default async function NextPage(
   const { nextParams = [] } = await props.params
 
   // 💡 params returns `{ brand: 'nvidia', query: 'rtx 5090' }`
-  const params = parseUrlByTemplate(nextParams, routeTemplate)
+  const params = parseCatchAllSegments(nextParams, routeTemplate)
 
   return <div>...</div>
 }
@@ -150,9 +150,9 @@ sequenceDiagram
     user->>nextjs: 🙎‍♂️ visit URL '/mall/query/iphone' directly
     note over user,nextjs: route `/mall/[[...nextParams]]/page.tsx` designed
 
-    nextjs-->>parseUrlByTemplate: NextParams returns ['query', 'iphone']
-    parseUrlByTemplate-->>generateStaticParams: parseUrlByTemplate(['query', 'iphone'], '/mall/query/{query}')
-    note over parseUrlByTemplate,generateStaticParams: returns `{ query: 'iphone' }`
+    nextjs-->>parseCatchAllSegments: NextParams returns ['query', 'iphone']
+    parseCatchAllSegments-->>generateStaticParams: parseCatchAllSegments(['query', 'iphone'], '/mall/query/{query}')
+    note over parseCatchAllSegments,generateStaticParams: returns `{ query: 'iphone' }`
 
     generateStaticParams-->>user: pre-rendered pages for user visit
 

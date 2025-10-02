@@ -1,5 +1,5 @@
 /**
- * Parse URL by matching against a template pattern
+ * Parse catch-all segments by matching against a template pattern
  *
  * @example
  *   // 🚀 get NextParams of Catch-All Segments in Server-Component
@@ -11,28 +11,28 @@
  *     const { nextParams } = await pageProps.params
  *
  *     // { search: 'rtx 5090' }
- *     const serverParams = parseUrlByTemplate(
+ *     const serverParams = parseCatchAllSegments(
  *       nextParams,
  *       '/mall/brand/{brand}/search/{search}',
  *     )
  *   }
  *
  * @example
- *   parseUrlByTemplate(
+ *   parseCatchAllSegments(
  *     '/mall/brand/nvidia/search/rtx 4090',
  *     '/mall/brand/{brand}/search/{search}',
  *   )
  *   // Returns: { brand: 'nvidia', search: 'rtx 4090' }
  *
- *   parseUrlByTemplate('/search/hello-world', '/search/{query}')
+ *   parseCatchAllSegments('/search/hello-world', '/search/{query}')
  *   // Returns: { query: 'hello-world' }
  *
- *   parseUrlByTemplate('/user/123/profile', '/user/{id}/profile')
+ *   parseCatchAllSegments('/user/123/profile', '/user/{id}/profile')
  *   // Returns: { id: '123' }
  *
  * @complexity O(n) where n is the number of URL segments
  */
-export function parseUrlByTemplate(
+export function parseCatchAllSegments(
   /**
    * @example
    *   // client side pathname

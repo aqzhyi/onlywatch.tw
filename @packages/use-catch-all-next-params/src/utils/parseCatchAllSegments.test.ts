@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest'
-import { parseUrlByTemplate } from './parseUrlByTemplate'
+import { parseCatchAllSegments } from './parseCatchAllSegments'
 
-describe('parseUrlByTemplate', () => {
+describe('parseCatchAllSegments', () => {
   describe('with string pathname input', () => {
     it('should parse URL with ordered parameters', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         ['brand', 'amd'],
         '/mall/brand/{brand}/search/{search}',
       )
@@ -14,7 +14,7 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should parse URL with multiple parameters', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         '/mall/brand/nvidia/search/rtx-4090',
         '/mall/brand/{brand}/search/{search}',
       )
@@ -25,7 +25,7 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should parse URL with single parameter', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         '/search/hello-world',
         '/search/{query}',
       )
@@ -35,7 +35,7 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should parse URL with user profile', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         '/user/123/profile',
         '/user/{id}/profile',
       )
@@ -45,7 +45,7 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should handle URL encoded values', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         '/search/hello%20world',
         '/search/{query}',
       )
@@ -55,12 +55,12 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should return empty object when no parameters in template', () => {
-      const result = parseUrlByTemplate('/static/page', '/static/page')
+      const result = parseCatchAllSegments('/static/page', '/static/page')
       expect(result).toEqual({})
     })
 
     it('should handle mismatch in static segments', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         '/mall/brand/nvidia/search/rtx-4090',
         '/shop/brand/{brand}/search/{search}',
       )
@@ -68,7 +68,7 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should handle fewer URL segments than template', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         '/mall/brand/nvidia',
         '/mall/brand/{brand}/search/{search}',
       )
@@ -78,7 +78,7 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should handle more URL segments than template', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         '/mall/brand/nvidia/search/rtx-4090/extra/segments',
         '/mall/brand/{brand}/search/{search}',
       )
@@ -92,7 +92,7 @@ describe('parseUrlByTemplate', () => {
   describe('with array pathname input (Next.js catch-all params)', () => {
     it('should parse Next.js catch-all params array - matches from end of URL', () => {
       // Array ['search', 'rtx 5090'] should match the last segments of template
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         ['search', 'rtx 5090'],
         '/mall/brand/{brand}/search/{search}',
       )
@@ -103,7 +103,7 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should parse full Next.js catch-all params array', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         ['brand', 'nvidia', 'search', 'rtx-4090'],
         '/mall/brand/{brand}/search/{search}',
       )
@@ -114,19 +114,19 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should handle single parameter with array input', () => {
-      const result = parseUrlByTemplate(['hello-world'], '/search/{query}')
+      const result = parseCatchAllSegments(['hello-world'], '/search/{query}')
       expect(result).toEqual({
         query: 'hello-world',
       })
     })
 
     it('should handle empty array input', () => {
-      const result = parseUrlByTemplate([], '/search/{query}')
+      const result = parseCatchAllSegments([], '/search/{query}')
       expect(result).toEqual({})
     })
 
     it('should handle array with spaces in values', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         ['search', 'rtx 5090 ti'],
         '/products/{category}/{name}',
       )
@@ -137,7 +137,7 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should handle mismatch between array length and template', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         ['nvidia'],
         '/mall/brand/{brand}/search/{search}',
       )
@@ -149,22 +149,22 @@ describe('parseUrlByTemplate', () => {
 
   describe('edge cases', () => {
     it('should handle empty string pathname', () => {
-      const result = parseUrlByTemplate('', '/search/{query}')
+      const result = parseCatchAllSegments('', '/search/{query}')
       expect(result).toEqual({})
     })
 
     it('should handle root path', () => {
-      const result = parseUrlByTemplate('/', '/{param}')
+      const result = parseCatchAllSegments('/', '/{param}')
       expect(result).toEqual({})
     })
 
     it('should handle template with no placeholders', () => {
-      const result = parseUrlByTemplate('/static/page', '/static/page')
+      const result = parseCatchAllSegments('/static/page', '/static/page')
       expect(result).toEqual({})
     })
 
     it('should handle complex URL with special characters', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         '/product/rtx-4090-super/review',
         '/product/{productId}/review',
       )
@@ -174,7 +174,7 @@ describe('parseUrlByTemplate', () => {
     })
 
     it('should handle consecutive slashes in pathname', () => {
-      const result = parseUrlByTemplate(
+      const result = parseCatchAllSegments(
         '//mall//brand//nvidia//search//rtx-4090//',
         '/mall/brand/{brand}/search/{search}',
       )
