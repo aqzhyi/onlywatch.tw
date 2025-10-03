@@ -1,6 +1,6 @@
 ---
 description: "organise commits using the git commands"
-tools: ["changes", "list_branches", "create_branch", "get_commit", "list_commits", "runCommands"]
+tools: ["changes", "runCommands"]
 mode: agent
 ---
 
