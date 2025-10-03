@@ -1,10 +1,23 @@
+import { getSessionCookie } from 'better-auth/cookies'
 import createMiddleware from 'next-intl/middleware'
 import { NextResponse, type NextRequest } from 'next/server'
 import { routing } from '~/features/i18n/routing'
-import { updateSession } from '~/features/members/utils/updateSession'
 
 export async function middleware(request: NextRequest) {
-  // return await updateSession(request)
+  const sessionCookie = getSessionCookie(request)
+
+  // ⛑️ THIS IS NOT SECURE!
+  // ⛑️ This is the recommended approach to optimistically redirect users
+  // ⛑️ We recommend handling auth checks in each page/route
+  // TODO: create a DAL abstraction layer to be used in every required route, server actions, and API to check the accessToken status
+  if (
+    !sessionCookie &&
+    !request.nextUrl.pathname.startsWith('/sign-in') &&
+    !request.nextUrl.pathname.startsWith('/auth') &&
+    !request.nextUrl.pathname.startsWith('/api/auth')
+  ) {
+    return NextResponse.redirect(new URL('/sign-in', request.url))
+  }
 
   return createMiddleware(routing)(request)
 }
