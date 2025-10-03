@@ -29,6 +29,8 @@
 
 - 採用 DRY 原則
 
+- 盡量採用 `const` 建立變數，而非 `let`、`var`
+
 - 避免以縮寫命名變數、函式、參數命名，例如
 
   BAD ❌
@@ -41,4 +43,41 @@
 
   ```tsx
   for (let index = 0; index < 10; index++) {}
+  ```
+
+- 避免使用縮寫詞彙，例如:
+
+  BAD ❌
+
+  ```tsx
+  const usr = getUsr();
+  ```
+
+  ```tsx
+  for (let i = 0; i < urlSegments.length && isValid; i++) {}
+  ```
+
+  GOOD 👍
+
+  ```tsx
+  for (const index = 0; index < urlSegments.length; index++) {}
+  ```
+
+- 避免使用 magic numbers、magic strings，例如:
+
+  BAD ❌
+
+  ```tsx
+  if (status === 1) {
+    // ...
+  }
+  ```
+
+  GOOD 👍
+
+  ```tsx
+  const STATUS_ACTIVE = 1;
+  if (status === STATUS_ACTIVE) {
+    // ...
+  }
   ```
