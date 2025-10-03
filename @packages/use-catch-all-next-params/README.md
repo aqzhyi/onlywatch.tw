@@ -47,7 +47,6 @@ pnpm add @onlywatch/use-catch-all-next-params
 ### 🧩 NextPage, the Server Component
 
 ```tsx
-import { useCatchAllNextParams } from '@onlywatch/use-catch-all-next-params'
 import { parseCatchAllSegments } from '@onlywatch/use-catch-all-next-params/utils'
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -88,6 +87,8 @@ export default async function NextPage(
 
 ```tsx
 'use client'
+
+import { useCatchAllNextParams } from '@onlywatch/use-catch-all-next-params'
 
 export function ReactClientComponent() {
   const routeTemplate = '/mall/brand/{brand}/query/{query}'
@@ -174,7 +175,7 @@ sequenceDiagram
 ## 📚 Interface Design
 
 ```ts
-function useCatchAllNextParams(baseUrl: string): {
+function useCatchAllNextParams(routeTemplate: string): {
   params: CurrentNextParamsObject
   setParams: (
     updater:
