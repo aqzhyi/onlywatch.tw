@@ -2,8 +2,9 @@
 
 <!-- shields.io supports icons from https://simpleicons.org -->
 
-![Copilot](https://img.shields.io/badge/Copilot-%23222222.svg?style=for-the-badge&logo=githubcopilot&logoColor=3bb1ff)
-![AGENTS.md](https://img.shields.io/badge/AGENTS.md-%23222222.svg?style=for-the-badge&logo=githubcopilot&logoColor=3bb1ff)
+[![Copilot Instructions Files](https://img.shields.io/badge/Copilot@instructions-%23222222.svg?style=for-the-badge&logo=githubcopilot&logoColor=3bb1ff)](https://code.visualstudio.com/docs/copilot/customization/custom-instructions)
+[![Copilot Prompts files](https://img.shields.io/badge/Copilot@prompts-%23222222.svg?style=for-the-badge&logo=githubcopilot&logoColor=3bb1ff)](https://code.visualstudio.com/docs/copilot/customization/prompt-files)
+[![AGENTS.md](https://img.shields.io/badge/AGENTS.md-%23222222.svg?style=for-the-badge&logo=githubcopilot&logoColor=3bb1ff)](https://agents.md/)
 ![ESM](https://img.shields.io/badge/ESM-%2300367d.svg?style=for-the-badge&logo=pkgsrc&logoColor=3bb1ff)
 ![PNPM](https://img.shields.io/badge/pnpm-%234a4a4a.svg?style=for-the-badge&logo=pnpm&logoColor=f69220)
 ![Turborepo](https://img.shields.io/badge/Turborepo-%230F0813.svg?style=for-the-badge&logo=Turborepo&logoColor=white)
@@ -13,10 +14,12 @@
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
 ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
-![NextJS-canary](https://img.shields.io/badge/Next@Canary-black?style=for-the-badge&logo=next.js&logoColor=white)
-![NextJS-canary](https://img.shields.io/badge/Next@PPR-black?style=for-the-badge&logo=next.js&logoColor=white)
-![NextJS-canary](https://img.shields.io/badge/Next@UseCache-black?style=for-the-badge&logo=next.js&logoColor=white)
-![next-intl](https://img.shields.io/badge/i18n@nextintl-black?style=for-the-badge&logo=languagetool&logoColor=white)
+![NextJS-canary](https://img.shields.io/badge/Next@Canary-%23333333?style=for-the-badge&logo=next.js&logoColor=white)
+![NextJS-App-Router](https://img.shields.io/badge/Next@App--Router-%23333333?style=for-the-badge&logo=next.js&logoColor=white)
+![NextJS-RSC](https://img.shields.io/badge/Next@RSC-%23333333?style=for-the-badge&logo=next.js&logoColor=white)
+![NextJS-PPR](https://img.shields.io/badge/Next@PPR-%23333333?style=for-the-badge&logo=next.js&logoColor=white)
+![NextJS-USECACHE](https://img.shields.io/badge/Next@Use--Cache-%23333333?style=for-the-badge&logo=next.js&logoColor=white)
+![next-intl](https://img.shields.io/badge/i18n@next--intl-%23333333?style=for-the-badge&logo=languagetool&logoColor=white)
 ![HeroUI](https://img.shields.io/badge/HeroUI-black?style=for-the-badge&logo=heroui&logoColor=white)
 ![Zod](https://img.shields.io/badge/zod-%233068b7.svg?style=for-the-badge&logo=zod&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
