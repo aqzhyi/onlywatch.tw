@@ -2,15 +2,32 @@
  * Parse catch-all segments by matching against a template pattern
  *
  * @example
- *   // 🚀 get NextParams of Catch-All Segments in Server-Component
+ *   //
+ *   // 💡 input and output
  *
- *   export default function Page(
+ *   parseCatchAllSegments(
+ *     ['brand', 'nvidia', 'search', 'rtx 4090'], // the params from Catch-All Segments Route
+ *     '/mall/brand/{brand}/search/{search}', // your designed route template
+ *   )
+ *   // returns: { brand: 'nvidia', search: 'rtx 4090' }
+ *
+ *   parseCatchAllSegments(['search', 'hello-world'], '/search/{query}')
+ *   // returns: { query: 'hello-world' }
+ *
+ *   parseCatchAllSegments(['user', '123', 'profile'], '/user/{id}/profile')
+ *   // returns: { id: '123' }
+ *
+ * @example
+ *   //
+ *   // 🚀 get NextParams in Server-Component
+ *
+ *   export default function NextPage(
  *     props: PageProps<'/mall/[[...nextParams]]'>,
  *   ) {
- *     // [ 'search', 'rtx 5090' ]
+ *     // nextParams returns [ 'search', 'rtx 5090' ]
  *     const { nextParams } = await pageProps.params
  *
- *     // { search: 'rtx 5090' }
+ *     // serverParams returns { search: 'rtx 5090' }
  *     const serverParams = parseCatchAllSegments(
  *       nextParams,
  *       '/mall/brand/{brand}/search/{search}',
@@ -18,142 +35,176 @@
  *   }
  *
  * @example
+ *   //
+ *   // 🚀 get NextParams in Client-Component
+ *
+ *   'use client'
+ *   export function MyComponent(props) {
+ *     // 👀 also see the hook version `useCatchAllNextParams`
+ *     parseCatchAllSegments(
+ *       location.pathname, // the params from current URL
+ *       '/mall/brand/{brand}/search/{search}', // your designed route template
+ *     )
+ *     // returns { brand: 'nvidia', search: 'rtx 4090' }
+ *     // if current pathname is '/mall/brand/nvidia/search/rtx 4090'
+ *   }
+ *
+ * @example
+ *   //
+ *   // ⛑️ edge cases
+ *
+ *   //
+ *   // 💡 no params provided
+ *   parseCatchAllSegments([], '/mall/brand/{brand}/search/{search}')
+ *   // returns {}
+ *
+ *   //
+ *   // 💡 only one param provided, should match `search/{search}`
  *   parseCatchAllSegments(
- *     '/mall/brand/nvidia/search/rtx 4090',
+ *     ['search', 'rtx 5090'],
  *     '/mall/brand/{brand}/search/{search}',
  *   )
- *   // Returns: { brand: 'nvidia', search: 'rtx 4090' }
+ *   // returns { search: 'rtx 5090' }
  *
- *   parseCatchAllSegments('/search/hello-world', '/search/{query}')
- *   // Returns: { query: 'hello-world' }
+ *   //
+ *   // 💡 params do not match the template at all
+ *   parseCatchAllSegments(
+ *     ['nvidia', 'rtx 5090'],
+ *     '/mall/brand/{brand}/search/{search}',
+ *   )
+ *   // returns {}
  *
- *   parseCatchAllSegments('/user/123/profile', '/user/{id}/profile')
- *   // Returns: { id: '123' }
- *
- * @complexity O(n) where n is the number of URL segments
+ * @complexity Time: O(n) for string input, O(n×m) for array input; Space: O(1) where n is template segments, m is URL segments
  */
 export function parseCatchAllSegments(
   /**
    * @example
-   *   // client side pathname
-   *   '/mall/brand/nvidia/search/rtx-4090'
+   *   // 💡 in Server-Component
+   *   // the `props.params` will return an array for NextParams of catch-all segments, e.g.:
+   *   pathname = ['brand', 'nvidia', 'search', 'rtx 5090']
    *
    * @example
-   *   // server side props.params of Catch-All Segments
-   *   ;['search', 'rtx 5090']
+   *   // 💡 in Client-Component
+   *   // you can directly use location.pathname to get the current path string as input for this parameter
+   *   pathname = location.pathname // returns '/mall/brand/nvidia/search/rtx 5090'
    */
   pathname: string | string[],
   /**
    * @example
+   *   //
+   *   // 🚀 your designed route template with parameter placeholders and in order
    *   '/mall/brand/{brand}/search/{search}'
    */
   template: string,
 ): Record<string, string> {
-  // Split both URL and template into segments
-  const urlSegments = Array.isArray(pathname)
-    ? pathname
-    : pathname.split('/').filter(Boolean)
   const templateSegments = template.split('/').filter(Boolean)
 
+  if (Array.isArray(pathname)) {
+    return parseArrayPathname(pathname, templateSegments)
+  } else {
+    return parseStringPathname(pathname, templateSegments)
+  }
+}
+
+/**
+ * Parse string pathname against template pattern
+ *
+ * @complexity Time: O(n), Space: O(1) where n is the number of template segments
+ */
+function parseStringPathname(
+  pathname: string,
+  templateSegments: string[],
+): Record<string, string> {
+  const params: Record<string, string> = {}
+  const urlSegments = pathname.split('/').filter(Boolean)
+
+  for (let index = 0; index < templateSegments.length; index++) {
+    const templateSegment = templateSegments[index]
+    const urlSegment = urlSegments[index]
+
+    // If URL segment or template segment doesn't exist, we can't match
+    if (!urlSegment || !templateSegment) {
+      break
+    }
+
+    // Check if template segment is a parameter placeholder
+    if (templateSegment.startsWith('{') && templateSegment.endsWith('}')) {
+      // Extract parameter name and decode URL value
+      const paramName = templateSegment.slice(1, -1)
+      const paramValue = decodeURIComponent(urlSegment)
+      params[paramName] = paramValue
+    } else {
+      // Static segment must match exactly
+      if (templateSegment !== urlSegment) {
+        // Mismatch in static segments, stop parsing
+        break
+      }
+    }
+  }
+
+  return params
+}
+
+/**
+ * Parse array pathname (Next.js catch-all params) with simplified matching
+ * logic
+ *
+ * @complexity Time: O(n×m), Space: O(1) where n is template segments length and m is URL segments length
+ */
+function parseArrayPathname(
+  urlSegments: string[],
+  templateSegments: string[],
+): Record<string, string> {
   const params: Record<string, string> = {}
 
-  // For arrays, try multiple matching strategies to find the best fit
-  if (Array.isArray(pathname)) {
-    let bestMatch = {}
-    let bestMatchScore = 0
+  // Empty array returns empty object
+  if (urlSegments.length === 0) {
+    return params
+  }
 
-    // Try different starting positions in the template
-    for (
-      let startOffset = 0;
-      startOffset <= templateSegments.length - urlSegments.length;
-      startOffset++
-    ) {
-      const currentMatch: Record<string, string> = {}
-      let score = 0
-      let isValidMatch = true
-      let staticMatches = 0
-      let parameterMatches = 0
+  // Try to find the best match by testing different alignments
+  // This handles cases where array should match different parts of template
+  // Test from end to beginning to prefer end-matching
+  for (
+    let offset = templateSegments.length - urlSegments.length;
+    offset >= 0;
+    offset--
+  ) {
+    const currentParams: Record<string, string> = {}
+    let isValidMatch = true
 
-      for (let i = 0; i < urlSegments.length && isValidMatch; i++) {
-        const templateIndex = startOffset + i
-        const templateSegment = templateSegments[templateIndex]
-        const urlSegment = urlSegments[i]
+    // Test alignment at this offset
+    for (let i = 0; i < urlSegments.length && isValidMatch; i++) {
+      const templateIndex = offset + i
+      const templateSegment = templateSegments[templateIndex]
+      const urlSegment = urlSegments[i]
 
-        if (!templateSegment) {
-          isValidMatch = false
-          break
-        }
-
-        // Check if template segment is a parameter placeholder
-        if (templateSegment.startsWith('{') && templateSegment.endsWith('}')) {
-          // Extract parameter name and decode URL value
-          const paramName = templateSegment.slice(1, -1)
-          if (urlSegment) {
-            currentMatch[paramName] = decodeURIComponent(urlSegment)
-            parameterMatches += 1
-          }
-        } else {
-          // Static segment must match exactly
-          if (templateSegment !== urlSegment) {
-            isValidMatch = false
-            break
-          } else {
-            staticMatches += 1
-          }
-        }
+      if (!templateSegment) {
+        isValidMatch = false
+        break
       }
 
-      if (isValidMatch) {
-        // Scoring strategy: prioritize static matches, then parameter matches
-        // Static matches indicate a better structural alignment
-        score = staticMatches * 10 + parameterMatches
-
-        // Special case: if we have static matches, this is likely the intended match
-        // Otherwise, for single values without static matches, prefer end-of-template matching
-        const hasStaticMatch = staticMatches > 0
-        if (!hasStaticMatch && urlSegments.length === 1) {
-          // For single parameter arrays, prefer matching the last parameter in template
-          const lastParameterIndex =
-            templateSegments.length - 1 - urlSegments.length + 1
-          if (startOffset === lastParameterIndex) {
-            score += 5 // Boost score for end-matching single parameters
-          }
-        }
-
-        // Update best match if this one is better
-        if (score > bestMatchScore) {
-          bestMatch = currentMatch
-          bestMatchScore = score
+      if (
+        templateSegment.startsWith('{') &&
+        templateSegment.endsWith('}') &&
+        urlSegment
+      ) {
+        // Parameter segment
+        const paramName = templateSegment.slice(1, -1)
+        currentParams[paramName] = decodeURIComponent(urlSegment)
+      } else {
+        // Static segment must match exactly
+        if (templateSegment !== urlSegment) {
+          isValidMatch = false
+          break
         }
       }
     }
 
-    // Use the best match found
-    Object.assign(params, bestMatch)
-  } else {
-    // Original logic for string pathnames
-    for (let index = 0; index < templateSegments.length; index++) {
-      const templateSegment = templateSegments[index]
-      const urlSegment = urlSegments[index]
-
-      // If URL segment or template segment doesn't exist, we can't match
-      if (!urlSegment || !templateSegment) {
-        break
-      }
-
-      // Check if template segment is a parameter placeholder
-      if (templateSegment.startsWith('{') && templateSegment.endsWith('}')) {
-        // Extract parameter name and decode URL value
-        const paramName = templateSegment.slice(1, -1)
-        const paramValue = decodeURIComponent(urlSegment)
-        params[paramName] = paramValue
-      } else {
-        // Static segment must match exactly
-        if (templateSegment !== urlSegment) {
-          // Mismatch in static segments, stop parsing
-          break
-        }
-      }
+    if (isValidMatch) {
+      // Found a valid match, return it
+      Object.assign(params, currentParams)
+      break
     }
   }
 
