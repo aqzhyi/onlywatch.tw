@@ -162,16 +162,17 @@ feat(onlywatch): add JWT login flow
 
 ## 🙆‍♂️ Allowed Types
 
-| Type     | Description                                                                                                                                    |
-| -------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| feat     | 新功能特性、UI/UX 明顯變化或新增、CSS 美術明顯變化、功能邏輯變更、UI/UX 行為變更                                                               |
-| fix      | 修復邏輯問題、UI/UX 輕微變更，或者單元測試有變化視為修復功能邏輯                                                                               |
-| docs     | 功能文件 markdown 檔案、`README.md`、copilot `instruments.md`, `prompts.md` 檔案變更                                                           |
-| build    | 可能影響 CI/CD 以及部署結果（e.g., deps, `turbo.json`、`package.json#scripts`、`vitest`、`next.config.ts`、`.env`, npm:packages 相關檔案變更） |
-| refactor | 代碼重構（不改變行為）、類型補充、補充 `test-id` 提高可測試性                                                                                  |
-| test     | 僅僅對於單元測試檔案，對其補充內容或者重構測試內容                                                                                             |
-| chore    | 維護性工作                                                                                                                                     |
-| style    | 代碼格式化（不改變邏輯）                                                                                                                       |
+| Type     | Description                                                                                                                                                 |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| feat     | 新功能特性、UI/UX 明顯變化或新增、CSS 美術明顯變化、功能邏輯變更、UI/UX 行為變更                                                                            |
+| fix      | 修復邏輯問題、UI/UX 輕微變更，或者單元測試有變化視為修復功能邏輯                                                                                            |
+| docs     | 功能文件 markdown 檔案、`README.md`、copilot `instruments.md`, `prompts.md` 檔案變更                                                                        |
+| perf     | 此修改位於 server-side、RSC、edge function、middleware、API router 同時變更內容不涉及 fix 或 feat 類型，且修改的主要目標是增加性能，以及降低 CPU 使用時間。 |
+| build    | 可能影響 CI/CD 以及部署結果（e.g., deps, `turbo.json`、`package.json#scripts`、`vitest`、`next.config.ts`、`.env`, npm:packages 相關檔案變更）              |
+| refactor | 代碼重構（不改變行為）、類型補充、補充 `test-id` 提高可測試性                                                                                               |
+| test     | 僅僅對於單元測試檔案，對其補充內容或者重構測試內容                                                                                                          |
+| chore    | 維護性工作                                                                                                                                                  |
+| style    | 代碼格式化（不改變邏輯）                                                                                                                                    |
 
 ## ⛑️ Review
 
