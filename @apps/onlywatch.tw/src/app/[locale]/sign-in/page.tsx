@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 import { Button } from '~/components/Button'
-import { signInWithGoogle } from '~/features/members/server-actions/signInWithGoogle'
-import { GoogleIcon } from '~/icons/GoogleIcon'
+import { signInWithLINE } from '~/features/better-auth/server-actions/signInWithLINE'
+import { LineIcon } from '~/icons/LineIcon'
 import { site } from '~/site'
 
 export const metadata: Metadata = {
@@ -29,15 +29,15 @@ export default async function SignInPage() {
             </div>
           </div>
 
-          {/* Google 登入按鈕 */}
-          <form action={signInWithGoogle}>
+          {/* 登入按鈕 */}
+          <form action={signInWithLINE}>
             <Button
               type='submit'
-              aria-label='使用 Google 登入'
+              aria-label='使用 Line 登入'
               className='w-full space-x-2'
             >
-              <GoogleIcon />
-              <span>Google 登入</span>
+              <LineIcon />
+              <span>Line 登入</span>
             </Button>
           </form>
         </div>
