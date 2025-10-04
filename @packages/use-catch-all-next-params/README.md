@@ -164,11 +164,17 @@ sequenceDiagram
     note over Client Component,Input: value={'iphone'} <br> onChange={function() { setParams(...) }
 
     user->>Input: 🙎‍♂️ user typing words with 'rtx 5090'
+
     Input-->>useCatchAllNextParams: setParams((prev) => ({ ...prev, query: 'rtx 5090'}))
+
     useCatchAllNextParams-->>Input: value={'rtx 5090'}
+
     user->>Submit: 🙎‍♂️ user clicks
+
     Submit-->>useCatchAllNextParams: pushUrl()
+
     useCatchAllNextParams-->>nextjs: router.push('/mall/query/rtx 5090')
+
     nextjs-->>user: URL changed to /mall/query/5090<br>page re-rendered
 ```
 
