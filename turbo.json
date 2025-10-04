@@ -3,6 +3,8 @@
   "globalDependencies": ["**/.env.*local"],
   "ui": "stream",
   "tasks": {
+    "clean": {},
+
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "dependsOn": [
