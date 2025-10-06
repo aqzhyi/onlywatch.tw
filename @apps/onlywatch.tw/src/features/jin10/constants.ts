@@ -6,6 +6,7 @@ export const constants = {
   timezoneOffset: -6,
   financialTermDict: [
     { from: /\./gi, to: '' }, // i18n cannot handle full stops
+    { from: /。$/gi, to: '' }, // 去除句尾的句號
     { from: /主要再融資利率/gi, to: '利率決議' },
     { from: /利率決定/gi, to: '利率決議' },
     { from: /目標利率/gi, to: '利率決議' },
