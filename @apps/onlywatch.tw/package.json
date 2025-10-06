@@ -16,7 +16,7 @@
     "test:e2e:ui": "pnpm exec playwright test --ui",
     "test:e2e:report": "pnpm exec playwright show-report",
     "test:coverage": "vitest run --coverage",
-    "i18n:gen:jin10": "tsx ./scripts/gen-i18n-jin10.ts",
+    "gen:eventTitles": "tsx ./scripts/gen-eventTitles.ts",
     "typegen:nextjs": "tsx ./scripts/typegen-nextjs.ts",
     "typegen:supabase": "tsx ./scripts/typegen-supabase.ts"
   },
