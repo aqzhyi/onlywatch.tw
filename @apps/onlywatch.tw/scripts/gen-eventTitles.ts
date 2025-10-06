@@ -48,11 +48,7 @@ const supabase = createBrowserClient<Database>(
  *   //   ...
  *   // ]
  */
-const { data, error } = await supabase
-  .from('jin10_events')
-  .select('display_title')
-  .order('display_title', { ascending: true })
-  .not('display_title', 'is', null)
+const { data, error } = await supabase.rpc('get_distinct_display_titles')
 
 if (error) {
   console.error('❌ 查詢失敗:', error)
@@ -77,8 +73,9 @@ const displayTitles: Map<string, string> = new Map(
   }) || [],
 )
 
-console.log('📊 總共找到', displayTitles.size, '個不重複的 display_title:')
 console.log('🔸', Array.from(displayTitles.values()).join('\n🔸 '))
+console.log('📊 資料庫筆數', data.length, '個元素')
+console.log('📊 總共找到', displayTitles.size, '個不重複元素')
 
 /**
  * @prompt
