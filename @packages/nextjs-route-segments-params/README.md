@@ -6,7 +6,8 @@
 [![Sponsor](https://img.shields.io/badge/Sponsor-EA4AAA?style=for-the-badge&logo=githubsponsors&logoColor=pink)](https://wise.com/pay/me/luzhic1)
 [![npm](https://img.shields.io/npm/v/@onlywatch/nextjs-route-segments-params?style=for-the-badge&logo=npm&logoColor=white&label=npm&color=CB3837)](https://www.npmjs.com/package/@onlywatch/nextjs-route-segments-params)
 [![Coverage](https://img.shields.io/codecov/c/github/aqzhyi/onlywatch.tw/dev?flag=nextjs-route-segments-params&style=for-the-badge&logo=codecov&logoColor=red&label=Coverage&color=brightgreen)](https://codecov.io/gh/aqzhyi/onlywatch.tw/tree/dev/@packages/nextjs-route-segments-params)
-![Dependencies](https://img.shields.io/badge/dependencies-0-4a4a4a?style=for-the-badge&logo=npm&logoColor=f69220&color=brightgreen)
+[![Dependencies](https://img.shields.io/badge/dependencies-0-4a4a4a?style=for-the-badge&logo=npm&logoColor=f69220&color=brightgreen)](https://www.npmjs.com/package/@onlywatch/nextjs-route-segments-params?activeTab=dependencies)
+[![Package Size](https://img.shields.io/bundlephobia/minzip/@onlywatch/nextjs-route-segments-params?style=for-the-badge&logo=npm&logoColor=f69220&label=Gzipped&color=brightgreen)](https://bundlephobia.com/package/@onlywatch/nextjs-route-segments-params)
 
 ![NextJS-App-Router](https://img.shields.io/badge/Next@App--Router-black?style=for-the-badge&logo=next.js&logoColor=white)
 ![NextJS-supports-version](https://img.shields.io/badge/Next@v13+-black?style=for-the-badge&logo=next.js&logoColor=white)
