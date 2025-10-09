@@ -86,6 +86,8 @@ applyTo: "**/*.test.tsx, **/*.test.ts, **/*.spec.tsx, **/*.spec.ts, **/*.e2e.tsx
 
 - 多組相似、目標相同的測試資料，評估使用 [test.each()] 來編寫，前題是能夠減少代碼量、提升可讀性
 
+- 不要使用 emoji
+
 ## ⛑️ E2E Testing
 
 - 使用 [npm:playwright] 作為 e2e 測試程式庫，並遵循官方文檔 <https://playwright.dev> 與最佳實踐
