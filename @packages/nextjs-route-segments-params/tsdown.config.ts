@@ -8,4 +8,5 @@ export default defineConfig({
   sourcemap: true,
   minify: true,
   outDir: 'dist',
+  ignoreWatch: [/[.]turbo/],
 })
