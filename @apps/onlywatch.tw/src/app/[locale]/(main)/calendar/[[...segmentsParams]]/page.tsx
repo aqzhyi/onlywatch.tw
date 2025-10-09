@@ -1,5 +1,5 @@
 import { Skeleton } from '@heroui/skeleton'
-import { parseCatchAllSegments } from '@onlywatch/use-catch-all-next-params/utils'
+import { parseSegments } from '@onlywatch/nextjs-route-segments-params/utils'
 import { cacheLife } from 'next/dist/server/use-cache/cache-life'
 import { Suspense } from 'react'
 import { routing } from '~/features/i18n/routing'
@@ -81,25 +81,21 @@ export async function generateStaticParams() {
 }
 
 export default async function Page(
-  props: PageProps<'/[locale]/calendar/[[...nextParams]]'>,
+  props: PageProps<'/[locale]/calendar/[[...segmentsParams]]'>,
 ) {
   'use cache'
   cacheLife('minutes')
 
-  const { nextParams = [] } = await props.params
+  const { segmentsParams = [] } = await props.params
 
-  const params = parseCatchAllSegments(
-    nextParams,
-    '/calendar/query/{query}/date/{date}',
-  )
+  const params = parseSegments(['query', 'date'], segmentsParams)
 
   // 新的通用方式：使用泛型指定支援的參數類型
   // const parsedParams = await parseCatchAllParams<['query', 'date']>(props)
 
   // 開發模式調試
   if (process.env.NODE_ENV === 'development') {
-    console.log('📊 route template:', '/calendar/query/{query}/date/{date}')
-    console.log('📊 origin params:', nextParams)
+    console.log('📊 origin params:', segmentsParams)
     console.log('📊 parsed params:', params)
   }
 

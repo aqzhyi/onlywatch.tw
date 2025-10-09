@@ -3,7 +3,7 @@
 import { Button, ButtonGroup } from '@heroui/button'
 import { DrawerBody, DrawerContent, DrawerHeader } from '@heroui/drawer'
 import { Form } from '@heroui/form'
-import { useCatchAllNextParams } from '@onlywatch/use-catch-all-next-params'
+import { useSegments } from '@onlywatch/nextjs-route-segments-params'
 import { useReducer } from 'react'
 import { Drawer } from '~/components/Drawer'
 import { MonthPicker } from '~/features/jin10/components/MonthPicker'
@@ -14,9 +14,7 @@ export function FilterSetupButton() {
   const isMD = useMatchMedia('md')
   const [isOpen, toggleOpen] = useReducer((isOpen) => !isOpen, false)
 
-  const { params, setParams, pushUrl } = useCatchAllNextParams(
-    '/calendar/query/{query}/date/{date}',
-  )
+  const { params, setParams, pushUrl } = useSegments(['query', 'date'])
 
   const { query = '', date = '' } = params
 
@@ -41,14 +39,8 @@ export function FilterSetupButton() {
           <DrawerHeader>設定篩選器</DrawerHeader>
           <DrawerBody>
             <Form
-              onSubmit={async (event) => {
+              onSubmit={(event) => {
                 event.preventDefault()
-
-                // Update URL parameters - history and shallow are set in hook config
-                setParams({
-                  query: query,
-                  date: date,
-                })
 
                 pushUrl()
 
