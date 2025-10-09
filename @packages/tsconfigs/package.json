@@ -1,0 +1,10 @@
+{
+  "name": "@onlywatch/tsconfigs",
+  "private": true,
+  "version": "1.0.0",
+  "exports": {
+    "./base": "./src/base.json",
+    "./strict": "./src/strict.json",
+    "./strictest": "./src/strictest.json"
+  }
+}
