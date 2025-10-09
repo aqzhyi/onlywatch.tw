@@ -26,23 +26,26 @@
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![iconify](https://img.shields.io/badge/iconify-%2338B2AC.svg?style=for-the-badge&logo=iconify&logoColor=white)
 
-> [!TIP]
+<!-- TOC -->
+
+- [💬 About onlywatch.tw](#-about-onlywatchtw)
+  - [⚡ Try it now](#-try-it-now)
+  - [🔋 Technical Concerns](#-technical-concerns)
+    - [⚡ performance](#-performance)
+    - [📝 Concerns](#-concerns)
+    - [📈 Trends](#-trends)
+    - [⚡ Blogs](#-blogs)
+    - [🔋 guides](#-guides)
+
+<!-- /TOC -->
+
+## ⚡ Try it now
+
+> [!IMPORTANT]
 >
 > this tool is mainly provided for long-term swing traders and fundamental investors in macroeconomics to plan their entry and exit trading strategies
 >
 > it could be very effective for monthly and quarterly swing traders
-
-## 🔋 Notable
-
-- 📅 a clearer browsing experience for events over the next several weeks
-
-  > expected to enhance the efficiency of planning quarterly swing trading
-
-- 🔍 quickly keywords search and shareable URLs
-
-  > expected to quickly find and save the upcoming `events` that only you care about
-
-## ⚡ Try it now
 
 > [!TIP]
 >
@@ -74,15 +77,15 @@
 
 - ✨ Next.js (app router) with `PPR` and `'use cache'` enabled
 
-  ![](/@apps/onlywatch.tw/public/next-build-preview.png)
+  ![Build Step Preview](/@apps/onlywatch.tw/public/next-build-preview.png)
 
 - 🟢 Lighthouse is **green**
 
-  ![](/@apps/onlywatch.tw/public/lighthouse-preview.png)
+  ![Lighthouse Preview](/@apps/onlywatch.tw/public/lighthouse-preview.png)
 
 - ⏩ Vercel Speed Insights is **green**
 
-  ![](/@apps/onlywatch.tw/public/vercel-speed-insights-preview.png)
+  ![Vercel Speed Insights Preview](/@apps/onlywatch.tw/public/vercel-speed-insights-preview.png)
 
 ### 📝 Concerns
 
