@@ -1,20 +1,95 @@
----
-mode: agent
----
-
 # 💬 Instructions
 
 > [!IMPORTANT]
 >
-> 你的任務是檢查並根據 staged files 來編寫一個簡潔明確的 Git Commit Message
+> 你的任務是檢查本地的 staged files 並根據其 diff，來編寫一個簡潔明確的 Git Commit Message，並由開發者決定是否直接提交這個 commit message
 
-- ✅ 不要使用 `git add` 加多任何檔案
-- ✅ 永遠透過 `git diff --staged` 檢查最新的 staged files 作為你的參考 context
-- ✅ 不要關心其他 unstaged 的檔案與目錄
-- ✅ 使用祈使動詞形式編寫 commit message
-- ✅ 除了軟體工成專有詞語以及縮寫之外，不要在句首使用大寫，不要行尾加入句點符號
-- ✅ 保持精簡且明確描述
+- 🫡 你始終將開發者額外補充在對話框中的文字，視為對於本次 commit message 的 [WHY] reason 補充
+
+## 🫡 Rules
+
 - ✅ 遵循 [Atomic Commits](../wiki/atomic-commits-rules.md) 中的原則
+- ✅ 永遠透過 `git diff --staged` 檢查本地最新的 staged files 作為參考
+- ✅ 不要使用 `git add` 加多任何檔案
+- ✅ 不要關心其他 unstaged 的檔案與目錄
+- ✅ 如果是路由、路逕，請加上反引號包裹，例如 `./mall/[[...params]]/page.tsx`
+- ✅ 條列摘要應該保持簡潔、高層次描述、祈使動詞形式
+- ✅ 條列摘要行不超過 100 個字元
+- ✅ 標題行不超過 80 個字元
+- ✅ 句首不要使用大寫（專有名詞以及縮寫除外）
+- ✅ 句尾不要加入句點符號
+- ✅ 句尾不要存在額外空白字元
+- ✅ 如果是含有 `@` 字元的名詞，請加上反引號包裹，例如 `@heroui/button`、`@example`
+- ✅ 如果是{組件名稱}、{函數名稱}，請加上反引號包裹，例如 `<{組件名稱} />`、`{函數名稱}`
+
+  例如
+
+  - 組件
+
+    使用 `<MyComponent />` 表示:
+
+    ```tsx
+    function MyComponent() {}
+    ```
+
+  - 函數
+
+    使用 `useMyHook` 表示:
+
+    ```tsx
+    function useMyHook() {}
+    ```
+
+  - jsdoc 區塊
+
+    使用 `@example` 表示:
+
+    ```tsx
+    /**
+     * @example
+     * // some code
+     */
+    ```
+
+- ✅ 使用統一的祈使動詞之詞匯
+
+  💬 好的示例 👍
+
+  ```md
+  - implement `<UserProfile />` component
+  - implement `<UserAvatar />` component
+  - implement `<UserChip />` component
+  ```
+
+  💬 不好的示例 ❌
+
+  ```md
+  - implement `<UserProfile />` component
+  - add `<UserAvatar />` component
+  - create `<UserAvatar />` component
+  ```
+
+  💬 好的示例 👍
+
+  ```md
+  - refine `<UserProfile />` component
+  - refine `<UserAvatar />` component
+  - refine `<UserChip />` component
+  ```
+
+  💬 不好的示例 ❌
+
+  ```md
+  - improve `<UserProfile />` component
+  - refine `<UserAvatar />` component
+  - enhance `<UserChip />` component
+  ```
+
+### 🙅‍♂️ Avoid
+
+- ❌ 模糊且隱式的描述，例如: "update something", "fix stuff"
+- ❌ 過長或不聚焦的標題
+- ❌ 過多的細節在條列摘要中
 
 ## 📚 Formats
 
@@ -64,11 +139,11 @@ test(onlywatch): refine `<UserProfile />` unit tests
 
 - ✅ `<scope>` 總是從目錄中最靠近的 `package.json#name` 欄位中取得
 
-  例如: `onlywatch`, `use-catch-all-next-params`
+  例如: `onlywatch`, `nextjs-route-segments-params`
 
 - ✅ 如果 `package.json#name` 欄位有 `@` 字元，請去掉 `@` 字元以及 `/` 字元前面的所有字串
 
-  例如: `@onlywatch/use-catch-all-next-params` 將截取為 `use-catch-all-next-params`
+  例如: `@onlywatch/nextjs-route-segments-params` 將截取為 `nextjs-route-segments-params`
 
 ### 📖 Examples with `<message title>` and Body
 
@@ -79,86 +154,20 @@ feat(onlywatch): add JWT login flow
 - add documentation for the validation component
 ```
 
-## 🫡 Rules
+### 📖 Examples with `<message title>` and Body also with [WHY] reason
 
-- ✅ 每一句句尾不要有額外的空白字元
-- ✅ 如果是路由、路逕，請加上反引號包裹，例如 `./mall/[[...params]]/page.tsx`
-- ✅ 如果是含有 `@` 字元的名詞，請加上反引號包裹，例如 `@heroui/button`、`@example`
-- ✅ 如果是{組件名稱}、{函數名稱}，請加上反引號包裹，例如 `<{組件名稱} />`、`{函數名稱}`
+```md
+feat(onlywatch): add JWT login flow
 
-  例如
+💬 WHY:
 
-  - 組件
+- better security and stateless authentication
 
-    使用 `<MyComponent />` 表示:
+⛑️ WHAT:
 
-    ```tsx
-    function MyComponent() {}
-    ```
-
-  - 函數
-
-    使用 `useMyHook` 表示:
-
-    ```tsx
-    function useMyHook() {}
-    ```
-
-  - jsdoc 區塊
-
-    使用 `@example` 表示:
-
-    ```tsx
-    /**
-     * @example
-     * // some code
-     */
-    ```
-
-- ✅ 除了軟體工成專有詞語以及縮寫之外，不要在句首使用大寫，不要行尾加入句點符號
-- ✅ 使用祈使動詞形式，簡潔明確地描述，整行句子不要超過 80 個字元
-- ✅ 使用統一的祈使動詞之詞匯
-
-  💬 好的示例 👍
-
-  ```md
-  - implement `<UserProfile />` component
-  - implement `<UserAvatar />` component
-  - implement `<UserChip />` component
-  ```
-
-  💬 不好的示例 ❌
-
-  ```md
-  - implement `<UserProfile />` component
-  - add `<UserAvatar />` component
-  - create `<UserAvatar />` component
-  ```
-
-  💬 好的示例 👍
-
-  ```md
-  - refine `<UserProfile />` component
-  - refine `<UserAvatar />` component
-  - refine `<UserChip />` component
-  ```
-
-  💬 不好的示例 ❌
-
-  ```md
-  - improve `<UserProfile />` component
-  - refine `<UserAvatar />` component
-  - enhance `<UserChip />` component
-  ```
-
-- ✅ 使用正文（可選）來解釋 **WHY**，而不僅僅是 **WHAT**
-- ✅ 條列摘要應該簡潔並且高層次
-
-### 🙅‍♂️ Avoid
-
-- ❌ 模糊且隱式的描述，例如: "update something", "fix stuff"
-- ❌ 過長或不聚焦的標題
-- ❌ 過多的細節在條列摘要中
+- implement JWT token validation logic
+- add documentation for the validation component
+```
 
 ## 🙆‍♂️ Allowed Types
 
@@ -176,15 +185,19 @@ feat(onlywatch): add JWT login flow
 
 ## ⛑️ Review
 
-- 🔍 當你察覺到使用者的 staged files 不符合 [](../wiki/atomic-commits-rules.md) 原則時
+- 🔍 review 當前本地 staged files 是否符合 [Atomic Commits](../wiki/atomic-commits-rules.md)
 
-  請提示使用者，並給出你的建議作法，以及簡潔的原因
+  當不符合時
+
+  請繼續工作，但在最後並給出你認為不符合的原因，以及對於 git graph 之未來潛在影響
 
 ## 🤖 Response
 
 - 🫡 commit message 總是純文本方式回應，讓使用者可以直接複制
 
-- 🔋 請以英語編寫一份 commit message，並回應例如:
+- 🔍 如果有 [WHY] reason 請一併翻譯，並基於 [Format](#-formats) 格式補充
+
+- 🔋 請以英語編寫一份 commit message，並回應例如：
 
   ✨ commit message 已產生 👇
 
