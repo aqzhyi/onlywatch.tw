@@ -8,7 +8,6 @@ export const envSecretSchema = z.object({
   JIN10_APP_ID: z.string(),
   JIN10_HEADER_ORIGIN: z.string(),
   BETTER_AUTH_SECRET: z.string(),
-  BETTER_AUTH_URL: z.string(),
   LINE_CLIENT_ID: z.string(),
   LINE_CLIENT_SECRET: z.string(),
 })

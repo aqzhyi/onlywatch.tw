@@ -28,7 +28,6 @@
         "JIN10_APP_ID",
         "JIN10_HEADER_ORIGIN",
         "BETTER_AUTH_SECRET",
-        "BETTER_AUTH_URL",
         "LINE_CLIENT_ID",
         "LINE_CLIENT_SECRET"
       ],
