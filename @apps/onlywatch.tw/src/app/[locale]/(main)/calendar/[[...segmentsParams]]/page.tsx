@@ -13,48 +13,20 @@ import { findManyEvents } from '~/features/jin10/db/findManyEvents'
 import { days } from '~/utils/days'
 import { getIsoWeekdays } from '~/utils/getIsoWeekdays'
 
-/**
- * 生成日期和關鍵字組合的靜態路由
- *
- * @complexity O(n * m) 其中 n 是日期數量，m 是關鍵字數量
- */
-function generateDateKeywordCombinationRoutes(
-  dates: string[],
-): { params: string[] }[] {
-  const combinationRoutes: { params: string[] }[] = []
-
-  dates.forEach((date) => {
-    constants.prerenderKeywordsResult.forEach((keyword) => {
-      combinationRoutes.push({ params: ['date', date, 'query', keyword] })
-    })
-  })
-
-  return combinationRoutes
-}
+type RoutePropsParams = Partial<
+  Awaited<PageProps<'/[locale]/calendar/[[...segmentsParams]]'>['params']>
+>
 
 export async function generateStaticParams() {
-  const routes: { params: string[] }[] = []
+  const routes: RoutePropsParams[] = []
 
-  // 1. 預渲染默認路由
-  routes.push({ params: [] })
-
-  for (const locale of routing.locales) {
-    routes.push({ params: [locale] })
-  }
-
-  // 2. 預渲染關鍵字路由
+  // 預渲染關鍵字路由
   const prerenderQueryKeywords = [
     ...constants.importantKeywordsPresets,
     ...constants.prerenderKeywordsResult,
   ]
 
-  prerenderQueryKeywords.forEach((keyword) => {
-    if (keyword) {
-      routes.push({ params: ['query', keyword] })
-    }
-  })
-
-  // 3. 預渲染重要的歷史日期
+  // 預渲染重要的歷史日期
   const importantDates = [
     // 最近 12 個月的每月 15 日
     days().subtract(12, 'month').date(15).format('YYYY-MM-DD'),
@@ -71,12 +43,30 @@ export async function generateStaticParams() {
     days().subtract(1, 'month').date(15).format('YYYY-MM-DD'),
   ]
 
-  importantDates.forEach((date) => {
-    routes.push({ params: ['date', date] })
-  })
+  // `[locale]` 是必要的最上層路由參數
+  for (const locale of routing.locales) {
+    // 預渲染默認路由
+    routes.push({ locale })
+    routes.push({ locale, segmentsParams: [] })
 
-  // 4. 預渲染一些重要日期 + 關鍵字的組合
-  routes.push(...generateDateKeywordCombinationRoutes(importantDates))
+    prerenderQueryKeywords.forEach((keyword) => {
+      routes.push({ locale, segmentsParams: ['query', keyword] })
+    })
+
+    importantDates.forEach((date) => {
+      routes.push({ locale, segmentsParams: ['date', date] })
+    })
+
+    // 預渲染一些重要日期 + 關鍵字的組合
+    importantDates.forEach((date) => {
+      prerenderQueryKeywords.forEach((keyword) => {
+        routes.push({
+          locale,
+          segmentsParams: ['date', date, 'query', keyword],
+        })
+      })
+    })
+  }
 
   return routes
 }
