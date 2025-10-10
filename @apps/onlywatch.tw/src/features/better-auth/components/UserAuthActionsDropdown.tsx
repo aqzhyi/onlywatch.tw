@@ -6,23 +6,22 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from '@heroui/dropdown'
-import type { UserResponse } from '@supabase/supabase-js'
+import to from 'await-to-js'
 import { useRouter } from 'next/navigation'
-import { use } from 'react'
-import { signOut } from '~/features/members/server-actions/signOut'
+import { authClient } from '~/features/better-auth/authClient'
 
 type UserActionsDropdownProps = {
-  user: Promise<UserResponse>
+  hasUser: boolean
 } & React.PropsWithChildren
 
 export function UserAuthActionsDropdown({
   children,
+  hasUser,
   ...props
 }: UserActionsDropdownProps) {
   const router = useRouter()
-  const { data: user, error: userError } = use(props.user)
 
-  const isSignedIn = !!user && !userError
+  const isSignedIn = hasUser
 
   const signInButton = (
     <DropdownItem
@@ -45,8 +44,12 @@ export function UserAuthActionsDropdown({
       classNames={{
         title: 'flex flex-row items-center gap-2',
       }}
-      onPress={() => {
-        signOut()
+      onPress={async () => {
+        const [error, response] = await to(authClient.signOut())
+
+        if (response?.data?.success) {
+          router.refresh()
+        }
       }}
     >
       <span className='icon-[mdi--logout]' />
