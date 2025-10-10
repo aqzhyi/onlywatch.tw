@@ -13,6 +13,7 @@
 ![OxLint](https://img.shields.io/badge/oxc-%2338B2AC?style=for-the-badge&logo=eslint&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![Better-Auth](https://img.shields.io/badge/Better--Auth-%23000000.svg?style=for-the-badge&logo=auth0&logoColor=white)
 ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
 ![NextJS-canary](https://img.shields.io/badge/Next@Canary-%23333333?style=for-the-badge&logo=next.js&logoColor=white)
 ![NextJS-App-Router](https://img.shields.io/badge/Next@App--Router-%23333333?style=for-the-badge&logo=next.js&logoColor=white)
