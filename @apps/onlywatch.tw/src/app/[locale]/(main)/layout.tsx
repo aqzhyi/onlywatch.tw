@@ -5,22 +5,23 @@ import {
   NavbarMenuItem,
 } from '@heroui/navbar'
 import { Skeleton } from '@heroui/skeleton'
+import { headers } from 'next/headers'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Suspense } from 'react'
 import { twMerge } from 'tailwind-merge'
 import { LocaleDropdownButton } from '~/components/LocaleDropdownButton'
 import { ThemeToggle } from '~/components/ThemeToggle'
-import { getSupabaseSSR } from '~/db/getSupabaseSSR'
+import { auth } from '~/features/better-auth/auth'
 import { FilterSetupButton } from '~/features/jin10/components/FilterSetupButton'
-import { UserAuthActionsDropdown } from '~/features/members/components/UserAuthActionsDropdown'
-import { UserAvatar } from '~/features/members/components/UserAvatar'
+import { UserAuthActionsDropdown } from '~/features/better-auth/components/UserAuthActionsDropdown'
+import { UserAvatar } from '~/features/better-auth/components/UserAvatar'
 
 export default async function Layout({
   params,
   children,
 }: LayoutProps<'/[locale]'>) {
-  const userResponse = (await getSupabaseSSR()).auth.getUser()
+  const userSession = await auth.api.getSession({ headers: await headers() })
 
   return (
     <div className='grid h-dvh grid-rows-[3rem_1fr]'>
@@ -63,12 +64,8 @@ export default async function Layout({
           </NavbarMenuItem>
 
           <NavbarMenuItem>
-            <UserAuthActionsDropdown user={userResponse}>
-              <UserAvatar
-                avatarUrl={
-                  (await userResponse).data.user?.user_metadata?.avatar_url
-                }
-              />
+            <UserAuthActionsDropdown hasUser={Boolean(userSession?.user)}>
+              <UserAvatar avatarUrl={userSession?.user.image || ''} />
             </UserAuthActionsDropdown>
           </NavbarMenuItem>
 
