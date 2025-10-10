@@ -1,0 +1,28 @@
+{
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "name": "@onlywatch/tsconfigs",
+  "description": "My shared TypeScript (tsconfig) configurations",
+  "version": "1.0.0",
+  "exports": {
+    "./base": "./src/base.json",
+    "./strict": "./src/strict.json",
+    "./strictest": "./src/strictest.json"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aqzhyi/onlywatch.tw.git",
+    "directory": "@packages/tsconfigs"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {
+    "typescript": ">=5.0.0"
+  },
+  "scripts": {}
+}

@@ -1,15 +1,15 @@
-import type { Metadata } from 'next'
+'use client'
+
+import to from 'await-to-js'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { Button } from '~/components/Button'
-import { signInWithGoogle } from '~/features/members/server-actions/signInWithGoogle'
-import { GoogleIcon } from '~/icons/GoogleIcon'
-import { site } from '~/site'
+import { authClient } from '~/features/better-auth/authClient'
+import { LineIcon } from '~/icons/LineIcon'
 
-export const metadata: Metadata = {
-  title: site.getTitle('登入'),
-}
+export default function SignInPage() {
+  const router = useRouter()
 
-export default async function SignInPage() {
   return (
     <div className='flex min-h-dvh flex-col lg:flex-row'>
       {/* 形像展示區塊 - 手機版頂部，電腦版左側 */}
@@ -30,14 +30,33 @@ export default async function SignInPage() {
           </div>
 
           {/* Google 登入按鈕 */}
-          <form action={signInWithGoogle}>
+          <form
+            onSubmit={async (event) => {
+              event.preventDefault()
+
+              const [error, response] = await to(
+                authClient.signIn.social({
+                  provider: 'line',
+                  requestSignUp: false,
+                }),
+              )
+
+              if (response?.data?.url) {
+                router.push(response.data.url)
+              }
+
+              if (error) {
+                router.push('/auth/error')
+              }
+            }}
+          >
             <Button
               type='submit'
               aria-label='使用 Google 登入'
               className='w-full space-x-2'
             >
-              <GoogleIcon />
-              <span>Google 登入</span>
+              <LineIcon />
+              <span>LINE 登入</span>
             </Button>
           </form>
         </div>

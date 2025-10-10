@@ -1,78 +1,37 @@
 import { days } from '~/utils/days'
 
-/** events are usually published at 0, 15, 30, and 45 minutes */
+/**
+ * 檢查指定時間是否為事件發布的高峰期
+ *
+ * 事件通常在每小時的 0、15、30、45 分鐘發布，但可能因重大公告而延遲發布
+ *
+ * @example
+ *   isEventsPeriod('2023-10-03T08:00:00Z') // true (0分鐘是高峰期)
+ *   isEventsPeriod('2023-10-03T08:05:00Z') // false (5分鐘不是高峰期)
+ */
 export function isEventsPeriod(isodate: string): boolean {
   const targetTime = days(isodate).tz('asia/taipei')
   const minute = targetTime.minute()
 
-  /**
-   * some events may experience delayed releases when major announcements are
-   * made
-   *
-   * `null` represents the peak period for event publishing
-   */
-  const eventPublishPeriods = [
-    null,
-    null,
-    null,
-    null,
-    4,
-    5,
-    null,
-    null,
-    null,
-    null,
-    10,
-    11,
-    12,
-    13,
-    14,
-    null,
-    null,
-    null,
-    null,
-    19,
-    20,
-    21,
-    22,
-    23,
-    24,
-    25,
-    26,
-    27,
-    28,
-    29,
-    null,
-    null,
-    null,
-    null,
-    34,
-    35,
-    36,
-    37,
-    38,
-    39,
-    40,
-    41,
-    42,
-    43,
-    44,
-    null,
-    null,
-    null,
-    null,
-    49,
-    null,
-    null,
-    null,
-    null,
-    54,
-    55,
-    56,
-    57,
-    58,
-    59,
-  ]
+  // 事件發布的高峰時段（分鐘）
+  const eventPeakMinutes = new Set([
+    0,
+    1,
+    2,
+    3, // 0分鐘附近
+    15,
+    16,
+    17,
+    18, // 15分鐘附近
+    30,
+    31,
+    32,
+    33, // 30分鐘附近
+    45,
+    46,
+    47,
+    48, // 45分鐘附近
+  ])
 
-  return !eventPublishPeriods.includes(minute)
+  return eventPeakMinutes.has(minute)
 }

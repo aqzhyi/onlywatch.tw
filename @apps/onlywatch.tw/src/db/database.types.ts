@@ -14,6 +14,62 @@ export type Database = {
   }
   public: {
     Tables: {
+      account: {
+        Row: {
+          accessToken: string | null
+          accessTokenExpiresAt: string | null
+          accountId: string
+          createdAt: string | null
+          id: number
+          idToken: string | null
+          password: string
+          providerId: string
+          refreshToken: string | null
+          refreshTokenExpiresAt: string | null
+          scope: string | null
+          updatedAt: string | null
+          userId: string
+        }
+        Insert: {
+          accessToken?: string | null
+          accessTokenExpiresAt?: string | null
+          accountId: string
+          createdAt?: string | null
+          id?: number
+          idToken?: string | null
+          password: string
+          providerId: string
+          refreshToken?: string | null
+          refreshTokenExpiresAt?: string | null
+          scope?: string | null
+          updatedAt?: string | null
+          userId: string
+        }
+        Update: {
+          accessToken?: string | null
+          accessTokenExpiresAt?: string | null
+          accountId?: string
+          createdAt?: string | null
+          id?: number
+          idToken?: string | null
+          password?: string
+          providerId?: string
+          refreshToken?: string | null
+          refreshTokenExpiresAt?: string | null
+          scope?: string | null
+          updatedAt?: string | null
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "account_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       jin10_events: {
         Row: {
           actual_number: string | null
@@ -53,12 +109,115 @@ export type Database = {
         }
         Relationships: []
       }
+      session: {
+        Row: {
+          createdAt: string | null
+          expiredAt: string
+          id: string
+          ipAddress: string | null
+          token: string
+          updatedAt: string | null
+          userAgent: string | null
+          userId: string
+        }
+        Insert: {
+          createdAt?: string | null
+          expiredAt: string
+          id: string
+          ipAddress?: string | null
+          token: string
+          updatedAt?: string | null
+          userAgent?: string | null
+          userId: string
+        }
+        Update: {
+          createdAt?: string | null
+          expiredAt?: string
+          id?: string
+          ipAddress?: string | null
+          token?: string
+          updatedAt?: string | null
+          userAgent?: string | null
+          userId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "session_userId_fkey"
+            columns: ["userId"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user: {
+        Row: {
+          createdAt: string | null
+          email: string | null
+          emailVerified: boolean
+          id: string
+          image: string | null
+          name: string
+          updatedAt: string | null
+        }
+        Insert: {
+          createdAt?: string | null
+          email?: string | null
+          emailVerified?: boolean
+          id: string
+          image?: string | null
+          name: string
+          updatedAt?: string | null
+        }
+        Update: {
+          createdAt?: string | null
+          email?: string | null
+          emailVerified?: boolean
+          id?: string
+          image?: string | null
+          name?: string
+          updatedAt?: string | null
+        }
+        Relationships: []
+      }
+      verification: {
+        Row: {
+          createdAt: string
+          expiresAt: string
+          id: string
+          identifier: string
+          updatedAt: string
+          value: string
+        }
+        Insert: {
+          createdAt?: string
+          expiresAt?: string
+          id: string
+          identifier: string
+          updatedAt?: string
+          value: string
+        }
+        Update: {
+          createdAt?: string
+          expiresAt?: string
+          id?: string
+          identifier?: string
+          updatedAt?: string
+          value?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_distinct_display_titles: {
+        Args: { p_exclude_patterns?: string[]; p_limit?: number }
+        Returns: {
+          display_title: string
+        }[]
+      }
     }
     Enums: {
       currency:

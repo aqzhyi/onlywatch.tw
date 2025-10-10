@@ -10,7 +10,7 @@ applyTo: "**/*.ts, **/*.tsx, **/*.mjs, **/*.mts"
 
 - 除非絕對必要，否則不須要加多 jsdoc 註解，程式碼應該具有自我說明性
 
-- 永遠為 function 編寫 @example 區塊，並提供簡單的使用範例
+- 永遠為 `jsdoc` 編寫 @example 區塊，並提供簡單的使用範例
 
   - 至少提供 input 與 output 的範例
 

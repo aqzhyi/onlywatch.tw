@@ -17,7 +17,7 @@ const paramsSchema = z.strictObject({
 })
 
 const DEFAULT_START_OF = days().add(-2, 'days').format('YYYY-MM-DD')
-const DEFAULT_END_OF = days().add(4, 'days').format('YYYY-MM-DD')
+const DEFAULT_END_OF = days().add(2, 'days').format('YYYY-MM-DD')
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl

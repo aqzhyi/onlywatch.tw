@@ -3,6 +3,8 @@
   "globalDependencies": ["**/.env.*local"],
   "ui": "stream",
   "tasks": {
+    "clean": {},
+
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "dependsOn": [
@@ -21,9 +23,13 @@
         "NEXT_PUBLIC_GA_ID",
         "SUPABASE_PROJECT_ID",
         "SUPABASE_SERVICE_KEY",
+        "SUPABASE_DB_PASSWORD",
         "JIN10_API_URL",
         "JIN10_APP_ID",
-        "JIN10_HEADER_ORIGIN"
+        "JIN10_HEADER_ORIGIN",
+        "BETTER_AUTH_SECRET",
+        "LINE_CLIENT_ID",
+        "LINE_CLIENT_SECRET"
       ],
 
       //

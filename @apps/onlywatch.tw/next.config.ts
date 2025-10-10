@@ -13,9 +13,15 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
+        hostname: 'profile.line-scdn.net',
+        port: '',
+        pathname: '/**', // 允許 Line 頭像路徑
+      },
+      {
+        protocol: 'https',
         hostname: 'lh3.googleusercontent.com',
         port: '',
-        pathname: '/a/**', // 限制只允許 Google 頭像路徑
+        pathname: '/a/**', // 允許 Google 頭像路徑
       },
     ],
   },

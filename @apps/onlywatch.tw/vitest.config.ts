@@ -16,5 +16,10 @@ export default defineConfig({
       '**/.{idea,git,cache,output,temp}/**',
       '**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*',
     ],
+    typecheck: {
+      enabled: true,
+      include: ['**/*.test-d.ts', '**/*.test.ts'],
+      exclude: ['node_modules/**', 'dist/**'],
+    },
   },
 })

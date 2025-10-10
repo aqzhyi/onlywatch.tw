@@ -11,9 +11,9 @@ coverage:
         threshold: 1%
 
 flags:
-  use-catch-all-next-params:
+  nextjs-route-segments-params:
     paths:
-      - "@packages/use-catch-all-next-params/"
+      - "@packages/nextjs-route-segments-params/"
     carryforward: true
 
 comment:

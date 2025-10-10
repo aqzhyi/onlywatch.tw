@@ -1,6 +1,5 @@
 packages:
   - "@apps/*"
-  - "@packages/*/e2e/*"
   - "@packages/*"
   - "!**/test/**"
   - "!**/mock/**"
