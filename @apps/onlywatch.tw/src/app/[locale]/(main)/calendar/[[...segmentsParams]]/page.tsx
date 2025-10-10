@@ -2,6 +2,7 @@ import { Skeleton } from '@heroui/skeleton'
 import { parseSegments } from '@onlywatch/nextjs-route-segments-params/utils'
 import { cacheLife } from 'next/dist/server/use-cache/cache-life'
 import { Suspense } from 'react'
+import { envPublicVars } from '~/envPublicVars'
 import { routing } from '~/features/i18n/routing'
 import { Calendar } from '~/features/jin10/components/Calendar'
 import { DayCard } from '~/features/jin10/components/DayCard'
@@ -90,13 +91,12 @@ export default async function Page(
 
   const params = parseSegments(['query', 'date'], segmentsParams)
 
-  // 新的通用方式：使用泛型指定支援的參數類型
-  // const parsedParams = await parseCatchAllParams<['query', 'date']>(props)
-
   // 開發模式調試
-  if (process.env.NODE_ENV === 'development') {
-    console.log('📊 origin params:', segmentsParams)
-    console.log('📊 parsed params:', params)
+  if (envPublicVars.NODE_ENV === 'development') {
+    console.log('📊 props.params:', {
+      segments: segmentsParams,
+      parsed: params,
+    })
   }
 
   // 計算週範圍
