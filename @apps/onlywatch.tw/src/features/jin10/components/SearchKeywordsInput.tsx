@@ -13,7 +13,7 @@ const PRESET_IMPORTANT_KEYWORDS: string =
 
 interface SearchKeywordsInputProps {
   value: string
-  onValueChange: (value: string) => Promise<unknown>
+  onValueChange: (value: string) => unknown
   testIDs?: {
     input?: string
     clearButton?: string
@@ -25,7 +25,7 @@ export function SearchKeywordsInput({
   onValueChange,
   testIDs: testids,
 }: SearchKeywordsInputProps) {
-  const toggleKeyword = async (keyword: string) => {
+  const toggleKeyword = (keyword: string) => {
     let keywordsArray = value.split(' ').map((k: string) => k.trim())
 
     if (keywordsArray.includes(keyword)) {
@@ -35,15 +35,15 @@ export function SearchKeywordsInput({
     }
 
     const newValue = keywordsArray.join(' ').trim()
-    await onValueChange(newValue)
+    onValueChange(newValue)
   }
 
-  const applyKeywordsPreset = async () => {
-    await onValueChange(PRESET_IMPORTANT_KEYWORDS)
+  const applyKeywordsPreset = () => {
+    onValueChange(PRESET_IMPORTANT_KEYWORDS)
   }
 
-  const clearKeywords = async () => {
-    await onValueChange('')
+  const clearKeywords = () => {
+    onValueChange('')
   }
 
   return (
@@ -54,8 +54,8 @@ export function SearchKeywordsInput({
       variant='bordered'
       value={value}
       isClearable
-      onValueChange={async (newValue) => {
-        await onValueChange(newValue)
+      onValueChange={(newValue) => {
+        onValueChange(newValue)
       }}
       onClear={clearKeywords}
       description={
