@@ -540,4 +540,99 @@ describe('useSegments', () => {
       })
     })
   })
+
+  describe('router operations do not trigger setState during render', () => {
+    test('replaceUrl does not call router.replace during setState callback', () => {
+      mockPathname.mockReturnValue('/brand/nvidia/query/rtx 5090')
+
+      const { result } = renderHook(() =>
+        useSegments(['brand', 'query'] as const),
+      )
+
+      // Update state
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, brand: 'amd' }))
+      })
+
+      expect(mockReplace).not.toHaveBeenCalled()
+
+      // Then call replaceUrl
+      act(() => {
+        result.current.replaceUrl()
+      })
+
+      expect(mockReplace).toHaveBeenCalledTimes(1)
+      expect(mockReplace).toHaveBeenCalledWith('/brand/amd/query/rtx%205090')
+    })
+
+    test('pushUrl does not call router.push during setState callback', () => {
+      mockPathname.mockReturnValue('/brand/nvidia/query/rtx 5090')
+
+      const { result } = renderHook(() =>
+        useSegments(['brand', 'query'] as const),
+      )
+
+      // Update state
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, query: 'rtx 4080' }))
+      })
+
+      expect(mockPush).not.toHaveBeenCalled()
+
+      // Then call pushUrl
+      act(() => {
+        result.current.pushUrl()
+      })
+
+      expect(mockPush).toHaveBeenCalledTimes(1)
+      expect(mockPush).toHaveBeenCalledWith('/brand/nvidia/query/rtx%204080')
+    })
+
+    test('multiple setParams followed by single replaceUrl', () => {
+      mockPathname.mockReturnValue('/category/gpu/brand/nvidia/page/1')
+
+      const { result } = renderHook(() =>
+        useSegments(['category', 'brand', 'page'] as const),
+      )
+
+      // Multiple state updates
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, category: 'cpu' }))
+      })
+
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, brand: 'amd' }))
+      })
+
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, page: '2' }))
+      })
+
+      // Router should not be called yet
+      expect(mockReplace).not.toHaveBeenCalled()
+
+      // Single replaceUrl call with final state
+      act(() => {
+        result.current.replaceUrl()
+      })
+
+      expect(mockReplace).toHaveBeenCalledTimes(1)
+      expect(mockReplace).toHaveBeenCalledWith('/category/cpu/brand/amd/page/2')
+    })
+
+    test('setParams and replaceUrl can be called in same act', () => {
+      mockPathname.mockReturnValue('/brand/nvidia')
+
+      const { result } = renderHook(() => useSegments(['brand'] as const))
+
+      // Both operations in single act
+      act(() => {
+        result.current.setParams((prev) => ({ ...prev, brand: 'amd' }))
+        result.current.replaceUrl()
+      })
+
+      expect(mockReplace).toHaveBeenCalledTimes(1)
+      expect(mockReplace).toHaveBeenCalledWith('/brand/amd')
+    })
+  })
 })
