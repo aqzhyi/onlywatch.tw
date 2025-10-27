@@ -5,7 +5,7 @@
   },
   "name": "@onlywatch/nextjs-route-segments-params",
   "description": "Type-safe Dynamic Routes URL segments params and state manager for Next.js",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

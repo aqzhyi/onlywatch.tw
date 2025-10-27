@@ -34,7 +34,7 @@
     "@heroui/system": "2.4.23",
     "@heroui/theme": "2.4.23",
     "@next/third-parties": "16.0.0",
-    "@onlywatch/nextjs-route-segments-params": "workspace:^0.4.0",
+    "@onlywatch/nextjs-route-segments-params": "workspace:^0.4.1",
     "@supabase/ssr": "0.7.0",
     "@supabase/supabase-js": "2.75.0",
     "@vercel/speed-insights": "1.2.0",
