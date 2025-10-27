@@ -55,7 +55,7 @@ export function FilterSetupButton() {
                   clearButton: '篩選關鍵字清除按鈕',
                 }}
                 value={query}
-                onValueChange={async (value) => {
+                onValueChange={(value) => {
                   setParams((prev) => ({ ...prev, query: value }))
                 }}
               />

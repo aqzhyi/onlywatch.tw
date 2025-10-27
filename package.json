@@ -2,7 +2,7 @@
   "name": "monorepo",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.17.1",
+  "packageManager": "pnpm@10.19.0",
   "devDependencies": {
     "@changesets/changelog-git": "0.2.1",
     "@changesets/cli": "2.29.7",

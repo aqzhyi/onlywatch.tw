@@ -1,7 +1,7 @@
 'use client'
 
 import { usePathname, useRouter } from 'next/navigation'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo, useRef, useState } from 'react'
 import {
   extractKeyValuePairs,
   extractSegmentsFromPathname,
@@ -157,6 +157,10 @@ export function useSegments<const Keys extends readonly string[]>(
   // internal state management
   const [segments, setSegmentsState] = useState(initialSegments)
 
+  // use ref to track latest params value for URL operations
+  const segmentsRef = useRef(segments)
+  segmentsRef.current = segments
+
   // update params when pathname or segmentsKeys change
   useMemo(() => {
     setSegmentsState(initialSegments)
@@ -170,25 +174,24 @@ export function useSegments<const Keys extends readonly string[]>(
         [K in Keys[number]]?: string | undefined
       },
     ) => {
-      setSegmentsState((prev) => {
-        const newParams = updater(prev)
-        return newParams
-      })
+      // First update ref with the new params
+      const newParams = updater(segmentsRef.current)
+      segmentsRef.current = newParams
+
+      // Then update state
+      setSegmentsState(newParams)
     },
     [],
   )
 
   const replaceUrl = useCallback(() => {
     try {
-      setSegmentsState((currentParams) => {
-        const newPathname = rebuildPathname(
-          pathname,
-          segmentsKeys,
-          currentParams,
-        )
-        router.replace(newPathname)
-        return currentParams // do not change state, just get latest value
-      })
+      const newPathname = rebuildPathname(
+        pathname,
+        segmentsKeys,
+        segmentsRef.current,
+      )
+      router.replace(newPathname)
     } catch (error) {
       console.error('Failed to replace URL:', error)
     }
@@ -196,15 +199,12 @@ export function useSegments<const Keys extends readonly string[]>(
 
   const pushUrl = useCallback(() => {
     try {
-      setSegmentsState((currentParams) => {
-        const newPathname = rebuildPathname(
-          pathname,
-          segmentsKeys,
-          currentParams,
-        )
-        router.push(newPathname)
-        return currentParams // do not change state, just get latest value
-      })
+      const newPathname = rebuildPathname(
+        pathname,
+        segmentsKeys,
+        segmentsRef.current,
+      )
+      router.push(newPathname)
     } catch (error) {
       console.error('Failed to push URL:', error)
     }
