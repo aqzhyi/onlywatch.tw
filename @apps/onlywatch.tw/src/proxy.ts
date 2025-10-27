@@ -2,7 +2,7 @@ import createMiddleware from 'next-intl/middleware'
 import { NextResponse, type NextRequest } from 'next/server'
 import { routing } from '~/features/i18n/routing'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   // return await updateSession(request)
 
   return createMiddleware(routing)(request)

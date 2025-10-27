@@ -2,9 +2,9 @@ import createNextIntlPlugin from 'next-intl/plugin'
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
+  reactCompiler: true,
+  cacheComponents: true,
   experimental: {
-    cacheComponents: true,
-    reactCompiler: true,
     useCache: true,
     browserDebugInfoInTerminal: true,
     globalNotFound: true,
