@@ -22,7 +22,7 @@
     "noImplicitAny": true,
     "noImplicitOverride": true,
     "noUncheckedIndexedAccess": true,
-    // "noUncheckedSideEffectImports": true, // TODO: if it is true, it will cause an type error when importing the .css file
+    "noUncheckedSideEffectImports": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "sourceMap": true,

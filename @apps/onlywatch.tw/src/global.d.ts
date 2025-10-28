@@ -10,3 +10,8 @@ declare namespace NodeJS {
 interface ImportMeta {
   readonly env: EnvVarables
 }
+
+declare module '*.css' {
+  const content: string
+  export default content
+}
