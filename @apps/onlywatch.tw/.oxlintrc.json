@@ -6,14 +6,16 @@
   "plugins": [
     "import",
     // "jsx-a11y",
-    "nextjs",
     "oxc",
     "promise",
     "react-perf",
     "react",
     "typescript",
-    "unicorn",
-    "vitest"
+    "unicorn"
+  ],
+  "extends": [
+    "./node_modules/@onlywatch/oxlintrc/src/nextjs.rules.json",
+    "./node_modules/@onlywatch/oxlintrc/src/vitest.rules.json"
   ],
   "rules": {
     // i support clearly leaving unused function parameters, since
