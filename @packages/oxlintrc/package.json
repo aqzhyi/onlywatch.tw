@@ -7,11 +7,18 @@
   "description": "Shared oxlint configuration presets",
   "version": "0.1.0",
   "type": "module",
-  "main": "./src/vitest.rules.json",
   "exports": {
     "./vitest": {
       "types": "./src/vitest.rules.json",
       "import": "./src/vitest.rules.json"
+    },
+    "./react-perf": {
+      "types": "./src/react-perf.rules.json",
+      "import": "./src/react-perf.rules.json"
+    },
+    "./nextjs": {
+      "types": "./src/nextjs.rules.json",
+      "import": "./src/nextjs.rules.json"
     }
   },
   "files": [
