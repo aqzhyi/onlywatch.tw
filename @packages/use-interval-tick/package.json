@@ -1,0 +1,73 @@
+{
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "name": "@onlywatch/use-interval-tick",
+  "description": "Zero dependencies, the React hooks for interval-based ticking with requestAnimationFrame support",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "clock",
+    "countdown",
+    "counter",
+    "interval",
+    "raf",
+    "react-hooks",
+    "react",
+    "tick",
+    "requestAnimationFrame",
+    "timeout",
+    "timer",
+    "useInterval",
+    "useIntervalTick",
+    "hooks"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aqzhyi/onlywatch.tw.git",
+    "directory": "@packages/use-interval-tick"
+  },
+  "devDependencies": {
+    "@onlywatch/oxlintrc": "workspace:*",
+    "@onlywatch/tsconfigs": "workspace:*",
+    "@testing-library/react": "16.3.0",
+    "@types/react": "19.2.2",
+    "@vitest/coverage-v8": "4.0.5",
+    "del-cli": "7.0.0",
+    "jsdom": "27.1.0",
+    "oxlint": "1.25.0",
+    "prettier": "3.6.2",
+    "prettier-plugin-jsdoc": "1.5.0",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "tsdown": "0.15.12",
+    "typescript": "5.9.3",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "4.0.5"
+  },
+  "peerDependencies": {
+    "react": ">=17.0.0"
+  },
+  "scripts": {
+    "dev": "tsdown --watch",
+    "build": "tsdown",
+    "tsc": "tsc --noEmit",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "clean": "del dist coverage node_modules",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  }
+}

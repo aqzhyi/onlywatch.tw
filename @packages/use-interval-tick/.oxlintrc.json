@@ -1,0 +1,15 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["import", "oxc", "promise", "react", "typescript", "unicorn"],
+  "extends": [
+    // "./node_modules/@onlywatch/oxlintrc/src/nextjs.rules.json",
+    "./node_modules/@onlywatch/oxlintrc/src/react-perf.rules.json",
+    "./node_modules/@onlywatch/oxlintrc/src/vitest.rules.json"
+  ],
+  "rules": {
+    // i support clearly leaving unused function parameters, since
+    // they often have types defined
+    // they can help us remember which parameters are available for this function
+    "no-unused-vars": "allow"
+  }
+}
