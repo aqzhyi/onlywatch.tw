@@ -98,7 +98,7 @@ describe('useInterval', () => {
 
   it('should not set interval when delay is null', () => {
     const mockCallback = vi.fn()
-    const setIntervalSpy = vi.spyOn(global, 'setInterval')
+    const setIntervalSpy = vi.spyOn(globalThis, 'setInterval')
 
     renderHook(() =>
       useInterval({
@@ -117,7 +117,7 @@ describe('useInterval', () => {
 
   it('should not set interval when delay is zero', () => {
     const mockCallback = vi.fn()
-    const setIntervalSpy = vi.spyOn(global, 'setInterval')
+    const setIntervalSpy = vi.spyOn(globalThis, 'setInterval')
 
     renderHook(() =>
       useInterval({
@@ -136,7 +136,7 @@ describe('useInterval', () => {
 
   it('should not set interval when delay is negative', () => {
     const mockCallback = vi.fn()
-    const setIntervalSpy = vi.spyOn(global, 'setInterval')
+    const setIntervalSpy = vi.spyOn(globalThis, 'setInterval')
 
     renderHook(() =>
       useInterval({
@@ -326,7 +326,7 @@ describe('useInterval', () => {
     const delay = 1000
 
     const { rerender } = renderHook(
-      ({ callback }: { callback: (...args: any[]) => unknown }) =>
+      ({ callback }: { callback: (...args: unknown[]) => unknown }) =>
         useInterval({
           onTick: callback,
           refreshInterval: delay,
@@ -360,7 +360,7 @@ describe('useInterval', () => {
   it('should clear interval on component unmount', () => {
     const mockCallback = vi.fn()
     const delay = 1000
-    const clearIntervalSpy = vi.spyOn(global, 'clearInterval')
+    const clearIntervalSpy = vi.spyOn(globalThis, 'clearInterval')
 
     const { unmount } = renderHook(() =>
       useInterval({

@@ -12,13 +12,15 @@ describe('useIntervalTick', () => {
     rafId = 0
 
     // mock requestAnimationFrame
-    global.requestAnimationFrame = vi.fn((callback: FrameRequestCallback) => {
-      rafCallbacks.push(callback)
-      return ++rafId
-    })
+    globalThis.requestAnimationFrame = vi.fn(
+      (callback: FrameRequestCallback) => {
+        rafCallbacks.push(callback)
+        return ++rafId
+      },
+    )
 
     // mock cancelAnimationFrame
-    global.cancelAnimationFrame = vi.fn((id: number) => {
+    globalThis.cancelAnimationFrame = vi.fn((id: number) => {
       // in real implementation, this would stop the callback
       // for testing, we'll just track that it was called
     })
@@ -32,7 +34,9 @@ describe('useIntervalTick', () => {
   const triggerRAF = () => {
     const callbacks = [...rafCallbacks]
     rafCallbacks = []
-    callbacks.forEach((cb) => cb(performance.now()))
+    for (const callback of callbacks) {
+      callback(performance.now())
+    }
   }
 
   describe('core functionality', () => {
@@ -148,7 +152,10 @@ describe('useIntervalTick', () => {
 
       it('should cleanup animation frame on unmount', () => {
         const onTick = vi.fn()
-        const cancelAnimationFrameSpy = vi.spyOn(global, 'cancelAnimationFrame')
+        const cancelAnimationFrameSpy = vi.spyOn(
+          globalThis,
+          'cancelAnimationFrame',
+        )
 
         const { unmount } = renderHook(() =>
           useIntervalTick({
@@ -328,7 +335,10 @@ describe('useIntervalTick', () => {
     it('should keep RAF loop running even when disabled', () => {
       const onTick = vi.fn()
       let isEnabled = false
-      const requestAnimationFrameSpy = vi.spyOn(global, 'requestAnimationFrame')
+      const requestAnimationFrameSpy = vi.spyOn(
+        globalThis,
+        'requestAnimationFrame',
+      )
 
       renderHook(() =>
         useIntervalTick({
@@ -355,7 +365,7 @@ describe('useIntervalTick', () => {
   describe('edge cases', () => {
     it.each([
       { interval: 10, description: 'very small' },
-      { interval: 10000, description: 'very large' },
+      { interval: 10_000, description: 'very large' },
     ])('should handle $description interval ($interval ms)', ({ interval }) => {
       const onTick = vi.fn()
 
