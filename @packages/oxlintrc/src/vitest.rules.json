@@ -1,8 +1,7 @@
 {
-  // see https://github.com/vitest-dev/eslint-plugin-vitest
   "plugins": ["vitest"],
   "rules": {
-    "vitest/max-nested-describe": ["error", { "max": 3 }],
+    // see https://github.com/vitest-dev/eslint-plugin-vitest
     "vitest/no-commented-out-tests": "error",
     "vitest/no-identical-title": "error",
     "vitest/no-import-node-test": "error",

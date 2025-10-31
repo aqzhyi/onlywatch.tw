@@ -1,0 +1,29 @@
+{
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  "extends": [
+    "../import.rules.json",
+    // "../node.rules.json",
+    "../nextjs.rules.json",
+    "../promise.rules.json",
+    "../react-hooks.rules.json",
+    "../react-perf.rules.json",
+    "../react.rules.json",
+    "../typescript.rules.json",
+    "../unicorn.rules.json",
+    "../vitest.rules.json"
+  ],
+  "rules": {
+    // i support clearly leaving unused function parameters, since
+    // they often have types defined
+    // they can help us remember which parameters are available for this function
+    "no-unused-vars": "allow",
+    "@typescript-eslint/no-unused-vars": "allow",
+
+    //
+    "vitest/max-nested-describe": ["error", { "max": 3 }],
+
+    //
+    "unicorn/filename-case": "off",
+    "unicorn/no-null": "off"
+  }
+}

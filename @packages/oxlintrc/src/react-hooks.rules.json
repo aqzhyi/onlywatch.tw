@@ -1,0 +1,8 @@
+{
+  "plugins": ["react"],
+  "rules": {
+    // see https://www.npmjs.com/package/eslint-plugin-react-hooks
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn"
+  }
+}

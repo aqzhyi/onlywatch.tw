@@ -4,21 +4,53 @@
     "access": "public"
   },
   "name": "@onlywatch/oxlintrc",
-  "description": "Shared oxlint configuration presets",
+  "description": "aims to integrate the rules of eslint `plugins` supported by oxc-plugins (especially the `recommended` rules) for easy sharing of configurations across different projects",
   "version": "0.1.0",
   "type": "module",
   "exports": {
-    "./vitest": {
-      "types": "./src/vitest.rules.json",
-      "import": "./src/vitest.rules.json"
+    "./import": {
+      "import": "./src/import.rules.json",
+      "types": "./src/import.rules.json"
     },
-    "./react-perf": {
-      "types": "./src/react-perf.rules.json",
-      "import": "./src/react-perf.rules.json"
+    "./typescript": {
+      "import": "./src/typescript.json",
+      "types": "./src/typescript.json"
+    },
+    "./node": {
+      "import": "./src/node.rules.json",
+      "types": "./src/node.rules.json"
     },
     "./nextjs": {
-      "types": "./src/nextjs.rules.json",
-      "import": "./src/nextjs.rules.json"
+      "import": "./src/nextjs.rules.json",
+      "types": "./src/nextjs.rules.json"
+    },
+    "./promise": {
+      "import": "./src/promise.rules.json",
+      "types": "./src/promise.rules.json"
+    },
+    "./react": {
+      "import": "./src/react.rules.json",
+      "types": "./src/react.rules.json"
+    },
+    "./react-hooks": {
+      "import": "./src/react-hooks.json",
+      "types": "./src/react-hooks.json"
+    },
+    "./react-perf": {
+      "import": "./src/react-perf.rules.json",
+      "types": "./src/react-perf.rules.json"
+    },
+    "./unicorn": {
+      "import": "./src/unicorn.rules.json",
+      "types": "./src/unicorn.rules.json"
+    },
+    "./vitest": {
+      "import": "./src/vitest.rules.json",
+      "types": "./src/vitest.rules.json"
+    },
+    "./opinion-rules/base": {
+      "import": "./src/opinion-rules/base.json",
+      "types": "./src/opinion-rules/base.json"
     }
   },
   "files": [
@@ -26,12 +58,16 @@
     "README.md"
   ],
   "keywords": [
+    "oxlintrc",
     "oxlint",
     "eslint",
     "lint",
     "linter",
     "config",
     "configuration",
+    "preset",
+    "recommended",
+    "rules",
     "vitest",
     "testing"
   ],
