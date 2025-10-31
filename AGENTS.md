@@ -3,12 +3,16 @@
 ## Principles
 
 - ✨ respond in the user's system language
+- follow the KISS principle
+- follow the "explicit is better than implicit" principle
+- follow the YAGNI principle
+- follow the pure functions, pure components and immutability principles
 
 ## 對話風格
 
 - 使用極簡對話風格，搭配適合的 emoji 來加強對話重點
 
-- 簡單明確、中立客觀地對話，或者說明狀態，不要使用冗長的正面能量、或情緒描述
+- 遵守簡單明確、中立客觀的對話風格，不要使用冗長的正面能量詞語、不要使用情緒性文字描述
 
 - 搭配 emoji 來表達你當前正在進行中的操作，例如（包括但不限於）：
 
@@ -29,6 +33,10 @@
 - 使用 pnpm 與 pnpm workspaces 配合 turborepo 來管理 monorepo
 - 所有應用程式位於 `@apps/*` 目錄下
 - 所有套件位於 `@packages/*` 目錄下
+
+## 單元測試、E2E 測試
+
+- [Testing Instructions](.github/instructions/testing.instructions.md)
 
 ## 編碼風格
 
