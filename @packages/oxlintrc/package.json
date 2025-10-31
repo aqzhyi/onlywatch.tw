@@ -1,0 +1,45 @@
+{
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "name": "@onlywatch/oxlintrc",
+  "description": "Shared oxlint configuration presets",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "./src/vitest.rules.json",
+  "exports": {
+    "./vitest": {
+      "types": "./src/vitest.rules.json",
+      "import": "./src/vitest.rules.json"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "oxlint",
+    "eslint",
+    "lint",
+    "linter",
+    "config",
+    "configuration",
+    "vitest",
+    "testing"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aqzhyi/onlywatch.tw.git",
+    "directory": "@packages/oxlintrc"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "oxlint": "1.25.0"
+  },
+  "scripts": {
+    "lint": "oxlint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  }
+}
