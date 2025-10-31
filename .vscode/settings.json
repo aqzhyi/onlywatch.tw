@@ -10,7 +10,14 @@
   "oxc.enable": true,
   "prettier.enable": true,
   "tailwind-fold.foldStyle": "QUOTES",
-  "tailwindCSS.classFunctions": ["cva", "cx", "clsx", "cn"],
+  "tailwindCSS.classFunctions": [
+    "twMerge",
+    "twJoin",
+    "cva",
+    "cx",
+    "clsx",
+    "cn"
+  ],
   "tailwindCSS.classAttributes": [
     "class",
     "className",
