@@ -8,45 +8,45 @@
   "version": "0.1.0",
   "type": "module",
   "exports": {
-    "./import": {
-      "import": "./src/import.rules.json",
-      "types": "./src/import.rules.json"
+    "./recommended/import": {
+      "import": "./src/recommended/import.json",
+      "types": "./src/recommended/import.json"
     },
-    "./typescript": {
-      "import": "./src/typescript.json",
-      "types": "./src/typescript.json"
+    "./recommended/typescript": {
+      "import": "./src/recommended/typescript.json",
+      "types": "./src/recommended/typescript.json"
     },
-    "./node": {
-      "import": "./src/node.rules.json",
-      "types": "./src/node.rules.json"
+    "./recommended/node": {
+      "import": "./src/recommended/node.json",
+      "types": "./src/recommended/node.json"
     },
-    "./nextjs": {
-      "import": "./src/nextjs.rules.json",
-      "types": "./src/nextjs.rules.json"
+    "./recommended/nextjs": {
+      "import": "./src/recommended/nextjs.json",
+      "types": "./src/recommended/nextjs.json"
     },
-    "./promise": {
-      "import": "./src/promise.rules.json",
-      "types": "./src/promise.rules.json"
+    "./recommended/promise": {
+      "import": "./src/recommended/promise.json",
+      "types": "./src/recommended/promise.json"
     },
-    "./react": {
-      "import": "./src/react.rules.json",
-      "types": "./src/react.rules.json"
+    "./recommended/react": {
+      "import": "./src/recommended/react.json",
+      "types": "./src/recommended/react.json"
     },
-    "./react-hooks": {
-      "import": "./src/react-hooks.rules.json",
-      "types": "./src/react-hooks.rules.json"
+    "./recommended/react-hooks": {
+      "import": "./src/recommended/react-hooks.json",
+      "types": "./src/recommended/react-hooks.json"
     },
-    "./react-perf": {
-      "import": "./src/react-perf.rules.json",
-      "types": "./src/react-perf.rules.json"
+    "./recommended/react-perf": {
+      "import": "./src/recommended/react-perf.json",
+      "types": "./src/recommended/react-perf.json"
     },
-    "./unicorn": {
-      "import": "./src/unicorn.rules.json",
-      "types": "./src/unicorn.rules.json"
+    "./recommended/unicorn": {
+      "import": "./src/recommended/unicorn.json",
+      "types": "./src/recommended/unicorn.json"
     },
-    "./vitest": {
-      "import": "./src/vitest.rules.json",
-      "types": "./src/vitest.rules.json"
+    "./recommended/vitest": {
+      "import": "./src/recommended/vitest.json",
+      "types": "./src/recommended/vitest.json"
     },
     "./opinion-rules/base": {
       "import": "./src/opinion-rules/base.json",
