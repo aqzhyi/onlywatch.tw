@@ -56,7 +56,7 @@ this package organizes multiple commonly used `plugins` and their `recommended` 
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "extends": [
-+   "./node_modules/@onlywatch/oxlintrc/src/opinion-rules/base.json",
++   "./node_modules/@onlywatch/oxlintrc/src/opinion-rules/all.json",
   ],
 }
 ```
