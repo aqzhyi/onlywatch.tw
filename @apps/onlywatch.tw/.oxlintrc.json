@@ -14,8 +14,8 @@
     "unicorn"
   ],
   "extends": [
-    "./node_modules/@onlywatch/oxlintrc/src/nextjs.rules.json",
-    "./node_modules/@onlywatch/oxlintrc/src/vitest.rules.json"
+    "./node_modules/@onlywatch/oxlintrc/src/recommended/nextjs.json",
+    "./node_modules/@onlywatch/oxlintrc/src/recommended/vitest.json"
   ],
   "rules": {
     // i support clearly leaving unused function parameters, since
