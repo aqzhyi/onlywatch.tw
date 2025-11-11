@@ -33,15 +33,15 @@ this package organizes multiple commonly used `plugins` and their `recommended` 
    {
      "$schema": "./node_modules/oxlint/configuration_schema.json",
      "extends": [
-   +   "./node_modules/@onlywatch/oxlintrc/src/nextjs.rules.json",
-   +   "./node_modules/@onlywatch/oxlintrc/src/vitest.rules.json",
-   +   "./node_modules/@onlywatch/oxlintrc/src/unicorn.rules.json",
-   +   "./node_modules/@onlywatch/oxlintrc/src/import.rules.json",
-   +   "./node_modules/@onlywatch/oxlintrc/src/node.rules.json",
-   +   "./node_modules/@onlywatch/oxlintrc/src/react.rules.json",
-   +   "./node_modules/@onlywatch/oxlintrc/src/react-hooks.rules.json",
-   +   "./node_modules/@onlywatch/oxlintrc/src/react-perf.rules.json",
-   +   "./node_modules/@onlywatch/oxlintrc/src/promise.rules.json",
+   +   "./node_modules/@onlywatch/oxlintrc/src/recommended/nextjs.json",
+   +   "./node_modules/@onlywatch/oxlintrc/src/recommended/vitest.json",
+   +   "./node_modules/@onlywatch/oxlintrc/src/recommended/unicorn.json",
+   +   "./node_modules/@onlywatch/oxlintrc/src/recommended/import.json",
+   +   "./node_modules/@onlywatch/oxlintrc/src/recommended/node.json",
+   +   "./node_modules/@onlywatch/oxlintrc/src/recommended/react.json",
+   +   "./node_modules/@onlywatch/oxlintrc/src/recommended/react-hooks.json",
+   +   "./node_modules/@onlywatch/oxlintrc/src/recommended/react-perf.json",
+   +   "./node_modules/@onlywatch/oxlintrc/src/recommended/promise.json",
      ],
    }
    ```
