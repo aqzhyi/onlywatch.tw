@@ -1,5 +1,4 @@
 {
-  "plugins": ["n"],
   "rules": {
     // see https://github.com/eslint-community/eslint-plugin-n
     "n/hashbang": "error",

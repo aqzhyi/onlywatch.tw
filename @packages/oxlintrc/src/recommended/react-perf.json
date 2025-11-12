@@ -1,5 +1,4 @@
 {
-  "plugins": ["react-perf"],
   "rules": {
     // https://github.com/cvazac/eslint-plugin-react-perf
     "react-perf/jsx-no-new-array-as-prop": "warn",

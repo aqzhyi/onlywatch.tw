@@ -1,16 +1,16 @@
 {
   "$schema": "../../node_modules/oxlint/configuration_schema.json",
   "extends": [
-    "../import.rules.json",
-    // "../node.rules.json",
-    "../nextjs.rules.json",
-    "../promise.rules.json",
-    "../react-hooks.rules.json",
-    "../react-perf.rules.json",
-    "../react.rules.json",
-    "../typescript.rules.json",
-    "../unicorn.rules.json",
-    "../vitest.rules.json"
+    "../recommended/import.json",
+    // "../recommended/node.json", // FIXME: Plugin 'n' not found
+    "../recommended/nextjs.json",
+    "../recommended/promise.json",
+    "../recommended/react-hooks.json",
+    "../recommended/react-perf.json",
+    "../recommended/react.json",
+    "../recommended/typescript.json",
+    "../recommended/unicorn.json",
+    "../recommended/vitest.json"
   ],
   "rules": {
     // i support clearly leaving unused function parameters, since

@@ -1,5 +1,4 @@
 {
-  "plugins": ["vitest"],
   "rules": {
     // see https://github.com/vitest-dev/eslint-plugin-vitest
     "vitest/no-commented-out-tests": "error",

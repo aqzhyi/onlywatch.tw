@@ -1,5 +1,4 @@
 {
-  "plugins": ["unicorn"],
   "rules": {
     // see https://github.com/sindresorhus/eslint-plugin-unicorn
     "unicorn/catch-error-name": "error",

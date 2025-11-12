@@ -1,5 +1,4 @@
 {
-  "plugins": ["typescript"],
   "rules": {
     // see https://typescript-eslint.io/rules/
     "@typescript-eslint/await-thenable": "error",

@@ -1,5 +1,4 @@
 {
-  "plugins": ["react"],
   "rules": {
     // see https://github.com/jsx-eslint/eslint-plugin-react
     "react/display-name": "error",
