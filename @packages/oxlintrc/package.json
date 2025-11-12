@@ -4,7 +4,7 @@
     "access": "public"
   },
   "name": "@onlywatch/oxlintrc",
-  "description": "aims to integrate the rules of eslint `plugins` supported by oxc-plugins (especially the `recommended` rules) for easy sharing of configurations across different projects",
+  "description": "Battery-included oxlint configuration presets with recommended rules from popular ESLint plugins",
   "version": "0.1.0",
   "type": "module",
   "exports": {
@@ -64,16 +64,30 @@
   "keywords": [
     "oxlintrc",
     "oxlint",
+    "oxc",
     "eslint",
+    "eslint-plugin",
+    "eslint-config",
     "lint",
     "linter",
     "config",
     "configuration",
     "preset",
+    "presets",
     "recommended",
     "rules",
+    "shareable-config",
+    "nextjs",
+    "react",
+    "react-hooks",
+    "typescript",
+    "node",
+    "import",
+    "promise",
+    "unicorn",
     "vitest",
-    "testing"
+    "testing",
+    "code-quality"
   ],
   "repository": {
     "type": "git",

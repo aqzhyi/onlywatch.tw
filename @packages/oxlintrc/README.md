@@ -15,7 +15,7 @@
 
 seems...
 
-there doesn't seem to be a good way to load multiple `plugins` in `.oxlintrc.json` that can enable all `recommended` rule sets at once
+there doesn't seem to be a good way to load multiple `plugins` in `.oxlintrc.json` and enable all `recommended` rule sets at once
 
 so...
 
@@ -25,9 +25,9 @@ this package organizes multiple commonly used `plugins` and their `recommended` 
 
 1. install the package
 
-   `pnpm i @onlywatch/oxlintrc -D`
+   - `pnpm i oxlintrc @onlywatch/oxlintrc -D`
 
-1. in your project's `.oxlintrc.json`, extend the presets to include the `recommended` rules you wish to enable, for example:
+1. touch a file named `.oxlintrc.json`, extend the presets to include the `recommended` rules you wish to enable, for example:
 
    ```diff
    {
