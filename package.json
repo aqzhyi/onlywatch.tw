@@ -2,17 +2,19 @@
   "name": "monorepo",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.19.0",
+  "packageManager": "pnpm@10.21.0",
   "devDependencies": {
     "@changesets/changelog-git": "0.2.1",
     "@changesets/cli": "2.29.7",
-    "@types/node": "24.6.2",
+    "@types/node": "24.10.1",
     "changeset-conventional-commits": "0.2.5",
-    "lefthook": "1.13.6",
-    "turbo": "2.5.8",
+    "lefthook": "2.0.3",
+    "turbo": "2.6.1",
     "typescript": "5.9.3"
   },
   "scripts": {
+    "prepare:README": "💡 Installs configured hooks to Git hooks.",
+    "prepare": "lefthook install",
     "build": "turbo run build",
     "clean": "turbo run clean",
     "dev": "turbo run dev",

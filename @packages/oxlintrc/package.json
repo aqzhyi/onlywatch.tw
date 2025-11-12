@@ -48,13 +48,13 @@
       "import": "./src/recommended/vitest.json",
       "types": "./src/recommended/vitest.json"
     },
-    "./opinion-rules/base": {
-      "import": "./src/opinion-rules/base.json",
-      "types": "./src/opinion-rules/base.json"
+    "./opinion/base": {
+      "import": "./src/opinion/base.json",
+      "types": "./src/opinion/base.json"
     },
-    "./opinion-rules/all": {
-      "import": "./src/opinion-rules/all.json",
-      "types": "./src/opinion-rules/all.json"
+    "./opinion/own": {
+      "import": "./src/opinion/own.json",
+      "types": "./src/opinion/own.json"
     }
   },
   "files": [
@@ -81,8 +81,8 @@
     "directory": "@packages/oxlintrc"
   },
   "dependencies": {},
-  "devDependencies": {
-    "oxlint": "1.25.0"
+  "peerDependencies": {
+    "oxlint": ">= 1.0.0"
   },
   "scripts": {
     "lint": "oxlint",
