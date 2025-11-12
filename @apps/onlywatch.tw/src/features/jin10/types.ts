@@ -1,3 +1,4 @@
+// oxlint-disable-next-line no-namespace
 export namespace Jin10 {
   /**
    * jin10 native http API for data `/get/data?date={2024-09-09}`

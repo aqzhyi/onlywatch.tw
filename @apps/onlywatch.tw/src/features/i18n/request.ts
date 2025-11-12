@@ -11,6 +11,7 @@ export default getRequestConfig(async () => {
 
   return {
     locale: locale,
+    // oxlint-disable-next-line no-await-expression-member FIXME: don't know how to fix this for now
     messages: (await import(`./locales/${locale}.json`)).default,
   }
 })
