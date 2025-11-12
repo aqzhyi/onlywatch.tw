@@ -21,13 +21,20 @@ async function UpsertEventsCronjob() {
 /**
  * @see https://developers.google.com/apps-script/reference/url-fetch/url-fetch-app?hl=zh-tw
  */
+// oxlint-disable-next-line no-namespace
 declare namespace UrlFetchApp {
-  export const fetch: any
+  export const fetch: (
+    url: string,
+    params?: Record<string, unknown>,
+  ) => {
+    getContentText: () => string
+  }
 }
 
 /**
  * @see https://developers.google.com/apps-script/reference/url-fetch/url-fetch-app?hl=zh-tw
  */
+// oxlint-disable-next-line no-namespace
 declare namespace Logger {
-  export const log: any
+  export const log: (data: unknown) => void
 }
