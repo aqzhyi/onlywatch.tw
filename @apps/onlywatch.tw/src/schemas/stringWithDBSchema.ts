@@ -40,7 +40,7 @@ export const stringWithDBSchema = z.string().refine(
 
     // Extended Chinese character ranges and common symbols
     const allowedCharactersOnly =
-      /^[a-zA-Z0-9\u4e00-\u9fff\u3400-\u4dbf\u20000-\u2a6df\u2a700-\u2b73f\u2b740-\u2b81f\u2b820-\u2ceaf\uf900-\ufaff\u3300-\u33ff\ufe30-\ufe4f\uff00-\uffef\s+\-_()（）]*$/.test(
+      /^[a-zA-Z0-9\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6Df\u2A700-\u2B73f\u2B740-\u2B81f\u2B820-\u2CEAf\uF900-\uFAFF\u3300-\u33FF\uFE30-\uFE4F\uFF00-\uFFEF\s+\-_()（）]*$/.test(
         normalizedInput,
       )
 

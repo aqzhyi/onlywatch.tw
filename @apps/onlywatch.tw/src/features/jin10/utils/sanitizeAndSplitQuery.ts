@@ -19,21 +19,21 @@ export function sanitizeAndSplitQuery(query?: string): string[] {
     return []
   }
 
-  // ! ⛑️ avoid sql injection
-  const sanitizeQuery = (singleQuery: string): string => {
-    return (
-      singleQuery
-        // First remove SQL comment symbols and dangerous patterns
-        .replace(/--+/g, '') // Remove SQL comment syntax
-        .replace(/\/\*[\s\S]*?\*\//g, '') // Remove /* */ comments
-        // Then allow only safe characters: Chinese, English, numbers, spaces, single hyphens, underscores, and dots
-        .replace(/[^a-zA-Z0-9\u4e00-\u9fff\s_.-]/g, '')
-        .trim()
-    )
-  }
-
   return query
     .split(/[,\s]/)
     .map((singleQuery) => sanitizeQuery(singleQuery))
     .filter((singleQuery) => singleQuery.length > 0)
+}
+
+// ! ⛑️ avoid sql injection
+const sanitizeQuery = (singleQuery: string): string => {
+  return (
+    singleQuery
+      // First remove SQL comment symbols and dangerous patterns
+      .replaceAll(/--+/g, '') // Remove SQL comment syntax
+      .replaceAll(/\/\*[\s\S]*?\*\//g, '') // Remove /* */ comments
+      // Then allow only safe characters: Chinese, English, numbers, spaces, single hyphens, underscores, and dots
+      .replaceAll(/[^a-zA-Z0-9\u4E00-\u9FFF\s_.-]/g, '')
+      .trim()
+  )
 }

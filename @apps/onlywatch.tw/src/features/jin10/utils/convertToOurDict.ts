@@ -17,13 +17,13 @@ import { constants } from '~/features/jin10/constants'
 export function convertToOurDict(
   data: Tables<'jin10_events'>[],
 ): Tables<'jin10_events'>[] {
-  constants.financialTermDict.forEach(({ from, to }) => {
+  for (const { from, to } of constants.financialTermDict) {
     data = data.map((item) => {
       if (typeof item.display_title === 'string') {
         item.display_title = item.display_title.replace(from, to)
       }
       return item
     })
-  })
+  }
   return data
 }

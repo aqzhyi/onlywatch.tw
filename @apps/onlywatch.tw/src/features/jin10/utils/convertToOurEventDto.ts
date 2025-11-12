@@ -24,24 +24,22 @@ export const convertToOurEventDto = (
     const country = countryNameToCountryCode(datum.country || '')
 
     const displayText =
-      'indicator_name' in datum
-        ? datum.indicator_name
-        : 'event_content' in datum
-          ? datum.event_content
-          : ''
+      ('indicator_name' in datum && datum.indicator_name) ||
+      ('event_content' in datum && datum.event_content) ||
+      ''
 
     const revised = 'revised' in datum ? datum.revised : null
     const previous = 'previous' in datum ? datum.previous : null
     const consensus = 'consensus' in datum ? datum.consensus : null
     const actual = 'actual' in datum ? datum.actual : null
+
     const timeAt =
-      'event_time' in datum
-        ? datum.event_time
-        : 'pub_time' in datum
-          ? datum.pub_time
-          : null
+      ('event_time' in datum && datum.event_time) ||
+      ('pub_time' in datum && datum.pub_time) ||
+      null
+
     const unit = 'unit' in datum ? datum.unit : null
-    const id = `${currency}:${timeAt?.replace(/[\s:+-]/gi, '')}:${displayText}`
+    const id = `${currency}:${timeAt?.replaceAll(/[\s:+-]/gi, '')}:${displayText}`
 
     if (duplicatesCheckSet.has(id)) {
       continue
