@@ -49,23 +49,23 @@ export async function generateStaticParams() {
     routes.push({ locale })
     routes.push({ locale, segmentsParams: [] })
 
-    prerenderQueryKeywords.forEach((keyword) => {
+    for (const keyword of prerenderQueryKeywords) {
       routes.push({ locale, segmentsParams: ['query', keyword] })
-    })
+    }
 
-    importantDates.forEach((date) => {
+    for (const date of importantDates) {
       routes.push({ locale, segmentsParams: ['date', date] })
-    })
+    }
 
     // 預渲染一些重要日期 + 關鍵字的組合
-    importantDates.forEach((date) => {
-      prerenderQueryKeywords.forEach((keyword) => {
+    for (const date of importantDates) {
+      for (const keyword of prerenderQueryKeywords) {
         routes.push({
           locale,
           segmentsParams: ['date', date, 'query', keyword],
         })
-      })
-    })
+      }
+    }
   }
 
   return routes
@@ -105,15 +105,10 @@ export default async function Page(
       classNames={{
         base: 'gap-2',
       }}
-      renderHeadCell={function RenderHeadCell({ index }) {
-        return (
-          <WeekdayTitle
-            key={index}
-            value={index}
-          />
-        )
-      }}
+      renderHeadCell={HeadCell}
       renderCell={function RenderCell({ isodate, index }) {
+        const variant = _getDayCardVariant(isodate, params.date)
+
         return (
           <Suspense fallback={<Skeleton className='min-h-44' />}>
             <ManyEventsDrawer
@@ -123,19 +118,46 @@ export default async function Page(
                 <DayCard
                   isodate={isodate}
                   value={eventsPromise}
-                  variant={
-                    params.date === isodate
-                      ? 'today'
-                      : days(isodate).isBefore(days(), 'day')
-                        ? 'past'
-                        : undefined
-                  }
+                  variant={variant}
                 />
               }
             />
           </Suspense>
         )
       }}
+    />
+  )
+}
+
+/**
+ * 取得日曆卡片的顯示變體
+ *
+ * @example
+ *   _getDayCardVariant('2025-01-15', '2025-01-15') // 'today'
+ *   _getDayCardVariant('2025-01-14', '2025-01-15') // 'past'
+ *   _getDayCardVariant('2025-01-16', '2025-01-15') // undefined
+ */
+function _getDayCardVariant(
+  isodate: string,
+  selectedDate?: string,
+): 'today' | 'past' | undefined {
+  if (selectedDate === isodate) {
+    return 'today'
+  }
+
+  const isPastDay = days(isodate).isBefore(days(), 'day')
+  if (isPastDay) {
+    return 'past'
+  }
+
+  return undefined
+}
+
+function HeadCell({ index }: { index: number }) {
+  return (
+    <WeekdayTitle
+      key={index}
+      value={index}
     />
   )
 }
