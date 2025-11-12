@@ -50,6 +50,10 @@ yarn-error.log*
 **/*.tsbuildinfo
 next-env.d.ts
 
+# PM2
+**/logs
+**/.pm2
+
 # Playwright
 test-results
 playwright-report
