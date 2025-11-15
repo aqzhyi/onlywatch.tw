@@ -12,9 +12,10 @@
 
 ## ✍️ Task
 
-- 在你執行 Git 相關任務之前，請先備份所有 [Git Local Changes] 至 Stash，以防止任何意外資料遺失
-- 檢查所有 [Git Local Changes] 並依上述 [Rules] 產生一個或多個合適的 Git commits
+- 在你執行 Git 相關任務之前，請先額外備份一份復本包含所有 [Git Local Changes] 至 Stash（保持 [Git Local Changes] 不動，僅作額外備份）
+- 檢查最近的 commits 以及 [Git Local Changes]，並評估哪些變更適合使用 rebase 對現有 commits 進行整理
+- 根據 [Rules] 整理 commits 或者產生一個或多個合適的 Git commits
 
 ## 🤖 Response
 
-- 👀 基於上述英語版 commits，額外基於 user's system language 提供一份翻譯副本給開發者，讓開發者能夠快速審查你的工作結果
+- 👀 只提供一份翻譯副本給開發者，讓開發者能夠快速審查你的工作結果
