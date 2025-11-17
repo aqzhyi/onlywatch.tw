@@ -13,8 +13,8 @@
     "typescript": "5.9.3"
   },
   "scripts": {
-    "prepare:README": "💡 Installs configured hooks to Git hooks.",
-    "prepare": "lefthook install",
+    "postinstall:README": "💡 Installs configured hooks to Git hooks.",
+    "postinstall": "lefthook install",
     "build": "turbo run build",
     "clean": "turbo run clean",
     "dev": "turbo run dev",
