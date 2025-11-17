@@ -29,7 +29,8 @@
         "JIN10_HEADER_ORIGIN",
         "BETTER_AUTH_SECRET",
         "LINE_CLIENT_ID",
-        "LINE_CLIENT_SECRET"
+        "LINE_CLIENT_SECRET",
+        "TELEGRAM_BOT_TOKEN"
       ],
 
       //
