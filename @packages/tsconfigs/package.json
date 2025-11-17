@@ -9,7 +9,8 @@
   "exports": {
     "./base": "./src/base.json",
     "./strict": "./src/strict.json",
-    "./strictest": "./src/strictest.json"
+    "./strictest": "./src/strictest.json",
+    "./strictest_monorepo": "./src/strictest_monorepo.json"
   },
   "files": [
     "src"
