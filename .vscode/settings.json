@@ -25,5 +25,6 @@
     "ngClass",
     "class:list"
   ],
+  "turbo.useLocalTurbo": true,
   "typescript.tsdk": "node_modules/typescript/lib"
 }
