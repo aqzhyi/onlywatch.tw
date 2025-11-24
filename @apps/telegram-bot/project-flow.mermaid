@@ -1,0 +1,99 @@
+sequenceDiagram
+    participant Cron as Cron Scheduler
+    participant FreshPolling as pollingRefreshNewsFeeds
+    participant PushPolling as pollingPushNewsFeeds
+    participant CleanupPolling as pollingCleanupPushHistory
+    participant DB as Supabase Database
+    participant RSS as RSS Feed Sources
+    participant Bot as Telegram Bot API
+    participant Subscriber as Telegram Subscribers
+
+    Note over Cron,FreshPolling: 每 60 秒執行一次
+    Cron->>FreshPolling: Trigger (*/60 * * * * *)
+    FreshPolling->>DB: SELECT * FROM tg_rss_feeds WHERE enabled=true
+    DB-->>FreshPolling: Return feeds list
+
+    loop For each RSS feed
+        FreshPolling->>RSS: Fetch RSS XML
+        RSS-->>FreshPolling: Return RSS XML
+        FreshPolling->>FreshPolling: Parse RSS items with feedsmith
+    end
+
+    FreshPolling->>DB: UPSERT tg_rss_items (onConflict: title)
+    DB-->>FreshPolling: Return upsert count
+
+    Note over Cron,PushPolling: 每 2 分鐘執行一次
+    Cron->>PushPolling: Trigger (*/2 * * * *)
+
+    PushPolling->>DB: SELECT items (pub_date > now() - 1h)
+    DB-->>PushPolling: Return items list
+
+    PushPolling->>DB: SELECT feed_observers
+    DB-->>PushPolling: Return subscribers
+
+    PushPolling->>DB: SELECT push_history
+    DB-->>PushPolling: Return push records
+
+    PushPolling->>PushPolling: Build push tasks<br/>(filter by history & retry_count)
+
+    loop For each push task
+        alt Has push history
+            PushPolling->>PushPolling: Check status & retry_count
+            alt status=success
+                PushPolling->>PushPolling: Skip (already pushed)
+            else retry_count >= 3
+                PushPolling->>PushPolling: Skip (retry limit exceeded)
+            else retry_count < 3
+                PushPolling->>PushPolling: Retry push
+            end
+        else No push history
+            PushPolling->>PushPolling: First time push
+        end
+
+        PushPolling->>Bot: sendMessage(tg_id, formatted_message)
+        Bot->>Subscriber: Push notification
+        Bot-->>PushPolling: Success/Error
+
+        alt Push success
+            PushPolling->>DB: INSERT tg_push_history<br/>(status=success, retry_count=0)
+            PushPolling->>PushPolling: Wait 500ms (rate limit)
+        else Push failed
+            PushPolling->>PushPolling: Extract error code
+            alt Permanent error (400/403/404)
+                PushPolling->>DB: INSERT tg_push_history<br/>(status=failed, retry_count=999)
+                PushPolling->>PushPolling: Log: will not retry
+            else Temporary error (429/500/503)
+                PushPolling->>DB: INSERT tg_push_history<br/>(status=failed, retry_count=1)
+                PushPolling->>PushPolling: Log: will retry later
+            end
+        end
+    end
+
+    PushPolling->>PushPolling: Log summary stats
+
+    Note over Cron,CleanupPolling: 每日 04:00 和 05:00 執行
+    Cron->>CleanupPolling: Trigger (0 4,5 * * *)
+
+    CleanupPolling->>CleanupPolling: Calculate cutoff date<br/>(now - 7 days)
+
+    CleanupPolling->>DB: DELETE FROM tg_push_history<br/>WHERE pushed_at < cutoff
+    DB-->>CleanupPolling: Return deleted count
+
+    alt Cleanup success
+        CleanupPolling->>CleanupPolling: Log: ✅ Cleaned N records
+    else Cleanup failed
+        CleanupPolling->>CleanupPolling: Log: ❌ Failed with error
+    end
+
+    CleanupPolling->>DB: DELETE FROM tg_rss_items<br/>WHERE pub_date < cutoff<br/>AND created_at < cutoff
+    DB-->>CleanupPolling: Return deleted count
+
+    Note over CleanupPolling,DB: 雙重條件防止誤刪<br/>新抓取的舊內容
+
+    alt Cleanup success
+        CleanupPolling->>CleanupPolling: Log: ✅ Cleaned N items
+    else Cleanup failed
+        CleanupPolling->>CleanupPolling: Log: ❌ Failed with error
+    end
+
+    CleanupPolling->>CleanupPolling: Log: 🧹 Cleanup completed
