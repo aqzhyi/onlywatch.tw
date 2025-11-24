@@ -1,0 +1,70 @@
+# Containerignore file for telegram-bot
+# Excludes unnecessary files from the container image to reduce size and build time
+
+# Dependencies (will be installed during build)
+node_modules
+**/node_modules
+
+# Build artifacts
+dist
+build
+.turbo
+coverage
+.vitest
+
+# Test files
+*.test.ts
+*.test.js
+*.spec.ts
+*.spec.js
+**/__tests__
+test-results
+
+# Environment files (secrets should be injected at runtime)
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+
+# CI/CD
+.github
+
+# Development tools
+.prettierrc.*
+.prettierignore
+
+# Documentation (not needed in runtime)
+README.md
+*.md
+!README.container.md
+
+# Container files
+Containerfile
+.containerignore
+pod.yaml
+
+# Vitest configuration
+vitest.config.ts
+vitest.setup.ts
