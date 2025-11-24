@@ -1,4 +1,4 @@
-# 編碼注意事項
+# Coding Concerns
 
 - 不完整、未考慮 edge case
 - 不符合專案整體風格

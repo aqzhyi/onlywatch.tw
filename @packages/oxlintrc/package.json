@@ -1,0 +1,106 @@
+{
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "name": "@onlywatch/oxlintrc",
+  "description": "Battery-included oxlint configuration presets with recommended rules from popular ESLint plugins",
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    "./recommended/import": {
+      "import": "./src/recommended/import.json",
+      "types": "./src/recommended/import.json"
+    },
+    "./recommended/typescript": {
+      "import": "./src/recommended/typescript.json",
+      "types": "./src/recommended/typescript.json"
+    },
+    "./recommended/node": {
+      "import": "./src/recommended/node.json",
+      "types": "./src/recommended/node.json"
+    },
+    "./recommended/nextjs": {
+      "import": "./src/recommended/nextjs.json",
+      "types": "./src/recommended/nextjs.json"
+    },
+    "./recommended/promise": {
+      "import": "./src/recommended/promise.json",
+      "types": "./src/recommended/promise.json"
+    },
+    "./recommended/react": {
+      "import": "./src/recommended/react.json",
+      "types": "./src/recommended/react.json"
+    },
+    "./recommended/react-hooks": {
+      "import": "./src/recommended/react-hooks.json",
+      "types": "./src/recommended/react-hooks.json"
+    },
+    "./recommended/react-perf": {
+      "import": "./src/recommended/react-perf.json",
+      "types": "./src/recommended/react-perf.json"
+    },
+    "./recommended/unicorn": {
+      "import": "./src/recommended/unicorn.json",
+      "types": "./src/recommended/unicorn.json"
+    },
+    "./recommended/vitest": {
+      "import": "./src/recommended/vitest.json",
+      "types": "./src/recommended/vitest.json"
+    },
+    "./opinion/base": {
+      "import": "./src/opinion/base.json",
+      "types": "./src/opinion/base.json"
+    },
+    "./opinion/own": {
+      "import": "./src/opinion/own.json",
+      "types": "./src/opinion/own.json"
+    }
+  },
+  "files": [
+    "src",
+    "README.md"
+  ],
+  "keywords": [
+    "oxlintrc",
+    "oxlint",
+    "oxc",
+    "eslint",
+    "eslint-plugin",
+    "eslint-config",
+    "lint",
+    "linter",
+    "config",
+    "configuration",
+    "preset",
+    "presets",
+    "recommended",
+    "rules",
+    "shareable-config",
+    "nextjs",
+    "react",
+    "react-hooks",
+    "typescript",
+    "node",
+    "import",
+    "promise",
+    "unicorn",
+    "vitest",
+    "testing",
+    "code-quality"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aqzhyi/onlywatch.tw.git",
+    "directory": "@packages/oxlintrc"
+  },
+  "dependencies": {},
+  "peerDependencies": {
+    "oxlint": ">= 1.0.0"
+  },
+  "scripts": {
+    "lint": "oxlint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  }
+}

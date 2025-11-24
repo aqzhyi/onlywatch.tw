@@ -1,1 +1,1 @@
-export const isClientSide = typeof globalThis.window !== 'undefined'
+export const isClientSide = globalThis.window !== undefined

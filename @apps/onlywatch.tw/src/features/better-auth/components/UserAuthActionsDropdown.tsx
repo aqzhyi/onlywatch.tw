@@ -62,8 +62,7 @@ export function UserAuthActionsDropdown({
       <DropdownTrigger>{children}</DropdownTrigger>
 
       <DropdownMenu aria-label='使用者選單'>
-        {!isSignedIn ? signInButton : null}
-        {isSignedIn ? signOutButton : null}
+        {isSignedIn ? signOutButton : signInButton}
       </DropdownMenu>
     </Dropdown>
   )

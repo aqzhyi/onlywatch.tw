@@ -12,7 +12,7 @@ test.describe('useMatchMedia', () => {
 
     // 檢查媒體查詢狀態 - 大螢幕應該是 true
     const largeScreenState = await page.evaluate(() => {
-      return window.matchMedia('(min-width: 48rem)').matches
+      return globalThis.matchMedia('(min-width: 48rem)').matches
     })
     expect(largeScreenState).toBe(true)
 
@@ -22,16 +22,16 @@ test.describe('useMatchMedia', () => {
 
     // 檢查媒體查詢狀態 - 小螢幕應該是 false
     const smallScreenState = await page.evaluate(() => {
-      return window.matchMedia('(min-width: 48rem)').matches
+      return globalThis.matchMedia('(min-width: 48rem)').matches
     })
     expect(smallScreenState).toBe(false)
 
-    // 再次設置為大螢幕，確保狀態正確切換
+    // 再次設置為大螢幕,確保狀態正確切換
     await page.setViewportSize({ width: 900, height: 800 })
     await page.waitForTimeout(200)
 
     const finalState = await page.evaluate(() => {
-      return window.matchMedia('(min-width: 48rem)').matches
+      return globalThis.matchMedia('(min-width: 48rem)').matches
     })
     expect(finalState).toBe(true)
   })

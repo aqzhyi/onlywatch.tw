@@ -66,6 +66,7 @@ export function EventCard(
           <span className='text-sm dark:text-zinc-400'>({props.country})</span>
           <Datetime value={props.publishAt} />
         </div>
+        {/* oxlint-disable-next-line no-explicit-any FIXME: wanna remove `as any` but don't know how to for now */}
         <div>{$t(`eventTitles.${props.title}` as any)}</div>
         <div className={twMerge([hasNoNumbers && 'hidden'])}>{numbers}</div>
       </CardBody>

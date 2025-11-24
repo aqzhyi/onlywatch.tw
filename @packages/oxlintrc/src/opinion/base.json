@@ -1,0 +1,19 @@
+//
+// list of supported plugins
+// refs to 👉 https://oxc.rs/docs/guide/usage/linter/plugins.html
+{
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  "extends": [
+    "../recommended/import.json",
+    // "../recommended/node.json",
+    // "../recommended/nextjs.json",
+    "../recommended/promise.json",
+    // "../recommended/react-hooks.json",
+    // "../recommended/react-perf.json",
+    // "../recommended/react.json",
+    "../recommended/typescript.json",
+    "../recommended/unicorn.json"
+    // "../recommended/vitest.json"
+  ],
+  "rules": {}
+}

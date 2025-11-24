@@ -3,10 +3,13 @@ import { defineConfig } from 'tsdown'
 export default defineConfig({
   entry: ['src/index.ts', './src/utils/index.ts'],
   format: ['esm'],
-  dts: true,
+  dts: {
+    resolve: true,
+  },
   external: ['react', 'next/navigation'],
   sourcemap: true,
   minify: true,
   outDir: 'dist',
   ignoreWatch: [/[.]turbo/],
+  unbundle: true,
 })

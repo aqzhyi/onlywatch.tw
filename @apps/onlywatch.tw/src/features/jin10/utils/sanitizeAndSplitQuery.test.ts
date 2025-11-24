@@ -3,7 +3,7 @@ import { sanitizeAndSplitQuery } from './sanitizeAndSplitQuery'
 
 describe('sanitizeAndSplitQuery', () => {
   it('should return empty array for undefined input', () => {
-    expect(sanitizeAndSplitQuery(undefined)).toEqual([])
+    expect(sanitizeAndSplitQuery()).toEqual([])
   })
 
   it('should return empty array for empty string', () => {

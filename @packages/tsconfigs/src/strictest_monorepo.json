@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./strictest.json",
+  "compilerOptions": {
+    // === Monorepo Core Options ===
+    "incremental": true, // when composite is true, it is enabled by default, but it is recommended to declare it explicitly
+    "composite": true, // tell TypeScript to create a .tsbuildinfo file. this tells TypeScript that your project is part of a monorepo and helps cache builds to make them faster
+    "declaration": true,
+    "declarationMap": true,
+    "tsBuildInfoFile": "./dist/tsconfig.tsbuildinfo",
+    "sourceMap": true
+  }
+}

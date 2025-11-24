@@ -65,15 +65,15 @@ const displayTitles: Map<string, string> = new Map(
     let title = item.display_title || ''
 
     // 進行關鍵字替換
-    Object.entries(constants.financialTermDict).forEach(([, value]) => {
+    for (const [, value] of Object.entries(constants.financialTermDict)) {
       title = title.replace(value.from, value.to) || ''
-    })
+    }
 
     return [title, title]
   }) || [],
 )
 
-console.log('🔸', Array.from(displayTitles.values()).join('\n🔸 '))
+console.log('🔸', [...displayTitles.values()].join('\n🔸 '))
 console.log('📊 資料庫筆數', data.length, '個元素')
 console.log('📊 總共找到', displayTitles.size, '個不重複元素')
 
@@ -92,7 +92,7 @@ try {
 
   console.log('✅ 成功寫入檔案:', OUTPUT_BASE_FILE)
   console.log('📁 檔案大小:', (jsonContent.length / 1024).toFixed(2), 'KB')
-} catch (writeError) {
-  console.error('❌ 寫入檔案失敗:', writeError)
+} catch (error) {
+  console.error('❌ 寫入檔案失敗:', error)
   process.exit(1)
 }

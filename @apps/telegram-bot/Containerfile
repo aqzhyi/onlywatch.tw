@@ -1,0 +1,36 @@
+FROM docker.io/library/node:22-alpine AS base
+
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# Set working directory
+WORKDIR /monorepo
+
+# Copy root workspace configuration files
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+
+# Copy workspace packages package.json files for dependency resolution
+COPY @packages/oxlintrc/package.json ./@packages/oxlintrc/
+COPY @packages/tsconfigs/package.json ./@packages/tsconfigs/
+
+# Copy telegram-bot package.json
+COPY @apps/telegram-bot/package.json ./@apps/telegram-bot/
+
+# Install dependencies with frozen lockfile for reproducibility
+# Use --prod to install only production dependencies (exclude devDependencies)
+# Use --ignore-scripts to skip postinstall hooks (lefthook not needed in container)
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts
+
+# Copy workspace packages source code
+COPY @packages/oxlintrc ./@packages/oxlintrc/
+COPY @packages/tsconfigs ./@packages/tsconfigs/
+
+# Copy telegram-bot application source code
+COPY @apps/telegram-bot/src ./@apps/telegram-bot/src/
+
+# Set working directory to the telegram-bot application
+WORKDIR /monorepo/@apps/telegram-bot
+
+# Expose no ports (bot uses long-polling, no incoming connections needed)
+
+# Start the bot using the start script defined in package.json
+CMD ["pnpm", "start"]

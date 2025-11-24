@@ -22,17 +22,12 @@ export async function DayCard({
   const isToday = isodate === today
   const isPast = days(isodate).isBefore(days(today), 'days')
 
-  const countryEventCounts =
-    data?.[isodate]
-      ?.filter((event) => event.country)
-      .reduce(
-        (counts, event) => {
-          const country = event.country!
-          counts[country] = (counts[country] || 0) + 1
-          return counts
-        },
-        {} as Record<string, number>,
-      ) || {}
+  const countryEventCounts: Record<string, number> = {}
+  const events = data?.[isodate]?.filter((event) => event.country) || []
+  for (const event of events) {
+    const country = event.country!
+    countryEventCounts[country] = (countryEventCounts[country] || 0) + 1
+  }
 
   return (
     <Card

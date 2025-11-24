@@ -1,0 +1,45 @@
+{
+  "private": true,
+  "name": "telegram-bot",
+  "type": "module",
+  "version": "1.0.0",
+  "devDependencies": {
+    "@onlywatch/oxlintrc": "workspace:*",
+    "@onlywatch/tsconfigs": "workspace:*",
+    "@total-typescript/ts-reset": "0.6.1",
+    "@types/node": "24.10.1",
+    "@vitest/coverage-v8": "4.0.8",
+    "del-cli": "7.0.0",
+    "oxlint": "1.28.0",
+    "prettier": "3.6.2",
+    "prettier-plugin-jsdoc": "1.5.0",
+    "supabase": "2.58.5",
+    "typescript": "5.9.3",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "4.0.8",
+    "zx": "8.8.5"
+  },
+  "dependencies": {
+    "@sindresorhus/is": "7.1.1",
+    "@supabase/supabase-js": "2.75.0",
+    "cron": "4.3.4",
+    "dedent": "1.7.0",
+    "dotenv": "17.2.3",
+    "feedsmith": "2.5.0",
+    "grammy": "1.38.3",
+    "spacetime": "7.11.0",
+    "tsx": "4.20.6",
+    "zod": "4.1.12"
+  },
+  "scripts": {
+    "predev": "pnpm run gen:db:types",
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "lint": "oxlint",
+    "test": "vitest run",
+    "tsc": "tsc --noEmit",
+    "clean": "del dist node_modules .turbo",
+    "format": "oxlint --fix --fix-suggestions",
+    "gen:db:types": "tsx ./scripts/typegen-supabase.ts"
+  }
+}
