@@ -2,13 +2,13 @@
   "name": "monorepo",
   "private": true,
   "type": "module",
-  "packageManager": "pnpm@10.21.0",
+  "packageManager": "pnpm@10.23.0",
   "devDependencies": {
     "@changesets/changelog-git": "0.2.1",
     "@changesets/cli": "2.29.7",
     "@types/node": "24.10.1",
     "changeset-conventional-commits": "0.2.5",
-    "lefthook": "2.0.3",
+    "lefthook": "2.0.4",
     "turbo": "2.6.1",
     "typescript": "5.9.3"
   },
