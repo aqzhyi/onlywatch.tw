@@ -64,8 +64,8 @@ export function pollingPushNewsFeeds() {
       // Get all feed-observer relationships
       const feedIds = items.map((item) => item.feed_id)
       const { data: feedObservers, error: observersError } = await database
-        .from('tg_feeds_observers')
-        .select('feed_id, tg_id')
+        .from('tg_watchers')
+        .select('feed_id, observer_id')
         .in('feed_id', feedIds)
 
       if (observersError) {
@@ -82,7 +82,7 @@ export function pollingPushNewsFeeds() {
       const itemIds = items.map((item) => item.id)
       const { data: pushHistory, error: historyError } = await database
         .from('tg_push_history')
-        .select('item_id, tg_id, status, retry_count')
+        .select('item_id, observer_id, status, retry_count')
         .in('item_id', itemIds)
 
       if (historyError) {
@@ -93,7 +93,7 @@ export function pollingPushNewsFeeds() {
       // Build push tasks
       const pushTasks: Array<{
         item: ItemWithFeed
-        tgId: number
+        observerId: number
       }> = []
 
       for (const item of items) {
@@ -103,7 +103,9 @@ export function pollingPushNewsFeeds() {
 
         for (const subscriber of subscribers) {
           const historyRecord = pushHistory?.find(
-            (h) => h.item_id === item.id && h.tg_id === subscriber.tg_id,
+            (history) =>
+              history.item_id === item.id &&
+              history.observer_id === subscriber.observer_id,
           )
 
           // Skip if already successfully pushed
@@ -118,7 +120,7 @@ export function pollingPushNewsFeeds() {
 
           pushTasks.push({
             item,
-            tgId: subscriber.tg_id,
+            observerId: subscriber.observer_id,
           })
         }
       }
@@ -136,11 +138,11 @@ export function pollingPushNewsFeeds() {
       let failureCount = 0
 
       for (const task of pushTasks) {
-        const { item, tgId } = task
+        const { item, observerId } = task
         const message = formatNewsMessage(item)
 
         try {
-          await bot.api.sendMessage(tgId, message, {
+          await bot.api.sendMessage(observerId, message, {
             parse_mode: 'Markdown',
             link_preview_options: {
               is_disabled: false,
@@ -150,13 +152,13 @@ export function pollingPushNewsFeeds() {
           // Success: record to history
           await database.from('tg_push_history').insert({
             item_id: item.id,
-            tg_id: tgId,
+            observer_id: observerId,
             status: 'success',
             pushed_at: new Date().toISOString(),
             retry_count: 0,
           })
 
-          console.log(`✅ Pushed item ${item.id} to subscriber ${tgId}`)
+          console.log(`✅ Pushed item ${item.id} to subscriber ${observerId}`)
           successCount++
 
           // Rate limit: 500ms between messages
@@ -165,7 +167,7 @@ export function pollingPushNewsFeeds() {
           const errorInfo = extractTelegramError(error)
 
           console.error(
-            `❌ Failed to push item ${item.id} to subscriber ${tgId}: ${errorInfo.message}`,
+            `❌ Failed to push item ${item.id} to subscriber ${observerId}: ${errorInfo.message}`,
           )
 
           // Determine if it's a permanent failure
@@ -176,7 +178,7 @@ export function pollingPushNewsFeeds() {
 
           await database.from('tg_push_history').insert({
             item_id: item.id,
-            tg_id: tgId,
+            observer_id: observerId,
             status: 'failed',
             error_message: errorInfo.message,
             pushed_at: new Date().toISOString(),
@@ -185,7 +187,7 @@ export function pollingPushNewsFeeds() {
 
           if (isPermanentFailure) {
             console.warn(
-              `⛔ Permanent failure for item ${item.id} to ${tgId}, will not retry`,
+              `⛔ Permanent failure for item ${item.id} to ${observerId}, will not retry`,
             )
           }
 

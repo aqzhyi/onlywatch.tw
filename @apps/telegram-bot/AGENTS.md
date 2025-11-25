@@ -9,8 +9,8 @@
 
   在資料庫中
   - 資料表 `tg_observers` 記錄了 [訂閱者]，訂閱者可以是 tg_user (個人) 或者是 tg_channel (頻道)
+  - 資料表 `tg_watchers` 記錄了 [訂閱者] 與 [RSS Feeds Source] 之間的訂閱關聯
   - 資料表 `tg_rss_feeds` 記錄了所有的 [RSS Feeds Source]
-  - 資料表 `tg_feeds_observers` 記錄了 [訂閱者] 與 [RSS Feeds Source] 之間的訂閱關聯
   - 資料表 `tg_rss_items` 記錄了所有來源於 [RSS Feeds Source] 的 newsfeeds [items]
   - 資料表 `tg_push_history` 記錄了 [推播歷史]，追蹤哪些 items 已經推送給哪些訂閱者
 

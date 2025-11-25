@@ -11,11 +11,11 @@ export function pollingCleanupPushHistory() {
     start: true,
     runOnInit: true,
     /**
-     * Runs daily at 04:00 and 05:00 (Asia/Taipei)
+     * Runs every hours
      *
      * @see https://crontab.cronhub.io/
      */
-    cronTime: '0 4,5 * * *',
+    cronTime: '*/60 * * * *',
     timeZone: 'Asia/Taipei',
     onTick: async () => {
       const cutoffDate = spacetime

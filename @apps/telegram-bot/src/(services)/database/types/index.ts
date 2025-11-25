@@ -153,93 +153,68 @@ export type Database = {
           },
         ]
       }
-      tg_feeds_observers: {
-        Row: {
-          created_at: string
-          feed_id: number
-          id: number
-          tg_id: number
-        }
-        Insert: {
-          created_at?: string
-          feed_id: number
-          id?: number
-          tg_id: number
-        }
-        Update: {
-          created_at?: string
-          feed_id?: number
-          id?: number
-          tg_id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "tg_feeds_subs_feed_id_fkey"
-            columns: ["feed_id"]
-            isOneToOne: false
-            referencedRelation: "tg_rss_feeds"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "tg_feeds_subs_tg_id_fkey"
-            columns: ["tg_id"]
-            isOneToOne: false
-            referencedRelation: "tg_observers"
-            referencedColumns: ["tg_id"]
-          },
-        ]
-      }
       tg_observers: {
         Row: {
           created_at: string
           id: number
           memo: string | null
           tg_id: number
-          tg_username: string | null
+          tg_username: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
           memo?: string | null
           tg_id: number
-          tg_username?: string | null
+          tg_username: string
+          user_id: string
         }
         Update: {
           created_at?: string
           id?: number
           memo?: string | null
           tg_id?: number
-          tg_username?: string | null
+          tg_username?: string
+          user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "tg_observers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tg_push_history: {
         Row: {
           error_message: string | null
           id: number
           item_id: number
+          observer_id: number | null
           pushed_at: string | null
           retry_count: number
           status: string
-          tg_id: number
         }
         Insert: {
           error_message?: string | null
           id?: number
           item_id: number
+          observer_id?: number | null
           pushed_at?: string | null
           retry_count?: number
           status?: string
-          tg_id: number
         }
         Update: {
           error_message?: string | null
           id?: number
           item_id?: number
+          observer_id?: number | null
           pushed_at?: string | null
           retry_count?: number
           status?: string
-          tg_id?: number
         }
         Relationships: [
           {
@@ -247,6 +222,13 @@ export type Database = {
             columns: ["item_id"]
             isOneToOne: false
             referencedRelation: "tg_rss_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tg_push_history_observer_id_fkey"
+            columns: ["observer_id"]
+            isOneToOne: false
+            referencedRelation: "tg_observers"
             referencedColumns: ["id"]
           },
         ]
@@ -316,7 +298,43 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "tg_rss_news_feed_id_fkey"
+            foreignKeyName: "tg_rss_items_feed_id_fkey"
+            columns: ["feed_id"]
+            isOneToOne: false
+            referencedRelation: "tg_rss_feeds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tg_watchers: {
+        Row: {
+          created_at: string
+          feed_id: number
+          id: number
+          observer_id: number
+        }
+        Insert: {
+          created_at?: string
+          feed_id: number
+          id?: number
+          observer_id: number
+        }
+        Update: {
+          created_at?: string
+          feed_id?: number
+          id?: number
+          observer_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tg_feeds_observers_observer_id_fkey"
+            columns: ["observer_id"]
+            isOneToOne: false
+            referencedRelation: "tg_observers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tg_feeds_subs_feed_id_fkey"
             columns: ["feed_id"]
             isOneToOne: false
             referencedRelation: "tg_rss_feeds"
