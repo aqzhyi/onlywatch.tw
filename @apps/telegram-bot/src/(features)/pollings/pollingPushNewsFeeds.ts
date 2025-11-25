@@ -9,6 +9,11 @@ type ItemWithFeed = Tables<'tg_rss_items'> & {
   tg_rss_feeds: Pick<Tables<'tg_rss_feeds'>, 'id' | 'title' | 'enabled'>
 }
 
+type TelegramObserver = {
+  observerId: number
+  tgId: number
+}
+
 /**
  * 找出所有尚未推送的 newsfeeds 並推送到對應的 Telegram 群組
  *
@@ -61,11 +66,19 @@ export function pollingPushNewsFeeds() {
 
       const items = rawItems as unknown as ItemWithFeed[]
 
-      // Get all feed-observer relationships
+      // Get all feed-observer relationships with tg_id
       const feedIds = items.map((item) => item.feed_id)
-      const { data: feedObservers, error: observersError } = await database
+      const { data: rawFeedObservers, error: observersError } = await database
         .from('tg_watchers')
-        .select('feed_id, observer_id')
+        .select(
+          `
+            feed_id,
+            observer_id,
+            tg_observers!inner (
+              tg_id
+            )
+          `,
+        )
         .in('feed_id', feedIds)
 
       if (observersError) {
@@ -73,10 +86,17 @@ export function pollingPushNewsFeeds() {
         return
       }
 
-      if (!feedObservers || feedObservers.length === 0) {
+      if (!rawFeedObservers || rawFeedObservers.length === 0) {
         console.log('📭 No subscribers found for these feeds')
         return
       }
+
+      // Transform to include tg_id
+      const feedObservers = rawFeedObservers.map((watcher) => ({
+        feed_id: watcher.feed_id,
+        observer_id: watcher.observer_id,
+        tg_id: watcher.tg_observers.tg_id,
+      }))
 
       // Get push history to filter out already-pushed items
       const itemIds = items.map((item) => item.id)
@@ -94,6 +114,7 @@ export function pollingPushNewsFeeds() {
       const pushTasks: Array<{
         item: ItemWithFeed
         observerId: number
+        tgId: number
       }> = []
 
       for (const item of items) {
@@ -121,6 +142,7 @@ export function pollingPushNewsFeeds() {
           pushTasks.push({
             item,
             observerId: subscriber.observer_id,
+            tgId: subscriber.tg_id,
           })
         }
       }
@@ -138,11 +160,11 @@ export function pollingPushNewsFeeds() {
       let failureCount = 0
 
       for (const task of pushTasks) {
-        const { item, observerId } = task
+        const { item, observerId, tgId } = task
         const message = formatNewsMessage(item)
 
         try {
-          await bot.api.sendMessage(observerId, message, {
+          await bot.api.sendMessage(tgId, message, {
             parse_mode: 'Markdown',
             link_preview_options: {
               is_disabled: false,
@@ -158,7 +180,9 @@ export function pollingPushNewsFeeds() {
             retry_count: 0,
           })
 
-          console.log(`✅ Pushed item ${item.id} to subscriber ${observerId}`)
+          console.log(
+            `✅ Pushed item ${item.id} to subscriber ${observerId} (tg_id: ${tgId})`,
+          )
           successCount++
 
           // Rate limit: 500ms between messages
@@ -167,7 +191,7 @@ export function pollingPushNewsFeeds() {
           const errorInfo = extractTelegramError(error)
 
           console.error(
-            `❌ Failed to push item ${item.id} to subscriber ${observerId}: ${errorInfo.message}`,
+            `❌ Failed to push item ${item.id} to subscriber ${observerId} (tg_id: ${tgId}): ${errorInfo.message}`,
           )
 
           // Determine if it's a permanent failure
@@ -187,7 +211,7 @@ export function pollingPushNewsFeeds() {
 
           if (isPermanentFailure) {
             console.warn(
-              `⛔ Permanent failure for item ${item.id} to ${observerId}, will not retry`,
+              `⛔ Permanent failure for item ${item.id} to ${observerId} (tg_id: ${tgId}), will not retry`,
             )
           }
 
