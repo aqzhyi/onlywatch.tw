@@ -30,7 +30,7 @@ const nextConfig: NextConfig = {
       // 首頁重定向到日曆頁面
       {
         source: '/',
-        destination: '/calendar',
+        destination: '/channels',
         permanent: false, // 使用 302 臨時重定向，方便未來調整
       },
     ]

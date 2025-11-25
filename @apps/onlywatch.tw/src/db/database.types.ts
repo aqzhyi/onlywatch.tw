@@ -7,10 +7,30 @@ export type Json =
   | Json[]
 
 export type Database = {
-  // Allows to automatically instantiate createClient with right options
-  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
-  __InternalSupabase: {
-    PostgrestVersion: "12.2.3 (519615d)"
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
   }
   public: {
     Tables: {
@@ -19,50 +39,50 @@ export type Database = {
           accessToken: string | null
           accessTokenExpiresAt: string | null
           accountId: string
-          createdAt: string | null
-          id: number
+          createdAt: string
+          id: string
           idToken: string | null
-          password: string
+          password: string | null
           providerId: string
           refreshToken: string | null
           refreshTokenExpiresAt: string | null
           scope: string | null
-          updatedAt: string | null
+          updatedAt: string
           userId: string
         }
         Insert: {
           accessToken?: string | null
           accessTokenExpiresAt?: string | null
           accountId: string
-          createdAt?: string | null
-          id?: number
+          createdAt?: string
+          id: string
           idToken?: string | null
-          password: string
+          password?: string | null
           providerId: string
           refreshToken?: string | null
           refreshTokenExpiresAt?: string | null
           scope?: string | null
-          updatedAt?: string | null
+          updatedAt: string
           userId: string
         }
         Update: {
           accessToken?: string | null
           accessTokenExpiresAt?: string | null
           accountId?: string
-          createdAt?: string | null
-          id?: number
+          createdAt?: string
+          id?: string
           idToken?: string | null
-          password?: string
+          password?: string | null
           providerId?: string
           refreshToken?: string | null
           refreshTokenExpiresAt?: string | null
           scope?: string | null
-          updatedAt?: string | null
+          updatedAt?: string
           userId?: string
         }
         Relationships: [
           {
-            foreignKeyName: "account_userId_fkey"
+            foreignKeyName: "account_userId_fkey1"
             columns: ["userId"]
             isOneToOne: false
             referencedRelation: "user"
@@ -111,38 +131,41 @@ export type Database = {
       }
       session: {
         Row: {
-          createdAt: string | null
-          expiredAt: string
+          createdAt: string
+          expiresAt: string
           id: string
+          impersonatedBy: string | null
           ipAddress: string | null
           token: string
-          updatedAt: string | null
+          updatedAt: string
           userAgent: string | null
           userId: string
         }
         Insert: {
-          createdAt?: string | null
-          expiredAt: string
+          createdAt?: string
+          expiresAt: string
           id: string
+          impersonatedBy?: string | null
           ipAddress?: string | null
           token: string
-          updatedAt?: string | null
+          updatedAt: string
           userAgent?: string | null
           userId: string
         }
         Update: {
-          createdAt?: string | null
-          expiredAt?: string
+          createdAt?: string
+          expiresAt?: string
           id?: string
+          impersonatedBy?: string | null
           ipAddress?: string | null
           token?: string
-          updatedAt?: string | null
+          updatedAt?: string
           userAgent?: string | null
           userId?: string
         }
         Relationships: [
           {
-            foreignKeyName: "session_userId_fkey"
+            foreignKeyName: "session_userId_fkey1"
             columns: ["userId"]
             isOneToOne: false
             referencedRelation: "user"
@@ -150,33 +173,237 @@ export type Database = {
           },
         ]
       }
+      tg_observers: {
+        Row: {
+          created_at: string
+          id: number
+          memo: string | null
+          tg_id: number
+          tg_username: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          memo?: string | null
+          tg_id: number
+          tg_username: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          memo?: string | null
+          tg_id?: number
+          tg_username?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tg_observers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tg_push_history: {
+        Row: {
+          error_message: string | null
+          id: number
+          item_id: number
+          observer_id: number | null
+          pushed_at: string | null
+          retry_count: number
+          status: string
+        }
+        Insert: {
+          error_message?: string | null
+          id?: number
+          item_id: number
+          observer_id?: number | null
+          pushed_at?: string | null
+          retry_count?: number
+          status?: string
+        }
+        Update: {
+          error_message?: string | null
+          id?: number
+          item_id?: number
+          observer_id?: number | null
+          pushed_at?: string | null
+          retry_count?: number
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tg_push_history_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "tg_rss_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tg_push_history_observer_id_fkey"
+            columns: ["observer_id"]
+            isOneToOne: false
+            referencedRelation: "tg_observers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tg_rss_feeds: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          feed_url: string
+          id: number
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          feed_url: string
+          id?: number
+          title?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          feed_url?: string
+          id?: number
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tg_rssfeeds_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tg_rss_items: {
+        Row: {
+          created_at: string
+          description: string
+          feed_id: number
+          id: number
+          link: string
+          pub_date: string
+          title: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          feed_id: number
+          id?: number
+          link: string
+          pub_date: string
+          title: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          feed_id?: number
+          id?: number
+          link?: string
+          pub_date?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tg_rss_items_feed_id_fkey"
+            columns: ["feed_id"]
+            isOneToOne: false
+            referencedRelation: "tg_rss_feeds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      tg_watchers: {
+        Row: {
+          created_at: string
+          feed_id: number
+          id: number
+          observer_id: number
+        }
+        Insert: {
+          created_at?: string
+          feed_id: number
+          id?: number
+          observer_id: number
+        }
+        Update: {
+          created_at?: string
+          feed_id?: number
+          id?: number
+          observer_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "tg_feeds_observers_observer_id_fkey"
+            columns: ["observer_id"]
+            isOneToOne: false
+            referencedRelation: "tg_observers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "tg_feeds_subs_feed_id_fkey"
+            columns: ["feed_id"]
+            isOneToOne: false
+            referencedRelation: "tg_rss_feeds"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user: {
         Row: {
-          createdAt: string | null
-          email: string | null
+          banExpires: string | null
+          banned: boolean | null
+          banReason: string | null
+          createdAt: string
+          email: string
           emailVerified: boolean
           id: string
           image: string | null
+          isAnonymous: boolean | null
           name: string
-          updatedAt: string | null
+          role: string | null
+          updatedAt: string
         }
         Insert: {
-          createdAt?: string | null
-          email?: string | null
-          emailVerified?: boolean
+          banExpires?: string | null
+          banned?: boolean | null
+          banReason?: string | null
+          createdAt?: string
+          email: string
+          emailVerified: boolean
           id: string
           image?: string | null
+          isAnonymous?: boolean | null
           name: string
-          updatedAt?: string | null
+          role?: string | null
+          updatedAt?: string
         }
         Update: {
-          createdAt?: string | null
-          email?: string | null
+          banExpires?: string | null
+          banned?: boolean | null
+          banReason?: string | null
+          createdAt?: string
+          email?: string
           emailVerified?: boolean
           id?: string
           image?: string | null
+          isAnonymous?: boolean | null
           name?: string
-          updatedAt?: string | null
+          role?: string | null
+          updatedAt?: string
         }
         Relationships: []
       }
@@ -191,7 +418,7 @@ export type Database = {
         }
         Insert: {
           createdAt?: string
-          expiresAt?: string
+          expiresAt: string
           id: string
           identifier: string
           updatedAt?: string
@@ -358,6 +585,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       currency: [
@@ -377,3 +607,4 @@ export const Constants = {
     },
   },
 } as const
+
