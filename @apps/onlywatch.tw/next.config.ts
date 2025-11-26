@@ -25,16 +25,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  redirects: async () => {
-    return [
-      // 首頁重定向到日曆頁面
-      {
-        source: '/',
-        destination: '/channels',
-        permanent: false, // 使用 302 臨時重定向，方便未來調整
-      },
-    ]
-  },
 }
 
 const withNextIntl = createNextIntlPlugin({
