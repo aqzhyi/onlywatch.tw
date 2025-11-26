@@ -20,13 +20,8 @@ export function ObserverCard(props: ObserverCardProps) {
     <Card className='hover:border-primary h-full transition-colors'>
       <CardHeader className='flex flex-row gap-2'>
         <Tooltip content='設定'>
-          <Link href={`/channels/${tMeUserName}`}>
-            <Text
-              variant='h2'
-              className='text-2xl'
-            >
-              {observer.tg_username}
-            </Text>
+          <Link href={`/my/${tMeUserName}`}>
+            <Text className='text-2xl font-bold'>{observer.tg_username}</Text>
           </Link>
         </Tooltip>
 
