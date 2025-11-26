@@ -19,8 +19,8 @@ export function ObserverCard(props: ObserverCardProps) {
   return (
     <Card className='hover:border-primary h-full transition-colors'>
       <CardHeader className='flex flex-row gap-2'>
-        <Tooltip content='設定'>
-          <Link href={`/my/${tMeUserName}`}>
+        <Tooltip content='瀏覽已推播內容'>
+          <Link href={`/my/channels/${tMeUserName}`}>
             <Text className='text-2xl font-bold'>{observer.tg_username}</Text>
           </Link>
         </Tooltip>

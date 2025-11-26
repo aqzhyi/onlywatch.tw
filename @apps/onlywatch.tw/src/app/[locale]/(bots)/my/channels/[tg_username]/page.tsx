@@ -116,12 +116,12 @@ export default async function Page(props: PageProps) {
 
                   <div className='flex flex-row items-center gap-2'>
                     <Link
-                      href={`/feeds/${history.tg_rss_items.tg_rss_feeds.id}`}
+                      href={`/my/feeds/${history.tg_rss_items.tg_rss_feeds.id}`}
                       rel='noopener noreferrer'
                       className={twJoin('inline-block self-start')}
                     >
                       <Tooltip
-                        content={'修改新聞源'}
+                        content={'調整來源細節'}
                         placement='right'
                       >
                         <Button
