@@ -3,38 +3,29 @@
 import { Button } from '@heroui/button'
 import { Card, CardBody } from '@heroui/card'
 import { Input } from '@heroui/input'
-import { NumberInput } from '@heroui/react'
 import { Switch } from '@heroui/switch'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
-import type { Tables } from '~/db/database.types'
-import { updateRssFeed } from '~/features/tg-channels/server-actions/updateRssFeed'
-
-type RssFeedEditFormProps = {
-  feed: Tables<'tg_rss_feeds'>
-}
+import { insertRssFeed } from '~/features/tg-channels/server-actions/insertRssFeed'
 
 type FormValues = {
-  id: number
   feedUrl: string
   title: string
   enabled: boolean
 }
 
 /**
- * Form component for editing RSS feed details
+ * Form component for creating a new RSS feed
  *
- * Allows editing of feed_url, title, and enabled status. Shows success/error
- * messages after submission.
+ * Allows input of feed_url, title, and enabled status. Shows success/error
+ * messages after submission and resets form on success.
  *
  * @example
- *   ;<RssFeedEditForm feed={feedData} />
- *
- * @param props - Component props containing the feed data
+ *   ;<RssFeedCreateForm />
  */
-export function RssFeedEditForm({ feed }: RssFeedEditFormProps) {
+export function RssFeedCreateForm() {
   const router = useRouter()
   const [message, setMessage] = useState<{
     type: 'success' | 'error'
@@ -48,29 +39,28 @@ export function RssFeedEditForm({ feed }: RssFeedEditFormProps) {
     formState: { isSubmitting },
   } = useForm<FormValues>({
     defaultValues: {
-      id: feed.id,
-      feedUrl: decodeURI(feed.feed_url),
-      title: feed.title,
-      enabled: feed.enabled,
+      feedUrl: '',
+      title: '',
+      enabled: true,
     },
   })
 
   const onSubmit = async (data: FormValues) => {
     setMessage(null)
 
-    const { data: updatedData, error } = await updateRssFeed({
-      id: data.id,
+    const { data: insertedData, error } = await insertRssFeed({
       feed_url: encodeURI(data.feedUrl),
       title: data.title,
       enabled: data.enabled,
     })
 
     if (error) {
-      setMessage({ type: 'error', text: error.message || 'Update failed' })
+      setMessage({ type: 'error', text: error.message || 'Create failed' })
       return
     }
 
-    setMessage({ type: 'success', text: 'Feed updated successfully' })
+    setMessage({ type: 'success', text: 'Feed created successfully' })
+    reset()
     router.refresh()
   }
 
@@ -78,7 +68,7 @@ export function RssFeedEditForm({ feed }: RssFeedEditFormProps) {
     <Card
       className={twMerge(
         'w-full',
-        'hover:dark:border hover:dark:border-yellow-700',
+        'hover:dark:border hover:dark:border-green-700',
       )}
     >
       <CardBody>
@@ -140,11 +130,11 @@ export function RssFeedEditForm({ feed }: RssFeedEditFormProps) {
               <Button
                 size='sm'
                 type='submit'
-                color='primary'
+                color='success'
                 isLoading={isSubmitting}
                 isDisabled={isSubmitting}
               >
-                儲存
+                新增
               </Button>
               <Button
                 size='sm'
