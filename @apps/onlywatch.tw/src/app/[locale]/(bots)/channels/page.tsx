@@ -2,7 +2,7 @@ import { Alert } from '@heroui/alert'
 import { Skeleton } from '@heroui/skeleton'
 import { Suspense } from 'react'
 import { ObserverCard } from '~/features/tg-channels/components/ObserverCard'
-import { findManyObservers } from '~/features/tg-channels/server-actions/findManyObservers'
+import { findManyObservers } from '~/features/tg-channels/db/findManyObservers'
 
 export default async function NextPage(props: PageProps<'/[locale]/channels'>) {
   const { data: observers, error } = await findManyObservers()
