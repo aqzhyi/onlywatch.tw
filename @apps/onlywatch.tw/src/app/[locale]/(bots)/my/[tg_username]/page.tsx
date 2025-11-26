@@ -36,7 +36,7 @@ export default async function Page(props: PageProps) {
 
   const { data: historyItems, error: historyError } =
     await findManyPushHistoryItems({
-      tgId: observer.tg_id,
+      observerId: observer.id,
       limit: 50,
     })
 
