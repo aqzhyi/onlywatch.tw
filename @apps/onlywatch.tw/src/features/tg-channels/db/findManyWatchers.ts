@@ -7,7 +7,7 @@ type FeedObserverWithFeed = Tables<'tg_watchers'> & {
   tg_rss_feeds: Tables<'tg_rss_feeds'>
 }
 
-export async function findManyFeedObservers(params: {
+export async function findManyWatchers(params: {
   userId: string
   observerId: number
 }): Promise<{
