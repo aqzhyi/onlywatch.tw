@@ -19,17 +19,17 @@ sequenceDiagram
         FreshPolling->>FreshPolling: Parse RSS items with feedsmith
     end
 
-    FreshPolling->>DB: UPSERT tg_rss_items (onConflict: title)
+    FreshPolling->>DB: UPSERT tg_rss_items (onConflict: title, ignoreDuplicates: true)
     DB-->>FreshPolling: Return upsert count
 
     Note over Cron,PushPolling: 每 2 分鐘執行一次
     Cron->>PushPolling: Trigger (*/2 * * * *)
 
-    PushPolling->>DB: SELECT tg_rss_items (pub_date > now() - 1h)
+    PushPolling->>DB: SELECT tg_rss_items (pub_date >= now() - 1h)<br/>JOIN tg_rss_feeds WHERE enabled=true
     DB-->>PushPolling: Return items list
 
-    PushPolling->>DB: SELECT tg_watchers
-    DB-->>PushPolling: Return subscribers
+    PushPolling->>DB: SELECT tg_watchers<br/>JOIN tg_observers (for tg_id)
+    DB-->>PushPolling: Return subscribers with tg_id
 
     PushPolling->>DB: SELECT tg_push_history
     DB-->>PushPolling: Return push records
@@ -62,7 +62,7 @@ sequenceDiagram
             alt Permanent error (400/403/404)
                 PushPolling->>DB: INSERT tg_push_history<br/>(status=failed, retry_count=999)
                 PushPolling->>PushPolling: Log: will not retry
-            else Temporary error (429/500/503)
+            else Temporary error
                 PushPolling->>DB: INSERT tg_push_history<br/>(status=failed, retry_count=1)
                 PushPolling->>PushPolling: Log: will retry later
             end
@@ -71,10 +71,10 @@ sequenceDiagram
 
     PushPolling->>PushPolling: Log summary stats
 
-    Note over Cron,CleanupPolling: 每 60 分鐘執行一次
+    Note over Cron,CleanupPolling: 每 60 秒執行一次
     Cron->>CleanupPolling: Trigger (*/60 * * * *)
 
-    CleanupPolling->>CleanupPolling: Calculate cutoff date<br/>(now - 7 days)
+    CleanupPolling->>CleanupPolling: Calculate cutoff date<br/>(now - CLEANUP_RETENTION_DAYS)
 
     CleanupPolling->>DB: DELETE FROM tg_push_history<br/>WHERE pushed_at < cutoff
     DB-->>CleanupPolling: Return deleted count
@@ -96,4 +96,4 @@ sequenceDiagram
         CleanupPolling->>CleanupPolling: Log: ❌ Failed with error
     end
 
-    CleanupPolling->>CleanupPolling: Log: 🧹 Cleanup completed
+    CleanupPolling->>CleanupPolling: Log: 🧹 Cleanup task completed
