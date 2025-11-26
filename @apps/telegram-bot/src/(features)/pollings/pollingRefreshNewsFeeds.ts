@@ -1,3 +1,4 @@
+import is from '@sindresorhus/is'
 import { CronJob } from 'cron'
 import { parseRssFeed } from 'feedsmith'
 import spacetime from 'spacetime'
@@ -26,18 +27,25 @@ export function pollingRefreshNewsFeeds() {
 
       const _newsfeeds = await Promise.all(
         (feeds || []).map(async (feed) => {
-          const rssXmlString = await fetch(feed.feed_url).then((res) =>
-            res.text(),
-          )
+          try {
+            const rssXmlString = await fetch(feed.feed_url).then((res) =>
+              res.text(),
+            )
 
-          const rss = parseRssFeed(rssXmlString)
+            const rss = parseRssFeed(rssXmlString)
 
-          return (rss.items || [])?.map((item) => {
-            return {
-              ...item,
-              feed_id: feed.id,
+            return (rss.items || [])?.map((item) => {
+              return {
+                ...item,
+                feed_id: feed.id,
+              }
+            })
+          } catch (error: unknown) {
+            if (is.error(error)) {
+              console.log(`🔴`, `[feed_url] ${feed.feed_url}`, error)
             }
-          })
+            return []
+          }
         }),
       )
       const newsfeeds = _newsfeeds.flat()

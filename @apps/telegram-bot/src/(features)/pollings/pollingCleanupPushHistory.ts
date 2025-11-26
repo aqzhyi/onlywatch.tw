@@ -9,7 +9,7 @@ import { database } from '~/(services)/database'
 export function pollingCleanupPushHistory() {
   CronJob.from({
     start: true,
-    runOnInit: true,
+    runOnInit: false,
     /**
      * Runs every hours
      *

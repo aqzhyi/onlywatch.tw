@@ -29,6 +29,8 @@ export function pollingPushNewsFeeds() {
     start: true,
     runOnInit: true,
     /**
+     * Every 2 minutes
+     *
      * @see https://crontab.cronhub.io/
      */
     cronTime: '*/2 * * * *',
