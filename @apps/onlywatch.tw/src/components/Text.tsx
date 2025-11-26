@@ -8,7 +8,6 @@ const styleCva = cva({
   variants: {
     variant: {
       default: '',
-      h2: 'text-x2 font-bold',
       helper: 'text-default-500 text-sm',
       link: [
         'text-blue-600 hover:underline dark:text-yellow-400',
@@ -30,11 +29,16 @@ const styleCva = cva({
 export type ButtonProps = Omit<React.ComponentPropsWithRef<'div'>, 'disabled'> &
   VariantProps<typeof styleCva>
 
-export function Text({ variant, size, className, ...props }: ButtonProps) {
+export function Text({
+  variant = 'default',
+  size = 'md',
+  className,
+  ...props
+}: ButtonProps) {
   return (
     <div
       {...props}
-      className={twMerge(styleCva({ variant, size, className }))}
+      className={twMerge(styleCva({ size }), styleCva({ variant, className }))}
     >
       {props.children}
     </div>
