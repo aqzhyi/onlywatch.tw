@@ -8,7 +8,7 @@ type PushHistoryWithItem = Tables<'tg_push_history'> & {
 }
 
 export async function findManyPushHistoryItems(params: {
-  tgId: number
+  observerId: number
   limit?: number
 }): Promise<{
   error: null | Error
@@ -24,7 +24,7 @@ export async function findManyPushHistoryItems(params: {
         tg_rss_items!inner (*, tg_rss_feeds!inner (*))
       `,
     )
-    .eq('tg_id', params.tgId)
+    .eq('observer_id', params.observerId)
     .eq('status', 'success')
     .order('pushed_at', { ascending: false })
     .limit(params.limit ?? 5)

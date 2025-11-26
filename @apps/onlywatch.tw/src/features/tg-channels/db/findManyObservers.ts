@@ -1,14 +1,16 @@
 import type { Tables } from '~/db/database.types'
 import { getSupabase } from '~/db/getSupabase'
 
-export async function findManyObservers(userId?: string): Promise<{
+export async function findManyObservers(params?: {
+  userId?: undefined | string
+}): Promise<{
   error: null | Error
   data: null | Tables<'tg_observers'>[]
 }> {
-  const supabase = getSupabase().from('tg_observers').select('*')
+  const supabase = getSupabase().from('tg_observers').select('*').order('id')
 
-  if (userId) {
-    supabase.eq('user_id', userId)
+  if (params?.userId) {
+    supabase.eq('user_id', params.userId)
   }
 
   const { data, error } = await supabase.order('created_at', {
