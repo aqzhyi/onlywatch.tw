@@ -25,13 +25,13 @@ sequenceDiagram
     Note over Cron,PushPolling: 每 2 分鐘執行一次
     Cron->>PushPolling: Trigger (*/2 * * * *)
 
-    PushPolling->>DB: SELECT items (pub_date > now() - 1h)
+    PushPolling->>DB: SELECT tg_rss_items (pub_date > now() - 1h)
     DB-->>PushPolling: Return items list
 
-    PushPolling->>DB: SELECT feed_observers
+    PushPolling->>DB: SELECT tg_watchers
     DB-->>PushPolling: Return subscribers
 
-    PushPolling->>DB: SELECT push_history
+    PushPolling->>DB: SELECT tg_push_history
     DB-->>PushPolling: Return push records
 
     PushPolling->>PushPolling: Build push tasks<br/>(filter by history & retry_count)
@@ -71,8 +71,8 @@ sequenceDiagram
 
     PushPolling->>PushPolling: Log summary stats
 
-    Note over Cron,CleanupPolling: 每日 04:00 和 05:00 執行
-    Cron->>CleanupPolling: Trigger (0 4,5 * * *)
+    Note over Cron,CleanupPolling: 每 60 分鐘執行一次
+    Cron->>CleanupPolling: Trigger (*/60 * * * *)
 
     CleanupPolling->>CleanupPolling: Calculate cutoff date<br/>(now - 7 days)
 
