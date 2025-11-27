@@ -1,9 +1,9 @@
 import is from '@sindresorhus/is'
 import { CronJob } from 'cron'
-import { parseRssFeed } from 'feedsmith'
 import spacetime from 'spacetime'
 import { database } from '~/(services)/database'
 import type { Tables } from '~/(services)/database/types'
+import { fetchFeedItems } from '~/(services)/feeds/fetchFeedItems'
 
 /**
  * 掃描所有 FeedUrls 並將 newsfeeds 存入資料庫
@@ -22,27 +22,16 @@ export function pollingRefreshNewsFeeds() {
     onTick: async () => {
       const { data: feeds, error: feedsError } = await database
         .from('tg_rss_feeds')
-        .select('*')
+        .select('id, feed_type, feed_url, feed_config, enabled')
         .eq('enabled', true)
 
       const _newsfeeds = await Promise.all(
         (feeds || []).map(async (feed) => {
           try {
-            const rssXmlString = await fetch(feed.feed_url).then((res) =>
-              res.text(),
-            )
-
-            const rss = parseRssFeed(rssXmlString)
-
-            return (rss.items || [])?.map((item) => {
-              return {
-                ...item,
-                feed_id: feed.id,
-              }
-            })
+            return await fetchFeedItems(feed)
           } catch (error: unknown) {
             if (is.error(error)) {
-              console.log(`🔴`, `[feed_url] ${feed.feed_url}`, error)
+              console.log(`🔴`, `[feed_id=${feed.id}]`, error)
             }
             return []
           }
