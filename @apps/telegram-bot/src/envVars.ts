@@ -12,6 +12,7 @@ export const envVars = Object.freeze(
       SUPABASE_SERVICE_KEY: z.string(),
       SUPABASE_DB_PASSWORD: z.string(),
       TELEGRAM_BOT_TOKEN: z.string(),
+      TRADINGVIEW_NEWS_API_URL: z.string().url(),
     })
     .parse(process.env),
 )
