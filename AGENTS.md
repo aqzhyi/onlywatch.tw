@@ -11,17 +11,22 @@
 ## Principles
 
 - ✨ when chatting with developers always respond in the user's system language
-- follow the KISS principle
-- follow the "explicit is better than implicit" principle
-- follow the YAGNI principle
-- follow the pure functions, pure components and immutability principles
+- follow `feature-based structure` principle
+- follow `co-location` principle
+- follow the `KISS` principle
+- follow the `explicit is better than implicit` principle
+- follow the `YAGNI` principle
+- follow the `pure functions`, `pure components` and `immutability` principles
+- follow the `SOLID` principles
+- follow the `high cohesion, low coupling` principle
 
 ## 倉庫架構
 
 - 這是一個 `monorepo` 架構
 - 使用 `pnpm` 與 `pnpm workspaces` 配合 `turborepo` 來管理此 `monorepo`
-- 所有應用程式位於 `@apps/*` 目錄下
-- 所有套件位於 `@packages/*` 目錄下
+- 所有[應用程式]位於 `@apps/*` 目錄下
+- 所有[套件]位於 `@packages/*` 目錄下
+- 如果以上[應用程式]或是[套件]子目錄當中本身有 `AGENTS.md` 檔案，優先遵守最近距離的 `AGENTS.md` 規範
 
 ## 與開發者對話風格
 
@@ -42,6 +47,16 @@
   - 💥 衝突 FC：存在邏輯矛盾
   - 🎯 方案 GE：基於 jsdoc 示例重構邏輯與測試
 
+## UI 介面設計
+
+> [!TIP]
+>
+> 當你使用 tailwindcss 來實作 UI 介面時，可以參考以下設計稿資源
+
+- 參考 <https://tailwindcss.com/plus/ui-blocks/marketing>
+- 參考 <https://tailwindcss.com/plus/ui-blocks/application-ui>
+- 參考 <https://tailwindcss.com/plus/ui-blocks/ecommerce>
+
 ## 單元測試、E2E 測試
 
 - [Testing Instructions](.github/instructions/testing.instructions.md)
@@ -49,6 +64,7 @@
 ## 編碼風格
 
 - [Coding Practices](.github/wiki/coding-practices.md)
+- 在合適的時機與場景下，可以考慮採用這些技巧 [tailwindcss tricks by shadcn](.github/wiki/tailwindcss-tricks-by-shadcn.md)
 
 ## 編碼前注意事項
 
