@@ -16,22 +16,6 @@ export async function findManyWatchers(params: {
 }> {
   const supabase = getSupabase()
 
-  // First, get the tg_observers record to retrieve tg_id
-  const { data: observer, error: observerError } = await supabase
-    .from('tg_observers')
-    .select('tg_id')
-    .eq('id', params.observerId)
-    .eq('user_id', params.userId)
-    .single()
-
-  if (observerError) {
-    // If observer not found, return empty array
-    if (observerError.code === 'PGRST116') {
-      return { error: null, data: [] }
-    }
-    return { error: observerError, data: null }
-  }
-
   const { data, error } = await supabase
     .from('tg_watchers')
     .select(
@@ -40,7 +24,7 @@ export async function findManyWatchers(params: {
         tg_rss_feeds!inner (*)
       `,
     )
-    .eq('tg_id', observer.tg_id)
+    .eq('observer_id', params.observerId)
 
   if (error) {
     return { error, data: null }
