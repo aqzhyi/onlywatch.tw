@@ -11,7 +11,7 @@ export function pollingCleanupPushHistory() {
     start: true,
     runOnInit: false,
     /**
-     * Runs every hours
+     * Runs every 60 minutes
      *
      * @see https://crontab.cronhub.io/
      */
