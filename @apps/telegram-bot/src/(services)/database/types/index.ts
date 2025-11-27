@@ -237,6 +237,8 @@ export type Database = {
         Row: {
           created_at: string
           enabled: boolean
+          feed_config: Json | null
+          feed_type: string
           feed_url: string
           id: number
           title: string
@@ -245,6 +247,8 @@ export type Database = {
         Insert: {
           created_at?: string
           enabled?: boolean
+          feed_config?: Json | null
+          feed_type?: string
           feed_url: string
           id?: number
           title?: string
@@ -253,6 +257,8 @@ export type Database = {
         Update: {
           created_at?: string
           enabled?: boolean
+          feed_config?: Json | null
+          feed_type?: string
           feed_url?: string
           id?: number
           title?: string
