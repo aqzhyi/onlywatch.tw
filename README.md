@@ -1,1 +1,1 @@
-@apps/onlywatch.tw/README.md
+AGENTS.md
