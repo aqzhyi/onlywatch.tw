@@ -14,7 +14,7 @@ import { constants } from '~/features/jin10/constants'
 
 dotenv.config({ path: './.env.local' })
 
-const OUTPUT_PATH = './src/features/i18n'
+const OUTPUT_PATH = './features/i18n'
 const OUTPUT_LOCALE_PATH = `${OUTPUT_PATH}/locales`
 const OUTPUT_BASE_FILE = `${OUTPUT_PATH}/eventTitles.base.json`
 

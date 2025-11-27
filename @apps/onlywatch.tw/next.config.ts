@@ -28,7 +28,7 @@ const nextConfig: NextConfig = {
 }
 
 const withNextIntl = createNextIntlPlugin({
-  requestConfig: './src/features/i18n/request.ts',
+  requestConfig: './app/features/i18n/request.ts',
 })
 
 export default withNextIntl(nextConfig)
