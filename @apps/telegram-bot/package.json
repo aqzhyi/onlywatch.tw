@@ -28,6 +28,7 @@
     "feedsmith": "2.5.0",
     "grammy": "1.38.3",
     "spacetime": "7.11.0",
+    "ts-pattern": "5.9.0",
     "tsx": "4.20.6",
     "zod": "4.1.12"
   },
