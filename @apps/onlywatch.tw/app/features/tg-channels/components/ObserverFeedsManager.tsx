@@ -102,7 +102,7 @@ export function ObserverFeedsManager({
       <Card className='hover:dark:border hover:dark:border-blue-700'>
         <CardHeader>
           <div className='flex items-center gap-2'>
-            <span className='icon-[mdi--rss-plus]' />
+            <span className='icon-[mdi--rss-box]' />
             <span className='text-lg font-bold'>新增訂閱來源</span>
           </div>
         </CardHeader>
