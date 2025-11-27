@@ -1,10 +1,8 @@
-'use client'
-
 import { Fragment } from 'react/jsx-runtime'
 import { Button } from '~/components/Button'
 import { Link } from '~/features/i18n/navigation'
 
-export default function SignInPage() {
+export default async function SignInPage() {
   return (
     <Fragment>
       <Link
