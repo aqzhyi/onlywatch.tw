@@ -8,6 +8,7 @@ import { useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { twMerge } from 'tailwind-merge'
 import type { Tables } from '~/db/database.types'
+import { Link } from '~/features/i18n/navigation'
 import { updateObserver } from '~/features/tg-channels/server-actions/updateObserver'
 
 type ObserverEditFormProps = {
@@ -160,6 +161,17 @@ export function ObserverEditForm({ observer }: ObserverEditFormProps) {
               >
                 重設
               </Button>
+              <Link href={`/my/observers/${observer.id}`}>
+                <Button
+                  size='sm'
+                  type='button'
+                  variant='flat'
+                  color='warning'
+                  isDisabled={isSubmitting}
+                >
+                  管理訂閱來源
+                </Button>
+              </Link>
             </div>
           </div>
 
