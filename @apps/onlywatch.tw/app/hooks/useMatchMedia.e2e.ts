@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test'
 test.describe('useMatchMedia', () => {
   test('應該正確響應中等斷點的變化', async ({ page }) => {
     // 導航到頁面並等待載入
-    await page.goto('http://localhost:3000/calendar')
+    await page.goto('http://localhost:3000')
     await page.waitForLoadState('domcontentloaded')
 
     // 設置大螢幕尺寸 (> 768px)
