@@ -1,6 +1,6 @@
 ---
 description: "extract the content from a webpage URL and understand it, then save it to a Notion database as a structured page"
-tools: ["fetch", "notion"]
+tools: ["fetch", "notion/*"]
 ---
 
 # ✨ 任務目標

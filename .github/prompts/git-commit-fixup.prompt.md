@@ -1,7 +1,7 @@
 ---
 description: "organise commits using the git commands"
-tools: ["changes", "runCommands"]
-mode: agent
+tools: ["GitKraken/*", "changes", "runCommands"]
+agent: agent
 ---
 
 # Instructions
