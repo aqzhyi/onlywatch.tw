@@ -77,7 +77,8 @@ export function pollingPushNewsFeeds() {
             feed_id,
             observer_id,
             tg_observers!inner (
-              tg_id
+              tg_id,
+              tg_username
             )
           `,
         )
@@ -93,11 +94,12 @@ export function pollingPushNewsFeeds() {
         return
       }
 
-      // Transform to include tg_id
+      // Transform to include tg_id and tg_username
       const feedObservers = rawFeedObservers.map((watcher) => ({
         feed_id: watcher.feed_id,
         observer_id: watcher.observer_id,
         tg_id: watcher.tg_observers.tg_id,
+        tg_username: watcher.tg_observers.tg_username,
       }))
 
       // Get push history to filter out already-pushed items
@@ -117,6 +119,7 @@ export function pollingPushNewsFeeds() {
         item: ItemWithFeed
         observerId: number
         tgId: number
+        tgUsername: string
       }> = []
 
       for (const item of items) {
@@ -145,6 +148,7 @@ export function pollingPushNewsFeeds() {
             item,
             observerId: subscriber.observer_id,
             tgId: subscriber.tg_id,
+            tgUsername: subscriber.tg_username,
           })
         }
       }
@@ -162,7 +166,7 @@ export function pollingPushNewsFeeds() {
       let failureCount = 0
 
       for (const task of pushTasks) {
-        const { item, observerId, tgId } = task
+        const { item, observerId, tgId, tgUsername } = task
         const message = formatNewsMessage(item)
 
         try {
@@ -183,7 +187,7 @@ export function pollingPushNewsFeeds() {
           })
 
           console.log(
-            `✅ Pushed item ${item.id} to subscriber ${observerId} (tg_id: ${tgId})`,
+            `✅ Pushed itemId=${item.id} (${item.title}) to observer=${observerId} (tgUsername: ${tgUsername})`,
           )
           successCount++
 
@@ -193,7 +197,7 @@ export function pollingPushNewsFeeds() {
           const errorInfo = extractTelegramError(error)
 
           console.error(
-            `❌ Failed to push item ${item.id} to subscriber ${observerId} (tg_id: ${tgId}): ${errorInfo.message}`,
+            `❌ Failed to push itemId=${item.id} (${item.title}) to observerId=${observerId} (tgUsername: ${tgUsername}): ${errorInfo.message}`,
           )
 
           // Determine if it's a permanent failure
@@ -213,7 +217,7 @@ export function pollingPushNewsFeeds() {
 
           if (isPermanentFailure) {
             console.warn(
-              `⛔ Permanent failure for item ${item.id} to ${observerId} (tg_id: ${tgId}), will not retry`,
+              `⛔ Permanent failure for itemId=${item.id} (${item.title}) to observerId=${observerId} (tgUsername: ${tgUsername}), will not retry`,
             )
           }
 
