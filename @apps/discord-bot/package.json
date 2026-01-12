@@ -4,10 +4,14 @@
   "type": "module",
   "version": "0.1.0",
   "dependencies": {
+    "@types/lodash-es": "4.17.12",
+    "chinese-conv": "4.0.0",
     "dedent": "1.7.0",
     "discord.js": "14.24.2",
     "dotenv": "17.2.3",
+    "lodash-es": "4.17.22",
     "openai": "6.8.1",
+    "p-wait-for": "6.0.0",
     "pm2": "6.0.13",
     "tsx": "4.20.6",
     "zod": "4.1.12"
