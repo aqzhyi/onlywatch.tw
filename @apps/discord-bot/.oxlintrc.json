@@ -1,4 +1,12 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "extends": ["./node_modules/@onlywatch/oxlintrc/src/opinion/own.json"]
+  "extends": ["./node_modules/@onlywatch/oxlintrc/src/opinion/own.json"],
+  "overrides": [
+    {
+      "files": ["src/(constants)/**/*.ts"],
+      "rules": {
+        "numeric-separators-style": "off"
+      }
+    }
+  ]
 }
