@@ -2,9 +2,9 @@ import z from 'zod'
 import { tnzeTypes } from './tnzeTypes'
 import { envVar } from '~/envVar'
 
-/** ff14 八大生產系職業查詢 API */
+/** ff14 (Tnze) 八大生產系配方材料 API */
 export const tnzeApp = {
-  async searchRecipe(name = '') {
+  async searchRecipes(name = '') {
     const url = new URL(`${envVar.FF14_TNZE_API_URL}/recipe_table`)
     url.searchParams.set('page_id', '0')
     url.searchParams.set('search_name', `%${name}%`)
