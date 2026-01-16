@@ -19,7 +19,7 @@ discordBot.on('messageCreate', async (message) => {
     if (message.author.bot) return
     if (message.channelId === CHANNEL_ID.ff14_market) {
       const userMessage = message.content.trim()
-      const targetItemId = itemId.get(userMessage)
+      const targetItemId = itemId.get(userMessage) || 0
 
       const searching = await message.reply(
         `🔍1️⃣ 搜尋目標關鍵字之、物品市價...`,
@@ -28,7 +28,7 @@ discordBot.on('messageCreate', async (message) => {
       const {
         /** 目標物品市價 */
         data: targetItemPriceData,
-      } = await universalisApp.findManyItemsPrice([targetItemId || 0])
+      } = await universalisApp.findManyItemsPrice([targetItemId])
 
       await searching.edit(`🔍2️⃣ 搜尋目標關鍵字之、配方...`)
 
@@ -39,6 +39,16 @@ discordBot.on('messageCreate', async (message) => {
         await searching.edit(`🔍❌ 找不到相關物品或者配方: ${userMessage}`)
         return
       }
+
+      const {
+        /** 目標物品銷售歷史 */
+        data: targetItemSaleHistory,
+      } = await universalisApp.findItemSaleHistory([targetItemId])
+
+      /** HQ 七平平均銷量 */
+      const hqSaleVelocity = targetItemSaleHistory?.hqSaleVelocity || 0
+      /** NQ 七天平均銷量 */
+      const nqSaleVelocity = targetItemSaleHistory?.hqSaleVelocity || 0
 
       /** 如果該物品具有生產配方 */
       if (foundRecipes?.length) {
@@ -98,8 +108,8 @@ discordBot.on('messageCreate', async (message) => {
                 - **單件成本: ${costPerItem.toFixed(0)}g**
 
                 ### 📊 市場售價
-                - 成品NQ均價: ${itemNqPrice.toFixed(0)}g (利潤: ${profitNq > 0 ? '+' : ''}${profitNq.toFixed(0)}g)
-                - 成品HQ均價: ${itemHqPrice.toFixed(0)}g (利潤: ${profitHq > 0 ? '+' : ''}${profitHq.toFixed(0)}g)
+                - 成品NQ均價: ${itemNqPrice.toFixed(0)}g (利潤: ${profitNq > 0 ? '+' : ''}${profitNq.toFixed(0)}g) / 日平均銷量: ${nqSaleVelocity.toFixed(2)}
+                - 成品HQ均價: ${itemHqPrice.toFixed(0)}g (利潤: ${profitHq > 0 ? '+' : ''}${profitHq.toFixed(0)}g) / 日平均銷量: ${hqSaleVelocity.toFixed(2)}
               `,
             )
           }
@@ -117,8 +127,8 @@ discordBot.on('messageCreate', async (message) => {
             ## 🎨 **${userMessage}**
 
             ### 📊 市場售價
-            - NQ均價: ${itemNqPrice.toFixed(0)}g
-            - HQ均價: ${itemHqPrice.toFixed(0)}g
+            - NQ均價: ${itemNqPrice.toFixed(0)}g / 日平均銷量: ${nqSaleVelocity.toFixed(2)}
+            - HQ均價: ${itemHqPrice.toFixed(0)}g / 日平均銷量: ${hqSaleVelocity.toFixed(2)}
 
             ℹ️ 此物品無配方資料（可能為裝備、樂譜、寵物等）
           `,
