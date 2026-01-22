@@ -14,6 +14,9 @@ export const envVar = Object.freeze(
       FF14_UNIVERSALIS_API_URL: z
         .string()
         .url('FF14_UNIVERSALIS_API_URL must be a valid URL'),
+      FF14_UNIVERSALIS_SITE_URL: z
+        .string()
+        .url('FF14_UNIVERSALIS_SITE_URL must be a valid URL'),
     })
     .parse(process.env),
 )
