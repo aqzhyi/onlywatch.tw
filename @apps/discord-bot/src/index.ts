@@ -1,5 +1,6 @@
 import { REST, Routes } from 'discord.js'
 import { itemCommand } from '~/(features)/commands/itemCommand'
+import { materiaCommand } from '~/(features)/commands/materiaCommand'
 import { discordBot } from '~/(services)/bot/discordBot.ts'
 import { envVar } from '~/envVar.ts'
 
@@ -12,7 +13,10 @@ discordBot.on('ready', async (client) => {
 
   // Register slash commands
   const rest = new REST({ version: '10' }).setToken(envVar.DISCORD_BOT_TOKEN)
-  const commands = [itemCommand.command.toJSON()]
+  const commands = [
+    itemCommand.command.toJSON(),
+    materiaCommand.command.toJSON(),
+  ]
 
   try {
     await rest.put(Routes.applicationCommands(client.user.id), {
@@ -29,6 +33,10 @@ discordBot.on('interactionCreate', async (interaction) => {
 
   if (interaction.commandName === 'item') {
     await itemCommand.callback(interaction)
+  }
+
+  if (interaction.commandName === 'materia') {
+    await materiaCommand.callback(interaction)
   }
 })
 
