@@ -25,8 +25,29 @@ export const universalisTypes = {
     stackSizeHistogramNQ: z.record(z.string(), z.number()),
     /** e.g. `{ "1": 12 }` */
     stackSizeHistogramHQ: z.record(z.string(), z.number()),
+    /**
+     * 過去七天內每天的平均銷售數量（或顯示的銷售總數，以先到者為準）
+     *
+     * 這個數字對於每個項目來說往往是相同的，因為顯示的銷售數量和時間段都是相同的
+     *
+     * 這個統計數據在歷史查詢中更有用
+     */
     regularSaleVelocity: z.number(),
+    /**
+     * 過去七天（或顯示的銷售總數，以較早者為準）每天的平均 NQ 銷售數量。
+     *
+     * 這個數字對於每個項目來說往往是相同的，因為顯示的銷售數量和時間段都是相同的。
+     *
+     * 這個統計數據在歷史查詢中更有用。
+     */
     nqSaleVelocity: z.number(),
+    /**
+     * 過去七天（或顯示的銷售總數，以先到者為準）每天的平均 HQ 銷售數量。
+     *
+     * 這個數字對於每個項目來說往往是相同的，因為顯示的銷售數量和時間段都是相同的。
+     *
+     * 這個統計數據在歷史查詢中更有用。
+     */
     hqSaleVelocity: z.number(),
   }),
   aggregatedItems: z.object({
