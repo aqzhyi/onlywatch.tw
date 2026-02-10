@@ -23,27 +23,27 @@ export const materiaCommand = {
   ): Promise<void> {
     const MATERIA_CONFIG = [
       // 🔴 紅色系列（戰鬥特職）
-      { emoji: '🔴', name: '武略魔晶石', attr: '爆擊' },
-      { emoji: '🔴', name: '神眼魔晶石', attr: '直擊' },
-      { emoji: '🔴', name: '雄略魔晶石', attr: '信念' },
+      { emoji: '🔴', name: '武略魔晶石', attr: '爆擊'.padStart(4, '　') },
+      { emoji: '🔴', name: '神眼魔晶石', attr: '直擊'.padStart(4, '　') },
+      { emoji: '🔴', name: '雄略魔晶石', attr: '信念'.padStart(4, '　') },
 
       // 🔵 藍色系列（生產系特職）
-      { emoji: '🔵', name: '巨匠魔晶石', attr: '加工精度' },
-      { emoji: '🔵', name: '名匠魔晶石', attr: '作業精度' },
-      { emoji: '🔵', name: '魔匠魔晶石', attr: 'CP' },
+      { emoji: '🔵', name: '巨匠魔晶石', attr: '加工精度'.padStart(4, '　') },
+      { emoji: '🔵', name: '名匠魔晶石', attr: '作業精度'.padStart(4, '　') },
+      { emoji: '🔵', name: '魔匠魔晶石', attr: 'ＣＰ'.padStart(4, '　') },
 
       // 🟢 綠色系列（採集系特職）
-      { emoji: '🟢', name: '達識魔晶石', attr: '獲得力' },
-      { emoji: '🟢', name: '博識魔晶石', attr: '鑑別力' },
-      { emoji: '🟢', name: '器識魔晶石', attr: 'GP' },
+      { emoji: '🟢', name: '達識魔晶石', attr: '獲得力'.padStart(4, '　') },
+      { emoji: '🟢', name: '博識魔晶石', attr: '鑑別力'.padStart(4, '　') },
+      { emoji: '🟢', name: '器識魔晶石', attr: 'ＧＰ'.padStart(4, '　') },
 
       // 🟣 紫色系列（戰鬥特職）
-      { emoji: '🟣', name: '戰技魔晶石', attr: '技能速度' },
-      { emoji: '🟣', name: '詠唱魔晶石', attr: '詠唱速度' },
+      { emoji: '🟣', name: '戰技魔晶石', attr: '技能速度'.padStart(4, '　') },
+      { emoji: '🟣', name: '詠唱魔晶石', attr: '詠唱速度'.padStart(4, '　') },
 
       // 🟡 黃色系列（坦克/治療特職）
-      { emoji: '🟡', name: '剛柔魔晶石', attr: '堅韌' },
-      { emoji: '🟡', name: '信力魔晶石', attr: '信仰' },
+      { emoji: '🟡', name: '剛柔魔晶石', attr: '堅韌'.padStart(4, '　') },
+      { emoji: '🟡', name: '信力魔晶石', attr: '信仰'.padStart(4, '　') },
     ]
 
     const TYPE_NAMES = [
