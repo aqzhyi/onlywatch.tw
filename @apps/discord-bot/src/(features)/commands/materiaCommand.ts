@@ -104,59 +104,52 @@ export const materiaCommand = {
 
     const priceMap = keyBy(allPriceResults, 'itemId')
 
-    // 分批查詢銷量（每批 20 個，延遲 1150ms）
-    await result.edit('🔍 查詢銷量資料中...')
-
-    const saleVelocityMap: Record<number, number> = {}
-
-    for (let batchIndex = 0; batchIndex < priceBatches.length; batchIndex++) {
-      const { data: saleData } = await universalisApp.findItemSaleHistory(
-        priceBatches[batchIndex]!,
-      )
-
-      if (saleData) {
-        saleVelocityMap[saleData.itemID] = saleData.nqSaleVelocity || 0
-      }
-
-      if (batchIndex < priceBatches.length - 1) {
-        await delay(1150)
-      }
-    }
-
-    // 格式化輸出 - 按顏色分組
+    // 格式化輸出 - 按型號分組
     await result.edit('🔍 正在總結...')
 
-    const colorGroups = [
-      { emoji: '🔴', name: '紅色系列（戰鬥特職）' },
-      { emoji: '🔵', name: '藍色系列（生產系特職）' },
-      { emoji: '🟢', name: '綠色系列（採集系特職）' },
-      { emoji: '🟣', name: '紫色系列（戰鬥特職）' },
-      { emoji: '🟡', name: '黃色系列（坦克/治療特職）' },
-    ]
+    const getVelocityEmoji = (velocity: number): string => {
+      if (velocity >= 10000) return '1️⃣0️⃣🌟'
+      if (velocity >= 9000) return '0️⃣9️⃣✨'
+      if (velocity >= 8000) return '0️⃣8️⃣🔥'
+      if (velocity >= 7000) return '0️⃣7️⃣🔥'
+      if (velocity >= 6000) return '0️⃣6️⃣🔥'
+      if (velocity >= 5000) return '0️⃣5️⃣🔥'
+      if (velocity >= 4000) return '0️⃣4️⃣🔋'
+      if (velocity >= 3000) return '0️⃣3️⃣🤔'
+      if (velocity >= 2000) return '0️⃣2️⃣🤔'
+      if (velocity >= 1000) return '0️⃣1️⃣💭'
+      return '0️⃣0️⃣💤'
+    }
 
-    for (let groupIndex = 0; groupIndex < colorGroups.length; groupIndex++) {
-      const group = colorGroups[groupIndex]!
-      const output = [`## ${group.emoji} ${group.name}\n`]
+    for (let typeIndex = 0; typeIndex < TYPE_NAMES.length; typeIndex++) {
+      const typeName = TYPE_NAMES[typeIndex]!
+      const typeNumber = typeIndex + 1
+      const output = [`## ${typeName}魔晶石\n`]
 
-      const groupItems = materiaItems.filter(
-        (item) => item.emoji === group.emoji,
+      const typeItems = materiaItems.filter(
+        (item) => item.typeNumber === typeNumber,
       )
 
-      for (const item of groupItems) {
+      for (const item of typeItems) {
         if (!item.id) continue
 
-        const price = priceMap[item.id]?.nq.averageSalePrice.region?.price || 0
-        const velocity = saleVelocityMap[item.id] || 0
+        const priceData = priceMap[item.id]
+        const price = priceData?.nq.averageSalePrice.region?.price || 0
+        const velocity = priceData?.nq.dailySaleVelocity.region?.quantity || 0
+        const velocityEmoji = getVelocityEmoji(velocity)
 
-        /**
-         * FIXME: 銷量總是返回 0 的問題。
-         */
         output.push(
-          `${item.emoji} ${toUniversalisLink(item.fullName)} (${item.typeNumber}型${item.attr}) / 平均 ${Math.round(price).toLocaleString('en-US')}g / 銷量 ${Math.round(velocity)} 件`,
+          `${item.emoji} ${toUniversalisLink(item.fullName)} (${item.typeNumber}型${item.attr})` +
+            ` | ` +
+            `${velocityEmoji} 平均銷量市場價值 ${Math.round(velocity).toLocaleString('en-US')}` +
+            ` x ` +
+            `${Math.round(price).toLocaleString('en-US')}g` +
+            ` ~= ` +
+            `${Math.round(price * velocity).toLocaleString('en-US')}g`,
         )
       }
 
-      if (groupIndex === 0) {
+      if (typeIndex === 0) {
         await result.edit(output.join('\n'))
       } else {
         await interaction.followUp(output.join('\n'))
