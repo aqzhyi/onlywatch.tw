@@ -31,12 +31,18 @@ discordBot.on('ready', async (client) => {
 discordBot.on('interactionCreate', async (interaction) => {
   if (!interaction.isChatInputCommand()) return
 
-  if (interaction.commandName === 'item') {
-    await itemCommand.callback(interaction)
-  }
+  try {
+    if (interaction.commandName === 'item') {
+      await itemCommand.callback(interaction)
+    }
 
-  if (interaction.commandName === 'materia') {
-    await materiaCommand.callback(interaction)
+    if (interaction.commandName === 'materia') {
+      await materiaCommand.callback(interaction)
+    }
+  } catch (error) {
+    interaction.followUp(
+      `❌ 發生錯誤: ${error instanceof Error ? error.message : '未知錯誤'}`,
+    )
   }
 })
 
