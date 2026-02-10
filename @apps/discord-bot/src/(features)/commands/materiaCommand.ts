@@ -6,6 +6,7 @@ import {
 import { chunk, keyBy } from 'lodash-es'
 import type { z } from 'zod'
 import { itemId } from '~/(constants)/itemId'
+import { toUniversalisLink } from '~/(features)/markdown/toUniversalisLink'
 import { universalisApp } from '~/(services)/universalis/universalisApp'
 import { universalisTypes } from '~/(services)/universalis/universalisTypes'
 
@@ -151,7 +152,7 @@ export const materiaCommand = {
          * FIXME: 銷量總是返回 0 的問題。
          */
         output.push(
-          `${item.emoji} ${item.fullName} (${item.typeNumber}型${item.attr}) / 平均 ${Math.round(price).toLocaleString('en-US')}g / 銷量 ${Math.round(velocity)} 件`,
+          `${item.emoji} ${toUniversalisLink(item.fullName)} (${item.typeNumber}型${item.attr}) / 平均 ${Math.round(price).toLocaleString('en-US')}g / 銷量 ${Math.round(velocity)} 件`,
         )
       }
 
