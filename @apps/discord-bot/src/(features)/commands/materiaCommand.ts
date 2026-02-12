@@ -14,6 +14,20 @@ type AggregatedItemResult = z.infer<
   typeof universalisTypes.aggregatedItems
 >['results'][number]
 
+const getVelocityEmoji = (velocity: number): string => {
+  if (velocity >= 10_000) return '1️⃣0️⃣🌟'
+  if (velocity >= 9000) return '0️⃣9️⃣✨'
+  if (velocity >= 8000) return '0️⃣8️⃣🔥'
+  if (velocity >= 7000) return '0️⃣7️⃣🔥'
+  if (velocity >= 6000) return '0️⃣6️⃣🔥'
+  if (velocity >= 5000) return '0️⃣5️⃣🔥'
+  if (velocity >= 4000) return '0️⃣4️⃣🔋'
+  if (velocity >= 3000) return '0️⃣3️⃣🤔'
+  if (velocity >= 2000) return '0️⃣2️⃣🤔'
+  if (velocity >= 1000) return '0️⃣1️⃣💭'
+  return '0️⃣0️⃣💤'
+}
+
 export const materiaCommand = {
   /**
    * TODO: 規畫 filters options 的配置。目前想法為（暫定，尚未定案）：
@@ -114,20 +128,6 @@ export const materiaCommand = {
 
     // 格式化輸出 - 按型號分組
     await result.edit('🔍 正在總結...')
-
-    const getVelocityEmoji = (velocity: number): string => {
-      if (velocity >= 10000) return '1️⃣0️⃣🌟'
-      if (velocity >= 9000) return '0️⃣9️⃣✨'
-      if (velocity >= 8000) return '0️⃣8️⃣🔥'
-      if (velocity >= 7000) return '0️⃣7️⃣🔥'
-      if (velocity >= 6000) return '0️⃣6️⃣🔥'
-      if (velocity >= 5000) return '0️⃣5️⃣🔥'
-      if (velocity >= 4000) return '0️⃣4️⃣🔋'
-      if (velocity >= 3000) return '0️⃣3️⃣🤔'
-      if (velocity >= 2000) return '0️⃣2️⃣🤔'
-      if (velocity >= 1000) return '0️⃣1️⃣💭'
-      return '0️⃣0️⃣💤'
-    }
 
     for (let typeIndex = 0; typeIndex < TYPE_NAMES.length; typeIndex++) {
       const typeName = TYPE_NAMES[typeIndex]!
