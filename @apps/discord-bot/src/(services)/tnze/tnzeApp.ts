@@ -14,7 +14,7 @@ export const tnzeApp = {
         throw new Error(`Failed to fetch recipes: ${res.statusText}`)
       }
 
-      const json = (await res.json()) as any
+      const json = (await res.json()) as { data: unknown }
 
       return z.array(tnzeTypes.RecipeTable).safeParse(json.data)
     })
@@ -28,7 +28,7 @@ export const tnzeApp = {
         throw new Error(`Failed to fetch recipes: ${res.statusText}`)
       }
 
-      const json = (await res.json()) as any
+      const json = (await res.json()) as unknown
 
       return z.array(tnzeTypes.RecipeItems).safeParse(json)
     })
@@ -42,7 +42,7 @@ export const tnzeApp = {
         throw new Error(`Failed to fetch item info: ${res.statusText}`)
       }
 
-      const json = (await res.json()) as any
+      const json = (await res.json()) as unknown
 
       return tnzeTypes.ItemInfo.safeParse(json)
     })
