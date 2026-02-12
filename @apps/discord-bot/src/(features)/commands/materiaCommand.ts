@@ -15,6 +15,14 @@ type AggregatedItemResult = z.infer<
 >['results'][number]
 
 export const materiaCommand = {
+  /**
+   * TODO: 規畫 filters options 的配置。目前想法為（暫定，尚未定案）：
+   *
+   * 1. 依照市場價值規模篩選
+   * 2. 依照單件售價篩選
+   * 3. 依照銷量篩選
+   * 4. 依照特定屬性（如爆擊、直擊等）篩選
+   */
   command: new SlashCommandBuilder()
     .setName('materia')
     .setDescription('魔晶石查詢'),
