@@ -7,6 +7,13 @@ import { envVar } from '~/envVar'
  * API 的速率限制為每秒 25 次請求（突發 50 次請求），而網站本身的限制則為每秒 15 次請求（突發 30 次請求），如果你是進行爬取的話。每個
  * IP 的同時連線數上限為 8。
  *
+ * TODO: 規畫參數能夠給予不同 DataCenter name 功能，例如（暫定，尚未確定定案）：
+ *
+ * - 中國服(輸入參數為`中国`)
+ * - 繁中服(輸入參數為`繁中服`) (此為現狀，目前為寫死的參數)
+ * - 韓服(輸入參數為`한국`)
+ * - 日服(輸入參數為`Japan` 或者 `Elemental` 或者 `Gaia` 或者 `Mana` 或者 `Meteor`)
+ *
  * @see https://docs.universalis.app/
  */
 export const universalisApp = {
