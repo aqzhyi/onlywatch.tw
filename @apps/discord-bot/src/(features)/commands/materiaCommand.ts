@@ -112,7 +112,7 @@ export const materiaCommand = {
         `🔍 查詢價格中 (${batchIndex + 1}/${priceBatches.length})...`,
       )
 
-      const { data: priceData } = await universalisApp.findManyItemsPrice(
+      const { data: priceData } = await universalisApp.findManyItemsAggregated(
         priceBatches[batchIndex]!,
       )
       if (priceData?.results) {

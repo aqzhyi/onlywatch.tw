@@ -33,7 +33,14 @@ export const universalisApp = {
       return universalisTypes.itemSaleHistory.safeParse(await res.json())
     })
   },
-  findManyItemsPrice: async function (id: number[]) {
+  /**
+   * 查詢過去 4 天之物品平均銷售情況
+   *
+   * AverageSalePrice 和 DailySaleVelocity 是根據過去 4 天的銷售情況計算得出。
+   *
+   * 取得指定物品的整合市場板資料。最多可用逗號分隔的 100 個 item ID，以一次取得多個物品的資料。
+   */
+  findManyItemsAggregated: async function (id: number[]) {
     let error = null
     if (id.length === 0) {
       error = new Error('至少提供一個物品 ID 來查詢物價')

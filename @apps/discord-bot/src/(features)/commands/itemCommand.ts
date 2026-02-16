@@ -57,7 +57,7 @@ export const itemCommand = {
       const {
         /** 目標物品市價 */
         data: targetItemPriceData,
-      } = await universalisApp.findManyItemsPrice([targetItemId])
+      } = await universalisApp.findManyItemsAggregated([targetItemId])
 
       const {
         /** 目標物品銷售歷史 */
@@ -99,7 +99,7 @@ export const itemCommand = {
 
         const materialIds = recipeItems.map(([itemId]) => itemId)
         const { data: materialsData } =
-          await universalisApp.findManyItemsPrice(materialIds)
+          await universalisApp.findManyItemsAggregated(materialIds)
         const materialPriceMap = keyBy(materialsData?.results, 'itemId')
 
         await result.edit(`🔍5️⃣ 正在總結...`)

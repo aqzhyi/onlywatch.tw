@@ -50,6 +50,7 @@ export const universalisTypes = {
      */
     hqSaleVelocity: z.number(),
   }),
+  /** 過去 4 天之物品平均銷售情況 */
   aggregatedItems: z.object({
     results: z.array(
       z.object({
@@ -72,6 +73,9 @@ export const universalisTypes = {
               })
               .optional(),
           }),
+          /**
+           * AverageSalePrice 和 DailySaleVelocity 是根據過去 4 天的銷售情況計算得出。
+           */
           averageSalePrice: z.object({
             region: z
               .object({
@@ -79,6 +83,9 @@ export const universalisTypes = {
               })
               .optional(),
           }),
+          /**
+           * AverageSalePrice 和 DailySaleVelocity 是根據過去 4 天的銷售情況計算得出。
+           */
           dailySaleVelocity: z.object({
             region: z
               .object({
@@ -106,6 +113,9 @@ export const universalisTypes = {
               })
               .optional(),
           }),
+          /**
+           * AverageSalePrice 和 DailySaleVelocity 是根據過去 4 天的銷售情況計算得出。
+           */
           averageSalePrice: z.object({
             region: z
               .object({
@@ -113,6 +123,9 @@ export const universalisTypes = {
               })
               .optional(),
           }),
+          /**
+           * AverageSalePrice 和 DailySaleVelocity 是根據過去 4 天的銷售情況計算得出。
+           */
           dailySaleVelocity: z.object({
             region: z
               .object({
@@ -121,13 +134,15 @@ export const universalisTypes = {
               .optional(),
           }),
         }),
-        worldUploadTimes: z.array(
-          z.object({
-            worldId: z.number(),
-            /** e.g. `1768061106604` */
-            timestamp: z.number(),
-          }),
-        ),
+        worldUploadTimes: z
+          .array(
+            z.object({
+              worldId: z.number(),
+              /** e.g. `1768061106604` */
+              timestamp: z.number(),
+            }),
+          )
+          .optional(),
       }),
     ),
   }),
