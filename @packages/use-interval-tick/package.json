@@ -46,7 +46,7 @@
     "@vitest/coverage-v8": "4.0.5",
     "del-cli": "7.0.0",
     "jsdom": "27.1.0",
-    "oxlint": "1.30.0",
+    "oxlint": "1.48.0",
     "prettier": "3.6.2",
     "prettier-plugin-jsdoc": "1.5.0",
     "react": "19.2.0",

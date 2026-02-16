@@ -65,7 +65,7 @@
     "del-cli": "7.0.0",
     "jsdom": "27.0.0",
     "next": "15.5.4",
-    "oxlint": "1.30.0",
+    "oxlint": "1.48.0",
     "prettier": "3.6.2",
     "prettier-plugin-jsdoc": "1.5.0",
     "react": "19.2.0",
