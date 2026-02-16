@@ -149,11 +149,11 @@ export const materiaCommand = {
         output.push(
           `${item.emoji} ${toUniversalisLink(item.fullName)} (${item.typeNumber}型${item.attr})` +
             ` | ` +
-            `${velocityEmoji} 平均銷量市場價值 ${Math.round(velocity).toLocaleString('en-US')}` +
+            `${velocityEmoji} 銷量市場規模 ${Math.round(velocity).toLocaleString('en-US')}件` +
             ` x ` +
-            `${Math.round(price).toLocaleString('en-US')}g` +
+            `\`${Math.round(price).toLocaleString('en-US')}g\`` +
             ` ~= ` +
-            `${Math.round(price * velocity).toLocaleString('en-US')}g`,
+            `\`${Math.round(price * velocity).toLocaleString('en-US')}g\``,
         )
       }
 
