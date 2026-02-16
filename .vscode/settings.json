@@ -8,6 +8,7 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.enable": false,
   "oxc.enable": true,
+  "oxc.enable.oxlint": true,
   "prettier.enable": true,
   "tailwind-fold.foldStyle": "QUOTES",
   "tailwindCSS.classFunctions": [
