@@ -36,6 +36,8 @@ export const universalisApp = {
   /**
    * 查詢過去 4 天之物品平均銷售情況
    *
+   * 如果需要比較即時的物價資訊，請使用 {@link universalisApp.findManyItemsCurrentPrice} 方法。
+   *
    * AverageSalePrice 和 DailySaleVelocity 是根據過去 4 天的銷售情況計算得出。
    *
    * 取得指定物品的整合市場板資料。最多可用逗號分隔的 100 個 item ID，以一次取得多個物品的資料。
@@ -52,6 +54,23 @@ export const universalisApp = {
 
     return await fetch(`${url}`).then(async (res) => {
       return universalisTypes.aggregatedItems.safeParse(await res.json())
+    })
+  },
+  /**
+   * 查詢現在拍賣版中之物品價格與銷售資訊
+   */
+  findManyItemsCurrentPrice: async function (id: number[]) {
+    let error = null
+    if (id.length === 0) {
+      error = new Error('至少提供一個物品 ID 來查詢物價')
+    }
+
+    const url = new URL(
+      `${envVar.FF14_UNIVERSALIS_API_URL}/繁中服/${id.join(',')}`,
+    )
+
+    return await fetch(`${url}`).then(async (res) => {
+      return universalisTypes.itemsCurrentPrice.safeParse(await res.json())
     })
   },
 }
