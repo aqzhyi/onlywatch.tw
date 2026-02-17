@@ -29,6 +29,7 @@ export const gatherMoneyRadarCommand = {
           { name: '原木', value: '原木' },
           { name: '靈砂', value: '靈砂' },
           { name: '礦石', value: '礦石' },
+          { name: '原石', value: '原石' },
           { name: '爆發藥', value: '爆發藥' },
           { name: '輔助藥品', value: '輔助藥品' },
         ),
@@ -225,6 +226,14 @@ const filterItems = (type: string): Array<{ name: string; id: number }> => {
       case '礦石': {
         match =
           name.endsWith('礦') &&
+          !name.includes('改良用') &&
+          !name.includes('收藏用') &&
+          !name.includes('重建用')
+        break
+      }
+      case '原石': {
+        match =
+          name.endsWith('原石') &&
           !name.includes('改良用') &&
           !name.includes('收藏用') &&
           !name.includes('重建用')
