@@ -20,6 +20,10 @@
 - follow the `SOLID` principles
 - follow the `high cohesion, low coupling` principle
 
+## Code Quality & Linting
+
+- 使用 `oxlint` 來確保程式碼沒有 linting error
+
 ## 倉庫架構
 
 - 這是一個 `monorepo` 架構
