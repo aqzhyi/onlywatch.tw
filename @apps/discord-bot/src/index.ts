@@ -1,5 +1,4 @@
 import { REST, Routes } from 'discord.js'
-import { gatherMoneyRadarCommand } from '~/(features)/commands/gatherMoneyRadarCommand'
 import { itemCommand } from '~/(features)/commands/itemCommand'
 import { materiaCommand } from '~/(features)/commands/materiaCommand'
 import { discordBot } from '~/(services)/bot/discordBot.ts'
@@ -17,7 +16,6 @@ discordBot.on('ready', async (client) => {
   const commands = [
     itemCommand.command.toJSON(),
     materiaCommand.command.toJSON(),
-    gatherMoneyRadarCommand.command.toJSON(),
   ]
 
   try {
@@ -40,10 +38,6 @@ discordBot.on('interactionCreate', async (interaction) => {
 
     if (interaction.commandName === 'materia') {
       await materiaCommand.callback(interaction)
-    }
-
-    if (interaction.commandName === 'gathers_money_radar') {
-      await gatherMoneyRadarCommand.callback(interaction)
     }
   } catch (error) {
     interaction.followUp(
