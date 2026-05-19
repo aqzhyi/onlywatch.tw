@@ -6,17 +6,14 @@
 
 ## 外部 API 服務依賴
 
-- 生產系之配方與需求材料: `./src/(services)/tnze/tnzeApp.ts`
-- 材料市價與銷貨歷史: `./src/(services)/universalis/universalisApp.ts`
-
-## 物品名稱與物品 ID 對照表
-
-- 所有物品名稱 ID 對照表：`./src/(constants)/itemNameIdMap.ts`
-- 所有伺服器(世界) ID 對照表：`./src/(constants)/worldIdMap.ts`
+- 物品生產配方與它的樹狀結構之依賴材料之文件: <https://wiki.ffxivteamcraft.com/>
+- 材料市價與銷貨歷史之文件: <https://docs.universalis.app/>
 
 ## 貨幣
 
-- Gil (別名 `g`)
+- Gil (使用 `💰` 來作為圖標，例如：`1,000`💰)
+- HQ (使用 `💖` 來作為圖標，例如：💖`HQ 高品`)
+- NQ (使用 `🩶` 來作為圖標，例如：🩶`HQ 普通`)
 
 ## 角色特職
 
