@@ -40,9 +40,9 @@ discordBot.on('interactionCreate', async (interaction) => {
       await materiaCommand.callback(interaction)
     }
   } catch (error) {
-    interaction.followUp(
-      `❌ 發生錯誤: ${error instanceof Error ? error.message : '未知錯誤'}`,
-    )
+    const raw = error instanceof Error ? error.message : '未知錯誤'
+    const msg = `❌ 發生錯誤: ${raw}`
+    interaction.followUp(msg.length > 2000 ? msg.slice(0, 1997) + '...' : msg)
   }
 })
 
