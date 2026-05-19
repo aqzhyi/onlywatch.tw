@@ -58,6 +58,8 @@ export const universalisApp = {
   },
   /**
    * 查詢現在拍賣版中之物品價格與銷售資訊
+   *
+   * 支援一次查詢多個物品（最多 100 個），返回即時的拍賣版價格與銷量資訊
    */
   findManyItemsCurrentPrice: async function (id: number[]) {
     let error = null
@@ -70,7 +72,13 @@ export const universalisApp = {
     )
 
     return await fetch(`${url}`).then(async (res) => {
-      return universalisTypes.itemsCurrentPrice.safeParse(await res.json())
+      const json = await res.json()
+      // 單個物品查詢時，直接返回物品資料
+      if (id.length === 1) {
+        return universalisTypes.OneItemCurrentPrice.safeParse(json)
+      }
+      // 多個物品查詢時，返回包含 items 字典的資料
+      return universalisTypes.ManyItemsCurrentPrice.safeParse(json)
     })
   },
 }

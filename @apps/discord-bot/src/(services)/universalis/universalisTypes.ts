@@ -147,8 +147,8 @@ export const universalisTypes = {
     ),
   }),
   /** 當前拍賣版中之物品價格與銷售資訊 */
-  itemsCurrentPrice: z.object({
-    itemID: z.number(),
+  OneItemCurrentPrice: z.object({
+    itemID: z.array(z.number()),
     /** e.g. `1768297753258` */
     lastUploadTime: z.number(),
     listings: z.array(
@@ -190,11 +190,11 @@ export const universalisTypes = {
       }),
     ),
     regionName: z.string(),
-    /** 當前拍賣中之物品的平均價格 */
+    /** 當前拍賣中之物品的平均價格（時價） */
     currentAveragePrice: z.number(),
-    /** 當前拍賣中之 NQ 物品的平均價格 */
+    /** 當前拍賣中之 NQ 物品的平均價格（時價） */
     currentAveragePriceNQ: z.number(),
-    /** 當前拍賣中之 HQ 物品的平均價格 */
+    /** 當前拍賣中之 HQ 物品的平均價格（時價） */
     currentAveragePriceHQ: z.number(),
     /**
      * 過去七天內每天的平均銷售數量（或顯示的所有銷售數量，以先到者為準）
@@ -224,8 +224,11 @@ export const universalisTypes = {
      * 這個統計數據在歷史查詢中更有用。
      */
     hqSaleVelocity: z.number(),
+    /** 平均銷售價格 */
     averagePrice: z.number(),
+    /** 平均 NQ 銷售價格 */
     averagePriceNQ: z.number(),
+    /** 平均 HQ 銷售價格 */
     averagePriceHQ: z.number(),
     /** 當前拍賣中之物品的最低價格 */
     minPrice: z.number(),
@@ -242,11 +245,84 @@ export const universalisTypes = {
     stackSizeHistogram: z.record(z.string(), z.number()),
     stackSizeHistogramNQ: z.record(z.string(), z.number()),
     stackSizeHistogramHQ: z.record(z.string(), z.number()),
-    worldUploadTimes: z.record(z.string(), z.number()),
+    worldUploadTimes: z.record(z.string(), z.number()).optional(),
     listingsCount: z.number(),
     recentHistoryCount: z.number(),
     unitsForSale: z.number(),
     unitsSold: z.number(),
     hasData: z.boolean(),
+  }),
+  /** 當前拍賣版中多個物品的價格與銷售資訊 */
+  ManyItemsCurrentPrice: z.object({
+    itemIDs: z.array(z.number()),
+    items: z.record(
+      z.string(),
+      z.object({
+        itemID: z.number(),
+        lastUploadTime: z.number(),
+        listings: z.array(
+          z.object({
+            lastReviewTime: z.number(),
+            pricePerUnit: z.number(),
+            quantity: z.number(),
+            stainID: z.number(),
+            worldName: z.string(),
+            worldID: z.number(),
+            creatorName: z.string(),
+            creatorID: z.any(),
+            hq: z.boolean(),
+            isCrafted: z.boolean(),
+            listingID: z.string(),
+            materia: z.array(z.any()),
+            onMannequin: z.boolean(),
+            retainerCity: z.number(),
+            retainerID: z.string(),
+            retainerName: z.string(),
+            sellerID: z.any(),
+            total: z.number(),
+            tax: z.number(),
+          }),
+        ),
+        recentHistory: z.array(
+          z.object({
+            hq: z.boolean(),
+            pricePerUnit: z.number(),
+            quantity: z.number(),
+            timestamp: z.number(),
+            onMannequin: z.boolean(),
+            worldName: z.string(),
+            worldID: z.number(),
+            buyerName: z.string(),
+            total: z.number(),
+          }),
+        ),
+        regionName: z.string(),
+        currentAveragePrice: z.number(),
+        currentAveragePriceNQ: z.number(),
+        currentAveragePriceHQ: z.number(),
+        regularSaleVelocity: z.number(),
+        nqSaleVelocity: z.number(),
+        hqSaleVelocity: z.number(),
+        averagePrice: z.number(),
+        averagePriceNQ: z.number(),
+        averagePriceHQ: z.number(),
+        minPrice: z.number(),
+        minPriceNQ: z.number(),
+        minPriceHQ: z.number(),
+        maxPrice: z.number(),
+        maxPriceNQ: z.number(),
+        maxPriceHQ: z.number(),
+        stackSizeHistogram: z.record(z.string(), z.number()),
+        stackSizeHistogramNQ: z.record(z.string(), z.number()),
+        stackSizeHistogramHQ: z.record(z.string(), z.number()),
+        worldUploadTimes: z.record(z.string(), z.number()).optional(),
+        listingsCount: z.number(),
+        recentHistoryCount: z.number(),
+        unitsForSale: z.number(),
+        unitsSold: z.number(),
+        hasData: z.boolean(),
+      }),
+    ),
+    worldUploadTimes: z.record(z.string(), z.number()).optional(),
   }),
 }
