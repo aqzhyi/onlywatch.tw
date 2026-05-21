@@ -9,6 +9,8 @@ import { toUniversalisLink } from '~/(features)/markdown/toUniversalisLink'
 import { teamcraftApp } from '~/(services)/teamcraft/teamcraftApp'
 import { universalisApp } from '~/(services)/universalis/universalisApp'
 
+const fmtPrice = (value: number) => value.toFixed(0).padStart(7, ' ')
+
 /**
  * 這個指令允許使用者查詢指定物品的市場資訊，並提供配方材料成本分析（若有配方）與利潤評估。
  *
@@ -153,9 +155,9 @@ export const itemCommand = {
               )
 
               if (hqPrice > 0) {
-                return `- \`${hqPrice.toFixed(0).padStart(7, ' ')}\`💰✨ **x** \`${itemAmount}\`📦　${materialLink}　小計 \`${totalHqCostPrice.toFixed(0)}\`💰`
+                return `- \`${fmtPrice(hqPrice)}\`💰💖 **x** \`${itemAmount}\`📦　${materialLink}　小計 \`${totalHqCostPrice.toFixed(0)}\`💰`
               }
-              return `- \`${nqPrice.toFixed(0).padStart(7, ' ')}\`💰 **x** \`${itemAmount}\`📦　${materialLink}　小計 \`${totalNqPrice.toFixed(0)}\`💰`
+              return `- \`${fmtPrice(nqPrice)}\`💰🩶 **x** \`${itemAmount}\`📦　${materialLink}　小計 \`${totalNqPrice.toFixed(0)}\`💰`
             }),
           )
 
@@ -176,9 +178,8 @@ export const itemCommand = {
 
             ### 🎨 生產配方材料
             ${materialInfos.join('\n')}
-            - 單次生產材料成本約 ~= \`${totalNqMaterialCost.toFixed(0)}\`💰
-            - ÷ 配方產出量: x${targetRecipe.yields}
-            - ~= **單件成品成本: ${hqCostPerItem.toFixed(0)}💰**
+            - 單次生產成本 ~= \`${fmtPrice(totalNqMaterialCost)}\`💰 ÷ 產出量: **x**\`${targetRecipe.yields}\`📦
+            - 約 ~= **單件**成品成本: \`${fmtPrice(totalNqMaterialCost / targetRecipe.yields)}\`💰
           `,
           )
         }
@@ -198,8 +199,8 @@ export const itemCommand = {
 
         ### 📊 平均單件售價
 
-        - 💖 HQ 高品: ${itemHqPrice.toFixed(0)}💰
-        - 🩶 NQ 低品: ${itemNqPrice.toFixed(0)}💰
+        - 💖 HQ 高品: \`${fmtPrice(itemHqPrice)}\`💰
+        - 🩶 NQ 低品: \`${fmtPrice(itemNqPrice)}\`💰
       `,
       )
     } catch (error) {
