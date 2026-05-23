@@ -3,7 +3,6 @@ import {
   type ChatInputCommandInteraction,
   SlashCommandBuilder,
 } from 'discord.js'
-import { itemId } from '~/(constants)/itemId'
 import { calcWeightedAvgPrice } from '~/(features)/commands/calcWeightedAvgPrice'
 import { toUniversalisLink } from '~/(features)/markdown/toUniversalisLink'
 import { teamcraftApp } from '~/(services)/teamcraft/teamcraftApp'
@@ -64,12 +63,13 @@ export const itemCommand = {
         .trim()
         .replaceAll('', '')
 
-      const targetItemId = itemId.get(itemName) || null
-
       const result = await interaction.reply(`🔍1️⃣ 搜尋物品與配方...`)
 
       /** 目標物品的生產配方 */
       const targetRecipe = await teamcraftApp.searchRecipes(itemName)
+
+      /** 目標物品的 Universalis item ID（由 Teamcraft tw-items.json 查詢） */
+      const targetItemId = await teamcraftApp.findItemId(itemName)
 
       if (!targetItemId && !targetRecipe) {
         await result.edit(`🔍❌ 找不到相關物品與配方: \`${itemName}\``)
@@ -95,11 +95,11 @@ export const itemCommand = {
           targetItemPricing.nqSaleVelocity = data.nqSaleVelocity
           targetItemPricing.hqSaleVelocity = data.hqSaleVelocity
           targetItemPricing.nqSalePrice = calcWeightedAvgPrice(
-            data.listings,
+            data.listings ?? [],
             false,
           )
           targetItemPricing.hqSalePrice = calcWeightedAvgPrice(
-            data.listings,
+            data.listings ?? [],
             true,
           )
         }
@@ -152,6 +152,7 @@ export const itemCommand = {
 
               const materialLink = toUniversalisLink(
                 materialName ?? '__無資訊__',
+                matId,
               )
 
               if (hqPrice > 0) {
@@ -168,7 +169,7 @@ export const itemCommand = {
 
           await result.edit(
             dedent`
-            ## 📦 **${toUniversalisLink(targetRecipe.resultItemName)}**
+            ## 📦 **${toUniversalisLink(targetRecipe.resultItemName, targetRecipe.resultItemId)}**
             > ${targetRecipe.jobName}配方(\`rlv ${targetRecipe.rlvl}\`)
 
             ### 📊 平均單件售價
@@ -194,7 +195,7 @@ export const itemCommand = {
 
       await result.edit(
         dedent`
-        ## 📦 **${toUniversalisLink(itemName)}**
+        ## 📦 **${toUniversalisLink(itemName, targetItemId)}**
         > 無配方 - ${googleSearchLink}
 
         ### 📊 平均單件售價

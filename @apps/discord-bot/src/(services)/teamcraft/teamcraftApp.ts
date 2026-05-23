@@ -85,6 +85,14 @@ export const teamcraftApp = {
   },
 
   /**
+   * Returns the FFXIV item ID for a given TW item name, or `null` if not found.
+   */
+  async findItemId(name: string): Promise<number | null> {
+    await loadTwItems()
+    return _nameToId!.get(name) ?? null
+  },
+
+  /**
    * Returns the TW job name for a given job ID, or `null` if not found.
    *
    * @example

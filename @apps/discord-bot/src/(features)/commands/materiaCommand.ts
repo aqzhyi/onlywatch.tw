@@ -5,8 +5,8 @@ import {
 } from 'discord.js'
 import { chunk, keyBy } from 'lodash-es'
 import type { z } from 'zod'
-import { itemId } from '~/(constants)/itemId'
 import { toUniversalisLink } from '~/(features)/markdown/toUniversalisLink'
+import { teamcraftApp } from '~/(services)/teamcraft/teamcraftApp'
 import { universalisApp } from '~/(services)/universalis/universalisApp'
 import { universalisTypes } from '~/(services)/universalis/universalisTypes'
 
@@ -86,19 +86,23 @@ export const materiaCommand = {
     const result = await interaction.reply('🔍 查詢所有魔晶石物價ing...')
 
     // 收集所有魔晶石物品（保持排序）
-    const materiaItems = MATERIA_CONFIG.flatMap((materia) =>
-      TYPE_NAMES.map((typeName, typeIndex) => {
-        const fullName = `${materia.name}${typeName}`
-        const materiaId = itemId.get(fullName)
-        return {
-          ...materia,
-          typeName,
-          typeNumber: typeIndex + 1,
-          fullName,
-          id: materiaId,
-        }
-      }),
-    ).filter((item) => item.id !== undefined)
+    const materiaItemsRaw = MATERIA_CONFIG.flatMap((materia) =>
+      TYPE_NAMES.map((typeName, typeIndex) => ({
+        ...materia,
+        typeName,
+        typeNumber: typeIndex + 1,
+        fullName: `${materia.name}${typeName}`,
+      })),
+    )
+
+    const materiaItems = (
+      await Promise.all(
+        materiaItemsRaw.map(async (item) => ({
+          ...item,
+          id: await teamcraftApp.findItemId(item.fullName),
+        })),
+      )
+    ).filter((item): item is typeof item & { id: number } => item.id !== null)
 
     const allMateriaIds = materiaItems.map((item) => item.id!)
 
@@ -147,7 +151,7 @@ export const materiaCommand = {
         const velocityEmoji = getVelocityEmoji(velocity)
 
         output.push(
-          `${item.emoji} ${toUniversalisLink(item.fullName)} (${item.typeNumber}型${item.attr})` +
+          `${item.emoji} ${toUniversalisLink(item.fullName, item.id)} (${item.typeNumber}型${item.attr})` +
             ` | ` +
             `${velocityEmoji} 銷量市場規模 ${Math.round(velocity).toLocaleString('en-US')}件` +
             ` x ` +
